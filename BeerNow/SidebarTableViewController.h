@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  SidebarTableViewController.h
 //  BeerNow
 //
 //  Created by Grant Arrowood on 5/24/17.
@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 
-@interface ViewController : UIViewController
-
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@interface SidebarTableViewController : UITableViewController {
+    NSArray *menuItems;
+}
 
 @end
-

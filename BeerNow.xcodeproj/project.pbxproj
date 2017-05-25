@@ -15,6 +15,9 @@
 		9C58AFFB1ED64A1800EB8E62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C58AFF91ED64A1800EB8E62 /* LaunchScreen.storyboard */; };
 		9C58B0061ED64A1800EB8E62 /* BeerNowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B0051ED64A1800EB8E62 /* BeerNowTests.m */; };
 		9C58B0111ED64A1800EB8E62 /* BeerNowUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B0101ED64A1800EB8E62 /* BeerNowUITests.m */; };
+		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
+		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
+		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,12 @@
 		9C58B00C1ED64A1800EB8E62 /* BeerNowUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeerNowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C58B0101ED64A1800EB8E62 /* BeerNowUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeerNowUITests.m; sourceTree = "<group>"; };
 		9C58B0121ED64A1800EB8E62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C58B01E1ED6730E00EB8E62 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		9C5DCCBD1ED6756500FA93E6 /* SidebarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarTableViewController.h; sourceTree = "<group>"; };
+		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
+		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +114,10 @@
 				9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */,
 				9C58AFF11ED64A1800EB8E62 /* ViewController.h */,
 				9C58AFF21ED64A1800EB8E62 /* ViewController.m */,
+				9C5DCCBD1ED6756500FA93E6 /* SidebarTableViewController.h */,
+				9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */,
+				9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */,
+				9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */,
 				9C58AFF41ED64A1800EB8E62 /* Main.storyboard */,
 				9C58AFF71ED64A1800EB8E62 /* Assets.xcassets */,
 				9C58AFF91ED64A1800EB8E62 /* LaunchScreen.storyboard */,
@@ -117,6 +130,8 @@
 		9C58AFEB1ED64A1800EB8E62 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9C58B01E1ED6730E00EB8E62 /* SWRevealViewController.h */,
+				9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */,
 				9C58AFEC1ED64A1800EB8E62 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -276,9 +291,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
+				9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
 				9C58AFED1ED64A1800EB8E62 /* main.m in Sources */,
+				9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +534,7 @@
 				9C58B0171ED64A1800EB8E62 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9C58B0181ED64A1800EB8E62 /* Build configuration list for PBXNativeTarget "BeerNowTests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +543,7 @@
 				9C58B01A1ED64A1800EB8E62 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9C58B01B1ED64A1800EB8E62 /* Build configuration list for PBXNativeTarget "BeerNowUITests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +552,7 @@
 				9C58B01D1ED64A1800EB8E62 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
