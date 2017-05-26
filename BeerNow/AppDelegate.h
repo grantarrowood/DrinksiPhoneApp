@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AWSCore/AWSCore.h>
+#import <AWSCognito/AWSCognito.h>
+#import "AWSCognitoIdentityProvider.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) UIStoryboard *storyboard;
 
 @end
 

@@ -138,6 +138,8 @@
 
 
 #import <UIKit/UIKit.h>
+#import "AWSCognitoIdentityProvider.h"
+#import "LoginViewController.h"
 
 @class SWRevealViewController;
 @protocol SWRevealViewControllerDelegate;
@@ -182,7 +184,8 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 };
 
 
-@interface SWRevealViewController : UIViewController
+@interface SWRevealViewController : UIViewController <AWSCognitoIdentityInteractiveAuthenticationDelegate, AWSCognitoIdentityRememberDevice>
+@property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
 
 /* Basic API */
 
@@ -401,7 +404,7 @@ typedef enum
 
 // String identifiers to be applied to segues on a storyboard
 extern NSString* const SWSegueRearIdentifier;  // this is @"sw_rear"
-extern NSString* const SWSegueFrontIdentifier; // this is @"sw_front"
+extern NSString *SWSegueFrontIdentifier; // this is @"sw_front"
 extern NSString* const SWSegueRightIdentifier; // this is @"sw_right"
 
 /* This will allow the class to be defined on a storyboard */

@@ -1836,7 +1836,7 @@ const int FrontViewPositionNone = 0xff;
 #pragma mark - SWRevealViewControllerSegueSetController segue identifiers
 
 NSString * const SWSegueRearIdentifier = @"sw_rear";
-NSString * const SWSegueFrontIdentifier = @"sw_front";
+NSString *SWSegueFrontIdentifier = @"sw_front";
 NSString * const SWSegueRightIdentifier = @"sw_right";
 
 
@@ -1845,7 +1845,19 @@ NSString * const SWSegueRightIdentifier = @"sw_right";
 @implementation SWRevealViewControllerSegueSetController
 
 - (void)perform
-{
+{    
+    //setup service config
+    AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    
+    //create a pool
+    AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
+    
+    AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
+    if([[pool currentUser] getSession].result != nil) {
+        SWSegueFrontIdentifier = @"sw_main";
+    }
     SWRevealControllerOperation operation = SWRevealControllerOperationNone;
     
     NSString *identifier = self.identifier;
