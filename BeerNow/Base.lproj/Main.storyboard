@@ -276,6 +276,42 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beerglasslogin" translatesAutoresizingMaskIntoConstraints="NO" id="ZLV-Wv-65o">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <view hidden="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Hl-pV-Gl7">
+                                <rect key="frame" x="55" y="471" width="265" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ura-xt-1ec">
+                                        <rect key="frame" x="15" y="3" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A6a-WB-jf5">
+                                        <rect key="frame" x="58" y="0.0" width="203" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view hidden="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HlG-Pb-q3z">
+                                <rect key="frame" x="55" y="528" width="265" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="calendaricon" translatesAutoresizingMaskIntoConstraints="NO" id="tRo-b8-QOl">
+                                        <rect key="frame" x="15" y="3" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Birthday(MM/DD/YYYY)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iZB-SE-Hhm">
+                                        <rect key="frame" x="58" y="0.0" width="203" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="af1-9z-osG">
                                 <rect key="frame" x="55" y="212" width="265" height="40"/>
                                 <subviews>
@@ -315,6 +351,60 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="3I5-wx-rhP"/>
                                 </constraints>
+                            </view>
+                            <view hidden="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IXL-eD-Lqz">
+                                <rect key="frame" x="55" y="356" width="265" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="emailIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Bk7-yz-OYF">
+                                        <rect key="frame" x="15" y="3" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w4Q-Wi-Bry">
+                                        <rect key="frame" x="58" y="0.0" width="203" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view hidden="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gyw-Ok-EzC">
+                                <rect key="frame" x="55" y="299" width="265" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="personicon" translatesAutoresizingMaskIntoConstraints="NO" id="ylr-mH-ltd">
+                                        <rect key="frame" x="15" y="3" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qr6-5R-sXW">
+                                        <rect key="frame" x="58" y="0.0" width="203" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view hidden="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHl-Fq-2Ar">
+                                <rect key="frame" x="55" y="412" width="265" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="phoneIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xqm-Ff-7rO">
+                                        <rect key="frame" x="15" y="3" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B9i-oj-b5a">
+                                        <rect key="frame" x="58" y="0.0" width="203" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFZ-kV-WuA">
                                 <rect key="frame" x="55" y="347" width="265" height="40"/>
@@ -370,6 +460,9 @@
                                 <state key="normal" title="Forgot Password?">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="forgotPasswordAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="fs1-9E-scr"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngT-3J-3eS">
                                 <rect key="frame" x="219" y="421" width="62" height="30"/>
@@ -381,6 +474,28 @@
                                 <state key="normal" title="Sign Up">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="signUpAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="ytL-IY-G68"/>
+                                </connections>
+                            </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="x6z-2Z-VPr">
+                                <rect key="frame" x="138" y="52" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Profile Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5q-qj-HKg">
+                                <rect key="frame" x="123" y="154" width="130" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcW-lV-8ZS">
+                                <rect key="frame" x="0.0" y="20" width="40" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="backbuttonimage"/>
+                                <connections>
+                                    <action selector="backButtonAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="LKx-x3-7cS"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -419,19 +534,36 @@
                         <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="LgN-ly-uy9"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="addPhotoLabel" destination="c5q-qj-HKg" id="IS7-Gh-vZQ"/>
+                        <outlet property="addressTextField" destination="A6a-WB-jf5" id="0cg-1M-0Km"/>
+                        <outlet property="addressView" destination="7Hl-pV-Gl7" id="yjx-Dq-xdR"/>
+                        <outlet property="backButton" destination="rcW-lV-8ZS" id="pgQ-yd-C4f"/>
                         <outlet property="backgroundImage" destination="ZLV-Wv-65o" id="Jff-ki-UU5"/>
+                        <outlet property="birthdateTextField" destination="iZB-SE-Hhm" id="Kfp-iH-dmd"/>
+                        <outlet property="birthdateView" destination="HlG-Pb-q3z" id="Rgt-Eb-cXW"/>
+                        <outlet property="drinksLabel" destination="Vwl-sF-bmF" id="f0r-3W-egu"/>
+                        <outlet property="emailTextField" destination="w4Q-Wi-Bry" id="6pn-qs-asR"/>
+                        <outlet property="emailView" destination="IXL-eD-Lqz" id="dRh-Tv-QBH"/>
+                        <outlet property="forgotPasswordButton" destination="1IA-WT-RBu" id="j1F-1l-md1"/>
                         <outlet property="loginButton" destination="7gR-6Q-HLY" id="GjF-sq-BdP"/>
                         <outlet property="loginButtonView" destination="EFZ-kV-WuA" id="g4J-TU-I2N"/>
+                        <outlet property="nameTextField" destination="Qr6-5R-sXW" id="jeN-SC-hzo"/>
+                        <outlet property="nameView" destination="gyw-Ok-EzC" id="tDm-yz-S6K"/>
+                        <outlet property="notAMemberLabel" destination="IpD-0y-7D7" id="uiG-Ot-xgb"/>
                         <outlet property="passwordTextField" destination="3eR-sG-xTW" id="4JO-rl-zqq"/>
                         <outlet property="passwordView" destination="uEC-gz-yJO" id="XZc-Kd-l1b"/>
+                        <outlet property="phoneTextField" destination="B9i-oj-b5a" id="a9q-Zb-4iy"/>
+                        <outlet property="phoneView" destination="eHl-Fq-2Ar" id="Won-kB-yZg"/>
+                        <outlet property="profileImageView" destination="x6z-2Z-VPr" id="N21-mp-CPE"/>
                         <outlet property="sidebarButton" destination="LgN-ly-uy9" id="mGd-wY-9dA"/>
+                        <outlet property="signUpButton" destination="ngT-3J-3eS" id="obq-bL-meH"/>
                         <outlet property="usernameTextField" destination="P9L-Pv-i2y" id="BNZ-hn-Sf4"/>
                         <outlet property="usernameView" destination="af1-9z-osG" id="ABc-A1-mfv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fa7-N6-euN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1733.5999999999999" y="-555.47226386806597"/>
+            <point key="canvasLocation" x="1734" y="-546"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pj6-Nl-HY7">
@@ -451,10 +583,16 @@
         </scene>
     </scenes>
     <resources>
+        <image name="backbuttonimage" width="128" height="128"/>
         <image name="beerglasslogin" width="1080" height="1920"/>
+        <image name="calendaricon" width="1600" height="1600"/>
+        <image name="emailIcon" width="256" height="256"/>
         <image name="hamburgericon" width="35" height="35"/>
+        <image name="homeIcon" width="256" height="256"/>
         <image name="lockedicon" width="512" height="512"/>
         <image name="personicon" width="128" height="128"/>
+        <image name="phoneIcon" width="512" height="512"/>
+        <image name="profileIcon" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ifl-Mh-rPa"/>
