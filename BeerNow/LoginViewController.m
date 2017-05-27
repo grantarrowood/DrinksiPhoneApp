@@ -80,6 +80,11 @@
                               cancelButtonTitle:nil
                               otherButtonTitles:@"Ok", nil] show];
         }else{
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
+            [defaults synchronize];
+            [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
+            
         }
     });
 }
@@ -142,6 +147,10 @@
                     if(!response.userConfirmed){
                         //need to confirm user using user.confirmUser:
                     }
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
+                    [defaults synchronize];
+                    [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
                 }});
             return nil;
         }];
