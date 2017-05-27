@@ -139,7 +139,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AWSCognitoIdentityProvider.h"
-#import "LoginViewController.h"
 
 @class SWRevealViewController;
 @protocol SWRevealViewControllerDelegate;
@@ -184,8 +183,7 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 };
 
 
-@interface SWRevealViewController : UIViewController <AWSCognitoIdentityInteractiveAuthenticationDelegate, AWSCognitoIdentityRememberDevice>
-@property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
+@interface SWRevealViewController : UIViewController
 
 /* Basic API */
 

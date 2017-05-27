@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
-#import "SWRevealViewController.h"
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, AWSCognitoIdentityRememberDevice>
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate>
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

@@ -182,7 +182,6 @@
 
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
                          
                      }];
     [UIView animateWithDuration:0.75
@@ -198,7 +197,6 @@
                          self.forgotPasswordButton.alpha = 0.0;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
                          self.notAMemberLabel.hidden = YES;
                          self.signUpButton.hidden = YES;
                          self.forgotPasswordButton.hidden = YES;
@@ -238,7 +236,6 @@
                          
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
                          self.profileImageView.hidden = YES;
                          self.addPhotoLabel.hidden = YES;
                          self.nameView.hidden = YES;
@@ -261,7 +258,6 @@
                          self.forgotPasswordButton.alpha = 1.0;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
                      }];
 }
 @end

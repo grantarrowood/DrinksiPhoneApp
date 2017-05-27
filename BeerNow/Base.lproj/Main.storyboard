@@ -33,7 +33,7 @@
             </objects>
             <point key="canvasLocation" x="852" y="139"/>
         </scene>
-        <!--Drinks-->
+        <!--DRINKS-->
         <scene sceneID="23c-Sh-Egc">
             <objects>
                 <viewController id="vUd-ep-Rod" customClass="ViewController" sceneMemberID="viewController">
@@ -45,26 +45,124 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Main Page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XbC-9j-AtT">
-                                <rect key="frame" x="147" y="323" width="80" height="21"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Qum-6e-Qot">
+                                <rect key="frame" x="150" y="112" width="75" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome, Name" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6r-Vu-Ql8">
+                                <rect key="frame" x="98" y="195" width="180" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="24"/>
                                 <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b8c-ZV-Vtf">
+                                <rect key="frame" x="187" y="282" width="3" height="250"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UfF-Ww-lqn">
+                                <rect key="frame" x="47" y="406" width="280" height="3"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d45-Lx-KwQ">
+                                <rect key="frame" x="48" y="282" width="142" height="127"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hv2-3g-TVc">
+                                <rect key="frame" x="188" y="282" width="139" height="127"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ORDER NOW" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGc-Ui-HJg">
+                                <rect key="frame" x="68" y="377" width="102" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="16"/>
+                                <color key="textColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SERVING AT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17A-Pu-PBn">
+                                <rect key="frame" x="212" y="377" width="91" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="16"/>
+                                <color key="textColor" red="0.41902248240000001" green="0.5409466127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="storeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uxw-KE-ydU">
+                                <rect key="frame" x="232" y="313" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.41902248243019302" green="0.54094661268481659" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NEAR YOU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b6K-tO-diE">
+                                <rect key="frame" x="78" y="492" width="83" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="16"/>
+                                <color key="textColor" red="0.0012710226448529099" green="0.78458360602094235" blue="0.24840843448627128" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bookIcon" translatesAutoresizingMaskIntoConstraints="NO" id="erB-t9-nwd">
+                                <rect key="frame" x="94" y="313" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZC-Uj-CPM">
+                                <rect key="frame" x="188" y="406" width="139" height="126"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="starIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xLj-wT-HA7">
+                                <rect key="frame" x="232" y="429" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="1" green="0.89576937099999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dw0-aE-tDx">
+                                <rect key="frame" x="48" y="406" width="142" height="126"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pinIconT" translatesAutoresizingMaskIntoConstraints="NO" id="SHt-Nn-Sh7">
+                                <rect key="frame" x="94" y="429" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.0012710226449999999" green="0.78458360599999999" blue="0.2484084345" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MOST POPULAR" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYj-RP-pEB">
+                                <rect key="frame" x="219" y="479" width="76" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="16"/>
+                                <color key="textColor" red="1" green="0.89576937104258669" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Drinks" id="vZc-sx-dyQ">
-                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="9jl-ki-qx0"/>
+                    <navigationItem key="navigationItem" title="DRINKS" id="vZc-sx-dyQ">
+                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="9jl-ki-qx0">
+                            <color key="tintColor" red="1" green="0.61050367787007032" blue="0.23144351977965893" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bookImageView" destination="erB-t9-nwd" id="PSh-Bm-QnO"/>
+                        <outlet property="pinImageView" destination="SHt-Nn-Sh7" id="B5S-UW-S12"/>
                         <outlet property="sidebarButton" destination="9jl-ki-qx0" id="wVC-qH-B0b"/>
+                        <outlet property="starImangeView" destination="xLj-wT-HA7" id="2l0-d1-gdT"/>
+                        <outlet property="storeImageView" destination="uxw-KE-ydU" id="dP5-TM-s89"/>
+                        <outlet property="topNavigationItem" destination="vZc-sx-dyQ" id="Jzn-sF-Y3D"/>
+                        <outlet property="welcomeLabel" destination="F6r-Vu-Ql8" id="Fbl-aM-3jc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jDD-Rk-zof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2513" y="139"/>
+            <point key="canvasLocation" x="2512.8000000000002" y="138.98050974512745"/>
         </scene>
         <!--Sidebar Table View Controller-->
         <scene sceneID="EFn-vS-ckB">
@@ -207,7 +305,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Location List" id="LTj-It-gNg">
-                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="pOH-zX-YRt"/>
+                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="pOH-zX-YRt">
+                            <color key="tintColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qk3-G0-I2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -254,7 +354,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Driver List" id="QZe-ak-FUI">
-                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="JOS-1g-fju"/>
+                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="JOS-1g-fju">
+                            <color key="tintColor" red="1" green="0.61050367790000004" blue="0.2314435198" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nba-Mn-MnQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -344,7 +446,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -569,9 +671,12 @@
         <scene sceneID="pj6-Nl-HY7">
             <objects>
                 <navigationController id="RK8-0B-ALa" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="o9y-aC-HtX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="o9y-aC-HtX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="vUd-ep-Rod" kind="relationship" relationship="rootViewController" id="ICt-w8-EcP"/>
@@ -585,6 +690,7 @@
     <resources>
         <image name="backbuttonimage" width="128" height="128"/>
         <image name="beerglasslogin" width="1080" height="1920"/>
+        <image name="bookIcon" width="256" height="256"/>
         <image name="calendaricon" width="1600" height="1600"/>
         <image name="emailIcon" width="256" height="256"/>
         <image name="hamburgericon" width="35" height="35"/>
@@ -592,7 +698,10 @@
         <image name="lockedicon" width="512" height="512"/>
         <image name="personicon" width="128" height="128"/>
         <image name="phoneIcon" width="512" height="512"/>
+        <image name="pinIconT" width="512" height="512"/>
         <image name="profileIcon" width="100" height="100"/>
+        <image name="starIcon" width="512" height="512"/>
+        <image name="storeIcon" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ifl-Mh-rPa"/>
