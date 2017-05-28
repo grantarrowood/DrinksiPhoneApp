@@ -16,7 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    menuItems = @[@"home", @"driverslist", @"locationlist", @"login"];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    menuItems = @[@"home", @"orderNow", @"profile", @"settings", @"faq", @"login"];
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beerBackground"]];
     
     // Uncomment the following line to preserve selection between presentations.
