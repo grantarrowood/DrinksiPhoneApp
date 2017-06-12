@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		83E31C43DABE41D851524395 /* libPods-BeerNowUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54654BA2E0074408A377B255 /* libPods-BeerNowUITests.a */; };
+		9C039D981EEF29A1006476BA /* Orders.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C039D971EEF29A1006476BA /* Orders.m */; };
 		9C58AFED1ED64A1800EB8E62 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEC1ED64A1800EB8E62 /* main.m */; };
 		9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */; };
 		9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFF21ED64A1800EB8E62 /* ViewController.m */; };
@@ -53,6 +54,8 @@
 		6DEE560317CC7A45DEAF02EC /* Pods-BeerNow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerNow.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeerNow/Pods-BeerNow.debug.xcconfig"; sourceTree = "<group>"; };
 		77819D1110FB026093833510 /* Pods-BeerNowUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerNowUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeerNowUITests/Pods-BeerNowUITests.release.xcconfig"; sourceTree = "<group>"; };
 		814E593468C821F605478206 /* libPods-BeerNow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeerNow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C039D961EEF29A1006476BA /* Orders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orders.h; sourceTree = "<group>"; };
+		9C039D971EEF29A1006476BA /* Orders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Orders.m; sourceTree = "<group>"; };
 		9C58AFE81ED64A1800EB8E62 /* BeerNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C58AFEC1ED64A1800EB8E62 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9C58AFEE1ED64A1800EB8E62 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 				9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */,
 				9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */,
 				9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */,
+				9C039D961EEF29A1006476BA /* Orders.h */,
+				9C039D971EEF29A1006476BA /* Orders.m */,
 				9CF8AD221ED9EABB00C61003 /* Locations.h */,
 				9CF8AD231ED9EABB00C61003 /* Locations.m */,
 				9CF8AD251EDA01E400C61003 /* Areas.h */,
@@ -484,6 +489,7 @@
 			files = (
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
+				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
 				9CF8AD271EDA01E400C61003 /* Areas.m in Sources */,
 				9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */,

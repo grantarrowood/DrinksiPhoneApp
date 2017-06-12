@@ -11,6 +11,7 @@
 @interface MenuItems : AWSDynamoDBObjectModel <AWSDynamoDBModeling>
 
 @property (nonatomic, strong) NSString *Name;
+@property (nonatomic, strong) NSString *Area;
 @property (nonatomic, strong) NSString *Address;
 @property (nonatomic, strong) NSString *MenuLocation;
 @property (nonatomic, strong) NSNumber *Price;

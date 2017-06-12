@@ -9,6 +9,11 @@
 #import "OrderNowTableViewController.h"
 
 @interface OrderNowTableViewController ()
+{
+    NSTimer *timer;
+    UIActivityIndicatorView *spinner;
+    UIView *greyView;
+}
 
 @end
 
@@ -52,17 +57,32 @@
              for (Areas *area in paginatedOutput.items) {
                  //Do something with book.
                  [allAreas addObject:area];
-                 [self.tableView reloadData];
              }
          }
          return nil;
      }];
-
+    greyView = [[UIView alloc] initWithFrame:self.view.frame];
+    greyView.backgroundColor = [UIColor grayColor];
+    greyView.alpha = 0.5;
+    [self.view addSubview:greyView];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)getTable {
+    [self.tableView reloadData];
+    [timer invalidate];
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    [greyView removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,51 +192,103 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    for (NSInteger j = 0; j < [tableView numberOfSections]; ++j)
-    {
-        for (NSInteger i = 0; i < [tableView numberOfRowsInSection:j]; ++i)
+    if([[self.tableView cellForRowAtIndexPath:indexPath].reuseIdentifier  isEqual: @"submit"]) {
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        Orders *newOrder = [Orders new];
+        newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
+        newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
+        for (int i = 0; i < selectedMenuItems.count; i++) {
+            if (orderString.length > 0) {
+                orderString = [NSString stringWithFormat:@"%@, {%@, %@}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+            } else {
+                orderString = [NSString stringWithFormat:@"{%@, %@}", [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+            }
+            
+        }
+        newOrder.Order = orderString;
+        newOrder.OrderId = @1;
+        newOrder.Completed = @"NO";
+        newOrder.Selected = @"NO";
+        [[dynamoDBObjectMapper save:newOrder]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             } else {
+                 //Do something with task.result or perform other operations.
+             }
+             return nil;
+         }];
+        NSLog(@"Submit");
+    } else {
+        for (NSInteger j = 0; j < [tableView numberOfSections]; ++j)
         {
-            if ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType == UITableViewCellAccessoryCheckmark) {
-                if ((indexPath.section == 0) && (indexPath.section == j)) {
-                    [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
-                    [allLocations removeAllObjects];
-                    [allMenuItems removeAllObjects];
-//                    if([tableView numberOfSections] == 3) {
-//                        for (NSInteger x = 1; j < [tableView numberOfSections]; ++x)
-//                        {
-//                            for (NSInteger y = 0; i < [tableView numberOfRowsInSection:x]; ++y)
-//                            {
-//                                if ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType == UITableViewCellAccessoryCheckmark) {
-//                                    if(indexPath.section == 1) {
-//                                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType = UITableViewCellAccessoryNone;
-//                                    } else if(indexPath.section == 2) {
-//                                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType = UITableViewCellAccessoryNone;
-//                                        [selectedMenuItems removeAllObjects];
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-                    [self.tableView reloadData];
-                    return;
-                } else if((indexPath.section == 1) && (indexPath.section == j)) {
-                    [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
-                    [allMenuItems removeAllObjects];
-                    [self.tableView reloadData];
-                    return;
-                } else if((indexPath.section == 2) && (indexPath.section == j)) {
-                    [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
-                    [selectedMenuItems removeObject:[allMenuItems objectAtIndex:indexPath.row]];
-                    return;
+            for (NSInteger i = 0; i < [tableView numberOfRowsInSection:j]; ++i)
+            {
+                if ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType == UITableViewCellAccessoryCheckmark) {
+                    if ((indexPath.section == 0) && (indexPath.section == j)) {
+                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
+                        [allLocations removeAllObjects];
+                        [allMenuItems removeAllObjects];
+                        //                    if([tableView numberOfSections] == 3) {
+                        //                        for (NSInteger x = 1; j < [tableView numberOfSections]; ++x)
+                        //                        {
+                        //                            for (NSInteger y = 0; i < [tableView numberOfRowsInSection:x]; ++y)
+                        //                            {
+                        //                                if ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType == UITableViewCellAccessoryCheckmark) {
+                        //                                    if(indexPath.section == 1) {
+                        //                                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType = UITableViewCellAccessoryNone;
+                        //                                    } else if(indexPath.section == 2) {
+                        //                                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:y inSection:x]].accessoryType = UITableViewCellAccessoryNone;
+                        //                                        [selectedMenuItems removeAllObjects];
+                        //                                    }
+                        //                                }
+                        //                            }
+                        //                        }
+                        //                    }
+                        return;
+                    } else if((indexPath.section == 1) && (indexPath.section == j)) {
+                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
+                        [allMenuItems removeAllObjects];
+                        return;
+                    } else if((indexPath.section == 2) && (indexPath.section == j) && ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:j]].accessoryType == UITableViewCellAccessoryCheckmark)) {
+                        [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType = UITableViewCellAccessoryNone;
+                        [selectedMenuItems removeObject:[allMenuItems objectAtIndex:indexPath.row]];
+                        return;
+                    }
                 }
             }
         }
-    }
-    if (allLocations.count > 0) {
-        if (allMenuItems.count > 0) {
-            [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-            [selectedMenuItems addObject:[allMenuItems objectAtIndex:indexPath.row]];
+        if (allLocations.count > 0) {
+            if (allMenuItems.count > 0) {
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+                [selectedMenuItems addObject:[allMenuItems objectAtIndex:indexPath.row]];
+            } else {
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+                
+                AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+                
+                AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
+                
+                queryExpression.keyConditionExpression = @"MenuLocation = :locationName AND Address = :addressName";
+                queryExpression.indexName = @"MenuLocation-Address-index";
+                queryExpression.expressionAttributeValues = @{@":locationName": [(Locations *)[allLocations objectAtIndex:indexPath.row] Name], @":addressName": [(Locations *)[allLocations objectAtIndex:indexPath.row] Address]};
+                
+                [[dynamoDBObjectMapper query:[MenuItems class]
+                                  expression:queryExpression]
+                 continueWithBlock:^id(AWSTask *task) {
+                     if (task.error) {
+                         NSLog(@"The request failed. Error: [%@]", task.error);
+                     } else {
+                         AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                         for (MenuItems *menuItem in paginatedOutput.items) {
+                             //Do something with book.
+                             [allMenuItems addObject:menuItem];
+                         }
+                         
+                     }
+                     return nil;
+                 }];
+            }
         } else {
             [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
             
@@ -224,53 +296,34 @@
             
             AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
             
-            queryExpression.keyConditionExpression = @"MenuLocation = :locationName AND Address = :addressName";
-            queryExpression.indexName = @"MenuLocation-Address-index";
-            queryExpression.expressionAttributeValues = @{@":locationName": [(Locations *)[allLocations objectAtIndex:indexPath.row] Name], @":addressName": [(Locations *)[allLocations objectAtIndex:indexPath.row] Address]};
+            queryExpression.keyConditionExpression = @"Area = :areaName";
+            queryExpression.indexName = @"Area-index";
+            queryExpression.expressionAttributeValues = @{@":areaName": [(Areas *)[allAreas objectAtIndex:indexPath.row] Name]};
             
-            [[dynamoDBObjectMapper query:[MenuItems class]
+            [[dynamoDBObjectMapper query:[Locations class]
                               expression:queryExpression]
              continueWithBlock:^id(AWSTask *task) {
                  if (task.error) {
                      NSLog(@"The request failed. Error: [%@]", task.error);
                  } else {
                      AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-                     for (MenuItems *menuItem in paginatedOutput.items) {
+                     for (Locations *locations in paginatedOutput.items) {
                          //Do something with book.
-                         [allMenuItems addObject:menuItem];
+                         [allLocations addObject:locations];
                      }
-                     [self.tableView reloadData];
-                     
                  }
                  return nil;
              }];
         }
-        } else {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-        
-        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-        
-        AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
-        
-        queryExpression.keyConditionExpression = @"Area = :areaName";
-        queryExpression.indexName = @"Area-index";
-        queryExpression.expressionAttributeValues = @{@":areaName": [(Areas *)[allAreas objectAtIndex:indexPath.row] Name]};
-        
-        [[dynamoDBObjectMapper query:[Locations class]
-                          expression:queryExpression]
-         continueWithBlock:^id(AWSTask *task) {
-             if (task.error) {
-                 NSLog(@"The request failed. Error: [%@]", task.error);
-             } else {
-                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-                 for (Locations *locations in paginatedOutput.items) {
-                     //Do something with book.
-                     [allLocations addObject:locations];
-                 }
-                 [self.tableView reloadData];
-             }
-             return nil;
-         }];
+        greyView = [[UIView alloc] initWithFrame:self.view.frame];
+        greyView.backgroundColor = [UIColor grayColor];
+        greyView.alpha = 0.5;
+        [self.view addSubview:greyView];
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
     }
 }
 

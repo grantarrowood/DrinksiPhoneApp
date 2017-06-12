@@ -12,13 +12,15 @@
 #import "Locations.h"
 #import "Areas.h"
 #import "MenuItems.h"
+#import "Orders.h"
+
 
 @interface OrderNowTableViewController : UITableViewController {
     NSMutableArray *allLocations;
     NSMutableArray *allAreas;
     NSMutableArray *allMenuItems;
     NSMutableArray *selectedMenuItems;
-
+    NSString *orderString;
 }
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 
