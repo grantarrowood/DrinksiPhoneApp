@@ -12,10 +12,14 @@
 #import "ViewController.h"
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate> 
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate>
+{
+    NSString *loginType;
+}
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@property (weak, nonatomic) IBOutlet UIImageView *carLoginImage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UIView *usernameView;
@@ -45,6 +49,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *drinksLabel;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 - (IBAction)backButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *customerLoginLabel;
+@property (weak, nonatomic) IBOutlet UILabel *driverLoginLabel;
+@property (weak, nonatomic) IBOutlet UIButton *customerLoginButton;
+@property (weak, nonatomic) IBOutlet UIButton *driverLoginButton;
+- (IBAction)customerLoginAction:(id)sender;
+- (IBAction)driverLoginAction:(id)sender;
 
 
 @end
