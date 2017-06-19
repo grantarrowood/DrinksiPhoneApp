@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		83E31C43DABE41D851524395 /* libPods-BeerNowUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54654BA2E0074408A377B255 /* libPods-BeerNowUITests.a */; };
+		9C039D981EEF29A1006476BA /* Orders.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C039D971EEF29A1006476BA /* Orders.m */; };
 		9C58AFED1ED64A1800EB8E62 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEC1ED64A1800EB8E62 /* main.m */; };
 		9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */; };
 		9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFF21ED64A1800EB8E62 /* ViewController.m */; };
@@ -19,6 +20,15 @@
 		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
+		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
+		9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */; };
+		9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */; };
+		9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */; };
+		9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392251EF769FC00FD458D /* DetailTableViewCell.m */; };
+		9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */; };
+		9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD231ED9EABB00C61003 /* Locations.m */; };
+		9CF8AD271EDA01E400C61003 /* Areas.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD261EDA01E400C61003 /* Areas.m */; };
+		9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD291EDA141A00C61003 /* MenuItems.m */; };
 		B7A9F28821192467A7167E52 /* libPods-BeerNowTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C119ED54A4F4F4A3656191 /* libPods-BeerNowTests.a */; };
 		D0685E950DC9437287F36059 /* libPods-BeerNow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 814E593468C821F605478206 /* libPods-BeerNow.a */; };
 /* End PBXBuildFile section */
@@ -49,6 +59,8 @@
 		6DEE560317CC7A45DEAF02EC /* Pods-BeerNow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerNow.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeerNow/Pods-BeerNow.debug.xcconfig"; sourceTree = "<group>"; };
 		77819D1110FB026093833510 /* Pods-BeerNowUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerNowUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeerNowUITests/Pods-BeerNowUITests.release.xcconfig"; sourceTree = "<group>"; };
 		814E593468C821F605478206 /* libPods-BeerNow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeerNow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C039D961EEF29A1006476BA /* Orders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orders.h; sourceTree = "<group>"; };
+		9C039D971EEF29A1006476BA /* Orders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Orders.m; sourceTree = "<group>"; };
 		9C58AFE81ED64A1800EB8E62 /* BeerNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C58AFEC1ED64A1800EB8E62 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9C58AFEE1ED64A1800EB8E62 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -71,6 +83,24 @@
 		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9CB392181EF4D3EE00FD458D /* DriverMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverMainViewController.h; sourceTree = "<group>"; };
+		9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverMainViewController.m; sourceTree = "<group>"; };
+		9CB3921B1EF5B85900FD458D /* AvailableOrdersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailableOrdersTableViewController.h; sourceTree = "<group>"; };
+		9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvailableOrdersTableViewController.m; sourceTree = "<group>"; };
+		9CB3921E1EF6530200FD458D /* OrderDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailsTableViewController.h; sourceTree = "<group>"; };
+		9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailsTableViewController.m; sourceTree = "<group>"; };
+		9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemTableViewCell.h; sourceTree = "<group>"; };
+		9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemTableViewCell.m; sourceTree = "<group>"; };
+		9CB392241EF769FC00FD458D /* DetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewCell.h; sourceTree = "<group>"; };
+		9CB392251EF769FC00FD458D /* DetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewCell.m; sourceTree = "<group>"; };
+		9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNowTableViewController.h; sourceTree = "<group>"; };
+		9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderNowTableViewController.m; sourceTree = "<group>"; };
+		9CF8AD221ED9EABB00C61003 /* Locations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locations.h; sourceTree = "<group>"; };
+		9CF8AD231ED9EABB00C61003 /* Locations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Locations.m; sourceTree = "<group>"; };
+		9CF8AD251EDA01E400C61003 /* Areas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Areas.h; sourceTree = "<group>"; };
+		9CF8AD261EDA01E400C61003 /* Areas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Areas.m; sourceTree = "<group>"; };
+		9CF8AD281EDA141A00C61003 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItems.h; sourceTree = "<group>"; };
+		9CF8AD291EDA141A00C61003 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItems.m; sourceTree = "<group>"; };
 		E019C9A9B7C31D1E2CA16DB2 /* Pods-BeerNow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerNow.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeerNow/Pods-BeerNow.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +175,26 @@
 				9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */,
 				9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */,
 				9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */,
+				9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */,
+				9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */,
+				9CB392181EF4D3EE00FD458D /* DriverMainViewController.h */,
+				9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */,
+				9CB3921B1EF5B85900FD458D /* AvailableOrdersTableViewController.h */,
+				9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */,
+				9CB3921E1EF6530200FD458D /* OrderDetailsTableViewController.h */,
+				9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */,
+				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
+				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
+				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
+				9CB392251EF769FC00FD458D /* DetailTableViewCell.m */,
+				9C039D961EEF29A1006476BA /* Orders.h */,
+				9C039D971EEF29A1006476BA /* Orders.m */,
+				9CF8AD221ED9EABB00C61003 /* Locations.h */,
+				9CF8AD231ED9EABB00C61003 /* Locations.m */,
+				9CF8AD251EDA01E400C61003 /* Areas.h */,
+				9CF8AD261EDA01E400C61003 /* Areas.m */,
+				9CF8AD281EDA141A00C61003 /* MenuItems.h */,
+				9CF8AD291EDA141A00C61003 /* MenuItems.m */,
 				9C58AFF41ED64A1800EB8E62 /* Main.storyboard */,
 				9C58AFF71ED64A1800EB8E62 /* Assets.xcassets */,
 				9C58AFF91ED64A1800EB8E62 /* LaunchScreen.storyboard */,
@@ -463,9 +513,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
+				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
+				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
+				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
+				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
+				9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */,
+				9CF8AD271EDA01E400C61003 /* Areas.m in Sources */,
+				9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */,
 				9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */,
+				9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */,
+				9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
+				9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */,
 				9C58AFED1ED64A1800EB8E62 /* main.m in Sources */,
 				9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */,
 			);

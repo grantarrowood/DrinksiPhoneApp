@@ -1,22 +1,22 @@
 //
-//  ViewController.m
+//  DriverMainViewController.m
 //  BeerNow
 //
-//  Created by Grant Arrowood on 5/24/17.
+//  Created by Grant Arrowood on 6/16/17.
 //  Copyright © 2017 Piglet Products, LLC. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "DriverMainViewController.h"
 
-@interface ViewController ()
+@interface DriverMainViewController ()
 
 @end
 
-@implementation ViewController
+@implementation DriverMainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view.
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -24,7 +24,7 @@
         [self.sidebarButton setAction: @selector( revealToggle: )];
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
-    self.backgroundImage.image = [UIImage imageNamed:@"beerMain"];
+    self.backgroundImage.image = [UIImage imageNamed:@"carLogin"];
     
     // create effect
     UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent];
@@ -32,23 +32,20 @@
     // add effect to an effect view
     UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
     effectView.frame = self.view.frame;
+    effectView.alpha = 0.9;
     [self.backgroundImage addSubview:effectView];
-
-    self.storeImageView.image = [self.storeImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.bookImageView.image = [self.bookImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.starImangeView.image = [self.starImangeView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.pinImageView.image = [self.pinImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
     
-    //create a pool
-    AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+    AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
     
-    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
     
-    AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
+    AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [defaults stringForKey:@"currentUsername"];
-    [[[pool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
+    [[[driverPool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if(task.error){
                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
@@ -70,13 +67,23 @@
         });
         return nil;
     }];
-}
 
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end
