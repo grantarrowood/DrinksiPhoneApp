@@ -13,10 +13,14 @@
 #import "Locations.h"
 #import "ItemTableViewCell.h"
 #import "DetailTableViewCell.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate> {
     NSMutableArray *orderItems;
+    NSTimer *timerTwo;
     NSTimer *timer;
+    NSString *driverUsername;
+    NSString *driverName;
     NSString *customerUsername;
     NSString *customerName;
     NSString *customerAddress;
@@ -25,6 +29,9 @@
     NSString *isPaid;
     UIActivityIndicatorView *spinner;
     UIView *greyView;
+    double deliveryFee;
+    CLLocationManager *locationManager;
+    CLLocation *currentLoc;
 }
 
 @property (strong) NSNumber *orderId;

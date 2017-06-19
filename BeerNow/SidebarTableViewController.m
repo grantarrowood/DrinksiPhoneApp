@@ -24,7 +24,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userPool = [defaults stringForKey:@"userPool"];
     if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"profile", @"settings", @"faq", @"login"];
+        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
     } else {
         menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
     }
@@ -43,7 +43,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userPool = [defaults stringForKey:@"userPool"];
     if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"profile", @"settings", @"faq", @"login"];
+        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
     } else {
         menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
     }
