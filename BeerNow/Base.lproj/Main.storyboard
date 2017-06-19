@@ -8,6 +8,8 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,13 +28,14 @@
                     </view>
                     <connections>
                         <segue destination="fzg-Jz-ggk" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="c2h-vF-9YR"/>
-                        <segue destination="RK8-0B-ALa" kind="custom" identifier="sw_main" customClass="SWRevealViewControllerSegueSetController" id="5A1-5P-al6"/>
+                        <segue destination="RK8-0B-ALa" kind="custom" identifier="sw_customerMain" customClass="SWRevealViewControllerSegueSetController" id="5A1-5P-al6"/>
                         <segue destination="GWJ-Uf-WGo" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="Ifl-Mh-rPa"/>
+                        <segue destination="Rxo-6Y-Uo7" kind="custom" identifier="sw_driverMain" customClass="SWRevealViewControllerSegueSetController" id="xSt-9M-rPZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="852" y="139"/>
+            <point key="canvasLocation" x="852" y="149"/>
         </scene>
         <!--DRINKS-->
         <scene sceneID="23c-Sh-Egc">
@@ -373,7 +376,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.41176470590000003" green="0.28235294119999998" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="home" id="cvn-0z-5AN">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customerHome" id="cvn-0z-5AN">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cvn-0z-5AN" id="sNi-j1-o0S">
@@ -390,7 +393,10 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="RK8-0B-ALa" kind="custom" identifier="showHome" customClass="SWRevealViewControllerSeguePushController" id="C4R-R1-5Nk"/>
+                                    <segue destination="RK8-0B-ALa" kind="custom" identifier="showCustomerHome" customClass="SWRevealViewControllerSeguePushController" id="C4R-R1-5Nk">
+                                        <segue key="commit" inheritsFrom="parent" id="Qxm-GP-ZpM"/>
+                                        <segue key="preview" inheritsFrom="commit" id="PIK-zO-5zr"/>
+                                    </segue>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="orderNow" id="vUB-dW-BIf">
@@ -484,6 +490,63 @@
                                     <segue destination="GWJ-Uf-WGo" kind="custom" identifier="showLogin" customClass="SWRevealViewControllerSeguePushController" id="HHQ-Hf-bRH"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="avalibleOrders" id="gJU-y8-rM8">
+                                <rect key="frame" x="0.0" y="292" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gJU-y8-rM8" id="i2u-OT-AgV">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Avalible Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gO-Kv-ImP">
+                                            <rect key="frame" x="23" y="11" width="121" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="RdC-aN-nsO" kind="custom" identifier="avalibleOrders" customClass="SWRevealViewControllerSeguePushController" id="IqC-D8-eVi"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="yourOrders" id="aV7-rY-na1">
+                                <rect key="frame" x="0.0" y="336" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aV7-rY-na1" id="eeU-kH-RIq">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOT-QI-HLv">
+                                            <rect key="frame" x="23" y="11" width="93" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="driverHome" id="ZG5-Gn-AyG">
+                                <rect key="frame" x="0.0" y="380" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZG5-Gn-AyG" id="HE3-1A-XNq">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Home" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6F-Le-EOH">
+                                            <rect key="frame" x="23" y="11" width="49" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="Rxo-6Y-Uo7" kind="custom" identifier="showDriverHome" customClass="SWRevealViewControllerSeguePushController" id="Lal-Yi-dfw"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="fzg-Jz-ggk" id="kGW-X8-s2H"/>
@@ -493,7 +556,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o0P-A7-W0R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="852" y="-555"/>
+            <point key="canvasLocation" x="852" y="-555.47226386806597"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="p5t-Fp-qET">
@@ -513,6 +576,219 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ejC-JQ-3Ir" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1734" y="-1213"/>
+        </scene>
+        <!--Avalible Orders-->
+        <scene sceneID="2fd-Mr-HPU">
+            <objects>
+                <tableViewController id="sIZ-Dm-a2u" customClass="AvailableOrdersTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Uzx-sL-f9J">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="EiR-fE-sNj" detailTextLabel="Dow-uW-3rB" style="IBUITableViewCellStyleSubtitle" id="Kz3-eh-Scd">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kz3-eh-Scd" id="UTe-7b-kIP">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EiR-fE-sNj">
+                                            <rect key="frame" x="15" y="4" width="33" height="21.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dow-uW-3rB">
+                                            <rect key="frame" x="15" y="25.5" width="39" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sIZ-Dm-a2u" id="U3j-DD-i8r"/>
+                            <outlet property="delegate" destination="sIZ-Dm-a2u" id="kee-2z-hWf"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Avalible Orders" id="tV9-80-733">
+                        <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="zYZ-rP-VhW">
+                            <color key="tintColor" red="0.78823529410000004" green="0.30196078430000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="sidebarButton" destination="zYZ-rP-VhW" id="7bi-8M-NyJ"/>
+                        <segue destination="wJF-7X-qse" kind="custom" identifier="detailOrderSegue" customClass="SWRevealViewControllerSeguePushController" id="ZpT-jh-ir3"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OTG-ry-25m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2513" y="-1910"/>
+        </scene>
+        <!--Order Details-->
+        <scene sceneID="RcI-LW-fEe">
+            <objects>
+                <tableViewController id="YQo-b4-7df" customClass="OrderDetailsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="3TP-YS-Dle">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detail" id="SwL-ND-QNO" customClass="DetailTableViewCell">
+                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SwL-ND-QNO" id="ukC-AA-l6Y">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Order Number:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qiv-33-sYq">
+                                            <rect key="frame" x="25" y="11" width="115" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIZ-NM-sFa">
+                                            <rect key="frame" x="191" y="11" width="159" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="159" id="zJM-0Z-ESm"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="wIZ-NM-sFa" secondAttribute="trailing" constant="17" id="HOT-mh-UOQ"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="wIZ-NM-sFa" secondAttribute="bottom" constant="3" id="WfA-dX-2J9"/>
+                                        <constraint firstItem="wIZ-NM-sFa" firstAttribute="top" secondItem="ukC-AA-l6Y" secondAttribute="topMargin" constant="3" id="yRQ-83-PcF"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="detailDynamicLabel" destination="wIZ-NM-sFa" id="Xzi-bo-5U3"/>
+                                    <outlet property="detailMainLabel" destination="qiv-33-sYq" id="uTg-A0-yFO"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="static6" id="k2K-T0-Xbe">
+                                <rect key="frame" x="0.0" y="100" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="k2K-T0-Xbe" id="v8n-fc-hf9">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Menu Item:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGQ-YL-eIC">
+                                            <rect key="frame" x="25" y="11" width="85" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMV-cB-aB2">
+                                            <rect key="frame" x="308" y="11" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="items" id="bcM-iq-UDf" customClass="ItemTableViewCell">
+                                <rect key="frame" x="0.0" y="144" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bcM-iq-UDf" id="DNW-nI-kbz">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alz-kv-RWs">
+                                            <rect key="frame" x="25" y="11" width="33" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$12" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cei-6z-B10">
+                                            <rect key="frame" x="324" y="11" width="29" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="itemNameLabel" destination="alz-kv-RWs" id="Isq-CA-MQn"/>
+                                    <outlet property="itemPriceLabel" destination="Cei-6z-B10" id="2em-yS-VVF"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="YQo-b4-7df" id="pvj-Di-fU2"/>
+                            <outlet property="delegate" destination="YQo-b4-7df" id="pCZ-Gr-zdw"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Order Details" id="Akh-rx-G6a">
+                        <leftBarButtonItems>
+                            <barButtonItem image="hamburgericon" id="apn-1a-b9L">
+                                <color key="tintColor" red="0.78823529410000004" green="0.30196078430000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </barButtonItem>
+                            <barButtonItem title="Back" style="done" id="yJ2-ok-7T7">
+                                <color key="tintColor" red="0.78823529410000004" green="0.30196078430000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <segue destination="RdC-aN-nsO" kind="custom" identifier="" customClass="SWRevealViewControllerSeguePushController" id="XCc-HJ-hCx"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="sidebarButton" destination="apn-1a-b9L" id="ZGg-bm-YdN"/>
+                        <segue destination="RdC-aN-nsO" kind="custom" identifier="backToAvalibleSegue" customClass="SWRevealViewControllerSeguePushController" id="UJB-xp-wLm"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QX1-w0-FNS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4325.6000000000004" y="-1910.1949025487258"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gsR-LH-4Ae">
+            <objects>
+                <navigationController id="wJF-7X-qse" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5FI-wx-VuC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="YQo-b4-7df" kind="relationship" relationship="rootViewController" id="ltv-Gb-gHi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6qU-GJ-12w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3374" y="-1910"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="CLd-Mt-g8z">
+            <objects>
+                <navigationController id="RdC-aN-nsO" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="CLz-cf-RCd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="sIZ-Dm-a2u" kind="relationship" relationship="rootViewController" id="VNi-y8-qpf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iWU-3p-cCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1734" y="-1910"/>
         </scene>
         <!--Order Now-->
         <scene sceneID="ZZp-hY-Z63">
@@ -1143,7 +1419,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundImage" destination="Nsr-1p-q3X" id="oxU-9Y-eSJ"/>
+                        <outlet property="profilePictureImage" destination="E91-b7-QLw" id="K0j-Wo-kJr"/>
                         <outlet property="sidebarButton" destination="Bic-X5-4US" id="KkF-BN-Vui"/>
+                        <outlet property="welcomeLabel" destination="HdV-E8-Awy" id="xAW-48-L5l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bsj-0m-eWh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1193,8 +1471,10 @@
         <image name="ugaserving" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HHQ-Hf-bRH"/>
-        <segue reference="ney-H2-6up"/>
+        <segue reference="Ifl-Mh-rPa"/>
+        <segue reference="Lal-Yi-dfw"/>
+        <segue reference="C4R-R1-5Nk"/>
         <segue reference="j3I-d0-PZp"/>
+        <segue reference="XCc-HJ-hCx"/>
     </inferredMetricsTieBreakers>
 </document>

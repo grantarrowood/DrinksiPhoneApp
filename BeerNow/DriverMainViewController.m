@@ -60,7 +60,7 @@
                     //print the user attributes
                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                     if ([attribute.name isEqualToString:@"name"]) {
-                        //self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
+                        self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
                     }
                 }
             }

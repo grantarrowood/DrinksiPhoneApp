@@ -16,8 +16,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadTable:)
+                                                 name:@"ReloadSidebar"
+                                               object:nil];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    menuItems = @[@"home", @"orderNow", @"profile", @"settings", @"faq", @"login"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userPool = [defaults stringForKey:@"userPool"];
+    if ([userPool isEqualToString:@"CUSTOMER"]) {
+        menuItems = @[@"customerHome", @"orderNow", @"profile", @"settings", @"faq", @"login"];
+    } else {
+        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
+    }
+    
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beerBackground"]];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -26,6 +37,20 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void)reloadTable:(NSNotification*)sender {
+    // Perform action here
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userPool = [defaults stringForKey:@"userPool"];
+    if ([userPool isEqualToString:@"CUSTOMER"]) {
+        menuItems = @[@"customerHome", @"orderNow", @"profile", @"settings", @"faq", @"login"];
+    } else {
+        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"settings", @"faq", @"login"];
+    }
+    [self.tableView reloadData];
+}
+
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     // Set the title of navigation bar by using the menu items

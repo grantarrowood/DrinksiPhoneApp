@@ -15,7 +15,7 @@
 #import "Orders.h"
 
 
-@interface OrderNowTableViewController : UITableViewController {
+@interface OrderNowTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray *allLocations;
     NSMutableArray *allAreas;
     NSMutableArray *allMenuItems;

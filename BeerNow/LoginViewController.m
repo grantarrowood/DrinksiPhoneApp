@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "SidebarTableViewController.h"
 
 @interface LoginViewController ()
 @end
@@ -102,6 +103,9 @@
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
                 [defaults synchronize];
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"ReloadSidebar"
+                 object:self];
                 [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
             } else {
                 AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
@@ -131,6 +135,9 @@
                                         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                         [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
                                         [defaults synchronize];
+                                        [[NSNotificationCenter defaultCenter]
+                                         postNotificationName:@"ReloadSidebar"
+                                         object:self];
                                         [self performSegueWithIdentifier:@"loginToDriver" sender:nil];
                                     } else {
                                         [[[UIAlertView alloc] initWithTitle:@"You have not been accepted yet!"
@@ -453,7 +460,9 @@
         [[pool currentUser] signOut];
     }
     [[pool getUser] getSession];
-
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:@"CUSTOMER" forKey:@"userPool"];
+    [defaults synchronize];
     loginType = @"CUSTOMER";
     self.notAMemberLabel.alpha = 0.0;
     self.signUpButton.alpha = 0.0;
@@ -522,6 +531,9 @@
     }
     [[driverPool getUser] getSession];
     loginType = @"DRIVER";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:@"DRIVER" forKey:@"userPool"];
+    [defaults synchronize];
     self.notAMemberLabel.alpha = 0.0;
     self.signUpButton.alpha = 0.0;
     self.forgotPasswordButton.alpha = 0.0;

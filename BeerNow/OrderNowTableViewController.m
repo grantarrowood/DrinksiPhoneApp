@@ -193,8 +193,31 @@
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if([[self.tableView cellForRowAtIndexPath:indexPath].reuseIdentifier  isEqual: @"submit"]) {
+        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        
+        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+        
         AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
         Orders *newOrder = [Orders new];
+
+        [[dynamoDBObjectMapper scan:[Orders class]
+                         expression:scanExpression]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             } else {
+                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                 NSInteger numberOfOrders = paginatedOutput.items.count + 1;
+                 newOrder.OrderId = [NSNumber numberWithInteger:numberOfOrders];
+             }
+             return nil;
+         }];
+        sleep(2);
         newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
         newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
         for (int i = 0; i < selectedMenuItems.count; i++) {
@@ -206,9 +229,14 @@
             
         }
         newOrder.Order = orderString;
-        newOrder.OrderId = @1;
         newOrder.Completed = @"NO";
         newOrder.Selected = @"NO";
+        newOrder.driverUsername = @"UNKNOWN";
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *username = [defaults stringForKey:@"currentUsername"];
+        newOrder.customerUsername = username;
+        newOrder.paid = @"NO";
+        newOrder.receipt = @"NONE";
         [[dynamoDBObjectMapper save:newOrder]
          continueWithBlock:^id(AWSTask *task) {
              if (task.error) {

@@ -21,6 +21,10 @@
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
 		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
+		9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */; };
+		9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */; };
+		9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */; };
+		9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392251EF769FC00FD458D /* DetailTableViewCell.m */; };
 		9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */; };
 		9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD231ED9EABB00C61003 /* Locations.m */; };
 		9CF8AD271EDA01E400C61003 /* Areas.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD261EDA01E400C61003 /* Areas.m */; };
@@ -81,6 +85,14 @@
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		9CB392181EF4D3EE00FD458D /* DriverMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverMainViewController.h; sourceTree = "<group>"; };
 		9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverMainViewController.m; sourceTree = "<group>"; };
+		9CB3921B1EF5B85900FD458D /* AvailableOrdersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailableOrdersTableViewController.h; sourceTree = "<group>"; };
+		9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvailableOrdersTableViewController.m; sourceTree = "<group>"; };
+		9CB3921E1EF6530200FD458D /* OrderDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailsTableViewController.h; sourceTree = "<group>"; };
+		9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailsTableViewController.m; sourceTree = "<group>"; };
+		9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemTableViewCell.h; sourceTree = "<group>"; };
+		9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemTableViewCell.m; sourceTree = "<group>"; };
+		9CB392241EF769FC00FD458D /* DetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewCell.h; sourceTree = "<group>"; };
+		9CB392251EF769FC00FD458D /* DetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewCell.m; sourceTree = "<group>"; };
 		9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNowTableViewController.h; sourceTree = "<group>"; };
 		9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderNowTableViewController.m; sourceTree = "<group>"; };
 		9CF8AD221ED9EABB00C61003 /* Locations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locations.h; sourceTree = "<group>"; };
@@ -167,6 +179,14 @@
 				9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */,
 				9CB392181EF4D3EE00FD458D /* DriverMainViewController.h */,
 				9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */,
+				9CB3921B1EF5B85900FD458D /* AvailableOrdersTableViewController.h */,
+				9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */,
+				9CB3921E1EF6530200FD458D /* OrderDetailsTableViewController.h */,
+				9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */,
+				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
+				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
+				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
+				9CB392251EF769FC00FD458D /* DetailTableViewCell.m */,
 				9C039D961EEF29A1006476BA /* Orders.h */,
 				9C039D971EEF29A1006476BA /* Orders.m */,
 				9CF8AD221ED9EABB00C61003 /* Locations.h */,
@@ -494,14 +514,18 @@
 			files = (
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
+				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
 				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
+				9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */,
 				9CF8AD271EDA01E400C61003 /* Areas.m in Sources */,
+				9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */,
 				9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */,
 				9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */,
 				9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
+				9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */,
 				9C58AFED1ED64A1800EB8E62 /* main.m in Sources */,
 				9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */,
 			);

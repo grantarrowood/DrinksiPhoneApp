@@ -17,5 +17,11 @@
 @property (nonatomic, strong) NSString *Location;
 @property (nonatomic, strong) NSNumber *OrderId;
 @property (nonatomic, strong) NSString *Area;
+@property (nonatomic, strong) NSString *driverUsername;
+@property (nonatomic, strong) NSString *customerUsername;
+@property (nonatomic, strong) NSString *paid;
+@property (nonatomic, strong) NSString *receipt;
+
+
 
 @end
