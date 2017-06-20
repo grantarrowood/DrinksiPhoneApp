@@ -14,8 +14,9 @@
 #import "ItemTableViewCell.h"
 #import "DetailTableViewCell.h"
 #import <CoreLocation/CoreLocation.h>
+#import "PaySequencePopoverViewController.h"
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate> {
     NSMutableArray *orderItems;
     NSTimer *timerTwo;
     NSTimer *timer;
@@ -27,6 +28,7 @@
     NSString *locationName;
     NSString *locationAddress;
     NSString *isPaid;
+    NSString *orderStatus;
     UIActivityIndicatorView *spinner;
     UIView *greyView;
     double deliveryFee;
@@ -37,5 +39,7 @@
 @property (strong) NSNumber *orderId;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *backBarButton;
+- (IBAction)backAction:(id)sender;
 
 @end

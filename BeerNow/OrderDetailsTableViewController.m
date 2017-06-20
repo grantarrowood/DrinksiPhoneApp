@@ -65,6 +65,7 @@
                                   if ([location.Name isEqualToString: locationName]) {
                                       locationAddress = location.Address;
                                       if ([driverUsername isEqualToString:@"UNKNOWN"]) {
+                                          sleep(1);
                                           [self getDeliveryFee];
                                       }
                                   }
@@ -144,6 +145,19 @@
                      }
                      
                      isPaid = order.paid;
+                     if ([driverUsername isEqualToString:@"UNKNOWN"]) {
+                         orderStatus = @"Awaiting Driver";
+                     } else {
+                         if ([isPaid isEqualToString:@"NO"]) {
+                             orderStatus = @"Awaiting Payment";
+                         } else {
+                             if ([order.Completed isEqualToString:@"NO"]) {
+                                 orderStatus = @"On the Way";
+                             } else {
+                                 orderStatus = @"Order Completed";
+                             }
+                         }
+                     }
                      NSString *stringWithoutSpaces = [order.Order
                                                       stringByReplacingOccurrencesOfString:@" " withString:@""];
                      NSString *stringEndBracket = [stringWithoutSpaces
@@ -173,7 +187,7 @@
     [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
     [self.view addSubview:spinner];
     [spinner startAnimating];
-    timer = [NSTimer scheduledTimerWithTimeInterval:5.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:7.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
 }
 
 -(void)getTable {
@@ -185,19 +199,46 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userPool = [defaults stringForKey:@"userPool"];
     if ([userPool isEqualToString:@"CUSTOMER"]) {
-        if([isPaid isEqualToString:@"NO"]) {
+        if ([driverUsername isEqualToString:@"UNKNOWN"]) {
             UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
             footerView.backgroundColor = [UIColor whiteColor];
             UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
             separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
             [footerView addSubview:separatorView];
             UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-            [acceptButton setTitle:@"Pay Now" forState:UIControlStateNormal];
+            [acceptButton setTitle:@"Cancel Order" forState:UIControlStateNormal];
             [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            [acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
+            [acceptButton addTarget:self action:@selector(cancelOrder) forControlEvents:UIControlEventTouchUpInside];
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
+        } else {
+            if([isPaid isEqualToString:@"NO"]) {
+                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
+                footerView.backgroundColor = [UIColor whiteColor];
+                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [footerView addSubview:separatorView];
+                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+                [acceptButton setTitle:@"Pay Now" forState:UIControlStateNormal];
+                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                [acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
+                [footerView addSubview:acceptButton];
+                [self.navigationController.view addSubview:footerView];
+            } else {
+                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
+                footerView.backgroundColor = [UIColor whiteColor];
+                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [footerView addSubview:separatorView];
+                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+                [acceptButton setTitle:@"Order Delivered" forState:UIControlStateNormal];
+                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                //[acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
+                [footerView addSubview:acceptButton];
+                [self.navigationController.view addSubview:footerView];
+            }
         }
+        
     } else {
         if ([driverUsername isEqualToString:@"UNKNOWN"]) {
             UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
@@ -421,8 +462,8 @@
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSString *userPool = [defaults stringForKey:@"userPool"];
             if ([userPool isEqualToString:@"CUSTOMER"]) {
-                cell.detailMainLabel.text = @"Paid:";
-                cell.detailDynamicLabel.text = isPaid;
+                cell.detailMainLabel.text = @"Order Status:";
+                cell.detailDynamicLabel.text = orderStatus;
                 [cell.detailMainLabel sizeToFit];
                 //[cell.detailDynamicLabel sizeToFit];
                 cell.detailDynamicLabel.minimumFontSize = 10;
@@ -439,8 +480,8 @@
             return cell;
         } else if (indexPath.row == 5) {
             DetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detail" forIndexPath:indexPath];
-            cell.detailMainLabel.text = @"Paid:";
-            cell.detailDynamicLabel.text = isPaid;
+            cell.detailMainLabel.text = @"Order Status:";
+            cell.detailDynamicLabel.text = orderStatus;
             [cell.detailMainLabel sizeToFit];
             //[cell.detailDynamicLabel sizeToFit];
             cell.detailDynamicLabel.minimumFontSize = 10;
@@ -474,7 +515,7 @@
             } else {
                 ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"items" forIndexPath:indexPath];
                 cell.itemNameLabel.text = [orderItems objectAtIndex:(indexPath.row-1)][0];
-                cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%@.00",[orderItems objectAtIndex:(indexPath.row-1)][1]];
+                cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%@",[orderItems objectAtIndex:(indexPath.row-1)][1]];
                 //[cell.itemPriceLabel sizeToFit];
                 [cell.itemNameLabel sizeToFit];
                 return cell;
@@ -498,7 +539,7 @@
             } else {
                 ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"items" forIndexPath:indexPath];
                 cell.itemNameLabel.text = [orderItems objectAtIndex:(indexPath.row-1)][0];
-                cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%@.00",[orderItems objectAtIndex:(indexPath.row-1)][1]];
+                cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%@",[orderItems objectAtIndex:(indexPath.row-1)][1]];
                 //[cell.itemPriceLabel sizeToFit];
                 [cell.itemNameLabel sizeToFit];
                 return cell;
@@ -582,7 +623,7 @@
     [spinner stopAnimating];
     [spinner removeFromSuperview];
     [greyView removeFromSuperview];
-    [self performSegueWithIdentifier:@"backToAvalibleSegue" sender:nil];
+    [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
 }
 
 -(id<AWSCognitoIdentityPasswordAuthentication>) startPasswordAuthentication{
@@ -611,52 +652,40 @@
 
 
 -(void)payNow {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
+    controller.orderDetails = orderItems;
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
     
-    [self performSegueWithIdentifier:@"paySequence" sender:nil];
-    
-    
-    
-    
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    popController.sourceView = self.view;
+    popController.sourceRect = CGRectMake(10, 50, 355, 567);
+    //[self performSegueWithIdentifier:@"paySequence" sender:nil];
 }
 
-
-
-
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(void)cancelOrder {
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    Orders *orderToCancel = [Orders new];
+    orderToCancel.OrderId = _orderId;
+    
+    [[dynamoDBObjectMapper remove:orderToCancel]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         } else {
+             //Item deleted.
+             [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
+         }
+         return nil;
+     }];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark - Navigation
@@ -669,4 +698,17 @@
 }
 */
 
+- (IBAction)backAction:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userPool = [defaults stringForKey:@"userPool"];
+    if ([userPool isEqualToString:@"CUSTOMER"]) {
+        [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
+    } else {
+        if ([driverUsername isEqualToString:@"UNKNOWN"]) {
+            [self performSegueWithIdentifier:@"backToAvalibleSegue" sender:nil];
+        } else {
+            [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
+        }
+    }
+}
 @end

@@ -20,6 +20,8 @@
 		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
+		9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */; };
+		9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA9EACE1EF89DBA008501DE /* PassKit.framework */; };
 		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
 		9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921C1EF5B85900FD458D /* AvailableOrdersTableViewController.m */; };
 		9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */; };
@@ -85,6 +87,9 @@
 		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaySequencePopoverViewController.h; sourceTree = "<group>"; };
+		9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaySequencePopoverViewController.m; sourceTree = "<group>"; };
+		9CA9EACE1EF89DBA008501DE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		9CB392181EF4D3EE00FD458D /* DriverMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverMainViewController.h; sourceTree = "<group>"; };
 		9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverMainViewController.m; sourceTree = "<group>"; };
 		9CB3921B1EF5B85900FD458D /* AvailableOrdersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailableOrdersTableViewController.h; sourceTree = "<group>"; };
@@ -115,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */,
 				9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */,
 				D0685E950DC9437287F36059 /* libPods-BeerNow.a in Frameworks */,
 			);
@@ -142,6 +148,7 @@
 		03854700A122053B4DB70296 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9CA9EACE1EF89DBA008501DE /* PassKit.framework */,
 				9CB3922A1EF850BB00FD458D /* CoreLocation.framework */,
 				814E593468C821F605478206 /* libPods-BeerNow.a */,
 				28C119ED54A4F4F4A3656191 /* libPods-BeerNowTests.a */,
@@ -194,6 +201,8 @@
 				9CB3921F1EF6530200FD458D /* OrderDetailsTableViewController.m */,
 				9CB392271EF822B200FD458D /* YourOrdersTableViewController.h */,
 				9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */,
+				9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */,
+				9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */,
 				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
 				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
 				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
@@ -534,6 +543,7 @@
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
 				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
+				9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */,
 				9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */,
 				9CF8AD271EDA01E400C61003 /* Areas.m in Sources */,
 				9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */,
