@@ -13,22 +13,33 @@
 #import "Locations.h"
 #import "ItemTableViewCell.h"
 #import "DetailTableViewCell.h"
+#import <CoreLocation/CoreLocation.h>
+#import "PaySequencePopoverViewController.h"
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate> {
     NSMutableArray *orderItems;
+    NSTimer *timerTwo;
     NSTimer *timer;
+    NSString *driverUsername;
+    NSString *driverName;
     NSString *customerUsername;
     NSString *customerName;
     NSString *customerAddress;
     NSString *locationName;
     NSString *locationAddress;
     NSString *isPaid;
+    NSString *orderStatus;
     UIActivityIndicatorView *spinner;
     UIView *greyView;
+    double deliveryFee;
+    CLLocationManager *locationManager;
+    CLLocation *currentLoc;
 }
 
 @property (strong) NSNumber *orderId;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *backBarButton;
+- (IBAction)backAction:(id)sender;
 
 @end

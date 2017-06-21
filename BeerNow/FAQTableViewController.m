@@ -1,63 +1,33 @@
 //
-//  SidebarTableViewController.m
+//  FAQTableViewController.m
 //  BeerNow
 //
-//  Created by Grant Arrowood on 5/24/17.
+//  Created by Grant Arrowood on 6/20/17.
 //  Copyright © 2017 Piglet Products, LLC. All rights reserved.
 //
 
-#import "SidebarTableViewController.h"
+#import "FAQTableViewController.h"
 
-@interface SidebarTableViewController ()
+@interface FAQTableViewController ()
 
 @end
 
-@implementation SidebarTableViewController
+@implementation FAQTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadTable:)
-                                                 name:@"ReloadSidebar"
-                                               object:nil];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userPool = [defaults stringForKey:@"userPool"];
-    if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
-    } else {
-        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
+    SWRevealViewController *revealViewController = self.revealViewController;
+    if ( revealViewController )
+    {
+        [self.sidebarButton setTarget: self.revealViewController];
+        [self.sidebarButton setAction: @selector( revealToggle: )];
+        [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
-    
-    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beerBackground"]];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
--(void)reloadTable:(NSNotification*)sender {
-    // Perform action here
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userPool = [defaults stringForKey:@"userPool"];
-    if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
-    } else {
-        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
-    }
-    [self.tableView reloadData];
-}
-
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    // Set the title of navigation bar by using the menu items
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
-    destViewController.title = [[menuItems objectAtIndex:indexPath.row] capitalizedString];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,16 +42,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return menuItems.count;
+    return 4;
 }
 
-
+/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *CellIdentifier = [menuItems objectAtIndex:indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    
+    // Configure the cell...
+    
     return cell;
 }
-
+*/
 
 /*
 // Override to support conditional editing of the table view.
