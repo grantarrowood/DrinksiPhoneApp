@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		83E31C43DABE41D851524395 /* libPods-BeerNowUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54654BA2E0074408A377B255 /* libPods-BeerNowUITests.a */; };
 		9C039D981EEF29A1006476BA /* Orders.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C039D971EEF29A1006476BA /* Orders.m */; };
+		9C219B071EF9C94900DDF258 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C219B061EF9C94900DDF258 /* MapKit.framework */; };
+		9C219B0A1EF9C9A700DDF258 /* NearYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C219B091EF9C9A700DDF258 /* NearYouViewController.m */; };
+		9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */; };
+		9C2C2FC61EF9A47300343AB0 /* ProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2C2FC51EF9A47300343AB0 /* ProfileTableViewController.m */; };
 		9C58AFED1ED64A1800EB8E62 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEC1ED64A1800EB8E62 /* main.m */; };
 		9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */; };
 		9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFF21ED64A1800EB8E62 /* ViewController.m */; };
@@ -65,6 +69,13 @@
 		814E593468C821F605478206 /* libPods-BeerNow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeerNow.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C039D961EEF29A1006476BA /* Orders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orders.h; sourceTree = "<group>"; };
 		9C039D971EEF29A1006476BA /* Orders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Orders.m; sourceTree = "<group>"; };
+		9C219B061EF9C94900DDF258 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C219B081EF9C9A700DDF258 /* NearYouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearYouViewController.h; sourceTree = "<group>"; };
+		9C219B091EF9C9A700DDF258 /* NearYouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearYouViewController.m; sourceTree = "<group>"; };
+		9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAQTableViewController.h; sourceTree = "<group>"; };
+		9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAQTableViewController.m; sourceTree = "<group>"; };
+		9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewController.h; sourceTree = "<group>"; };
+		9C2C2FC51EF9A47300343AB0 /* ProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewController.m; sourceTree = "<group>"; };
 		9C58AFE81ED64A1800EB8E62 /* BeerNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C58AFEC1ED64A1800EB8E62 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9C58AFEE1ED64A1800EB8E62 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,6 +133,7 @@
 			files = (
 				9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */,
 				9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */,
+				9C219B071EF9C94900DDF258 /* MapKit.framework in Frameworks */,
 				D0685E950DC9437287F36059 /* libPods-BeerNow.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +160,7 @@
 		03854700A122053B4DB70296 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C219B061EF9C94900DDF258 /* MapKit.framework */,
 				9CA9EACE1EF89DBA008501DE /* PassKit.framework */,
 				9CB3922A1EF850BB00FD458D /* CoreLocation.framework */,
 				814E593468C821F605478206 /* libPods-BeerNow.a */,
@@ -203,6 +216,8 @@
 				9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */,
 				9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */,
 				9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */,
+				9C219B081EF9C9A700DDF258 /* NearYouViewController.h */,
+				9C219B091EF9C9A700DDF258 /* NearYouViewController.m */,
 				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
 				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
 				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
@@ -215,6 +230,10 @@
 				9CF8AD261EDA01E400C61003 /* Areas.m */,
 				9CF8AD281EDA141A00C61003 /* MenuItems.h */,
 				9CF8AD291EDA141A00C61003 /* MenuItems.m */,
+				9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */,
+				9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */,
+				9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */,
+				9C2C2FC51EF9A47300343AB0 /* ProfileTableViewController.m */,
 				9C58AFF41ED64A1800EB8E62 /* Main.storyboard */,
 				9C58AFF71ED64A1800EB8E62 /* Assets.xcassets */,
 				9C58AFF91ED64A1800EB8E62 /* LaunchScreen.storyboard */,
@@ -341,9 +360,16 @@
 					9C58AFE71ED64A1800EB8E62 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = N5WA24M8FS;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -540,6 +566,9 @@
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
 				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,
+				9C2C2FC61EF9A47300343AB0 /* ProfileTableViewController.m in Sources */,
+				9C219B0A1EF9C9A700DDF258 /* NearYouViewController.m in Sources */,
+				9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
 				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
@@ -704,12 +733,16 @@
 			baseConfigurationReference = 6DEE560317CC7A45DEAF02EC /* Pods-BeerNow.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -718,12 +751,15 @@
 			baseConfigurationReference = E019C9A9B7C31D1E2CA16DB2 /* Pods-BeerNow.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
