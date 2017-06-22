@@ -20,6 +20,7 @@
     NSMutableArray *locationsArray;
     NSTimer *timer;
     NSString *selectedLocationAddress;
+    BOOL locationUpdated;
 }
 
 

@@ -77,7 +77,7 @@
          }
          return nil;
      }];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.75 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
     
 }
 
@@ -116,8 +116,14 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 5000, 5000);
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+    if (locationUpdated) {
+        
+    } else {
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 5000, 5000);
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        locationUpdated = YES;
+    }
+
 }
 
 

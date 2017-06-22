@@ -288,7 +288,7 @@
     // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
     float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
     float totalCosts = gasCosts+timeCosts;
-    deliveryFee = totalCosts+3.0;
+    deliveryFee = totalCosts+6.0;
 }
 
 - (CLLocationCoordinate2D) geoCodeUsingAddress:(NSString *)address
