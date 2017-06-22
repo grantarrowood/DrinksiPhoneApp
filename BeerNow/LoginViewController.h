@@ -10,6 +10,8 @@
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
 #import "ViewController.h"
+#import <AWSS3/AWSS3.h>
+
 
 
 @interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
@@ -63,6 +65,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *signUpScrollView;
 - (IBAction)addProfilePhotoAction:(id)sender;
 - (IBAction)addDriversLicenseAction:(id)sender;
+- (IBAction)addDriversLicenseTapAction:(id)sender;
+- (IBAction)addProfilePhotoTapAction:(id)sender;
+
 
 
 @end

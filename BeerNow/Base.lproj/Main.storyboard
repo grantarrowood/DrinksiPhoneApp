@@ -2004,7 +2004,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="x6z-2Z-VPr">
+                                    <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="x6z-2Z-VPr">
                                         <rect key="frame" x="132" y="78" width="100" height="100"/>
                                         <gestureRecognizers/>
                                         <constraints>
@@ -2037,7 +2037,7 @@
                                             <action selector="addDriversLicenseAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="RJr-Tj-8bV"/>
                                         </connections>
                                     </button>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fakeId" translatesAutoresizingMaskIntoConstraints="NO" id="jLH-8d-b4v">
+                                    <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fakeId" translatesAutoresizingMaskIntoConstraints="NO" id="jLH-8d-b4v">
                                         <rect key="frame" x="32" y="744" width="312" height="194"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <gestureRecognizers/>
@@ -2206,12 +2206,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fa7-N6-euN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="1sL-L2-uSU">
                     <connections>
-                        <action selector="addDriversLicenseAction:" destination="GWJ-Uf-WGo" id="t5E-vn-Qmg"/>
+                        <action selector="addDriversLicenseTapAction:" destination="GWJ-Uf-WGo" id="els-I6-5ev"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="D3G-SC-m84">
                     <connections>
-                        <action selector="addProfilePhotoAction:" destination="GWJ-Uf-WGo" id="1yR-1B-AJs"/>
+                        <action selector="addProfilePhotoTapAction:" destination="GWJ-Uf-WGo" id="Jl3-vF-ZzO"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
