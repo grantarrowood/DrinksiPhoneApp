@@ -90,10 +90,6 @@
     self.birthdateView.layer.cornerRadius = 20;
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
     [self.signUpScrollView addGestureRecognizer:recognizer];
-//    UITapGestureRecognizer *profileRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addProfilePhotoAction:)];
-//    [self.profileImageView addGestureRecognizer:profileRecognizer];
-//    UITapGestureRecognizer *licenseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addDriversLicenseAction:)];
-//    [self.driversLicenseImageView addGestureRecognizer:licenseRecognizer];
 }
 
 -(void)returnTextField {
@@ -239,12 +235,12 @@
                 NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsPath = [paths objectAtIndex:0];
-                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType]];
+                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
                 [pngData writeToFile:filePath atomically:YES];
                 NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
                 AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
                 uploadRequest.bucket = @"drinksprofilepictures";
-                uploadRequest.key = [NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType];
+                uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
                 uploadRequest.body = uploadingFileURL;
                 [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
                                                                    withBlock:^id(AWSTask *task) {
@@ -275,7 +271,7 @@
                 
                 profileImage.name = @"picture";
                 //phone number must be prefixed by country code
-                profileImage.value = [NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType];
+                profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
             }
 
             AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
@@ -337,12 +333,12 @@
                 NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsPath = [paths objectAtIndex:0];
-                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType]];
+                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
                 [pngData writeToFile:filePath atomically:YES];
                 NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
                 AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
                 uploadRequest.bucket = @"drinksprofilepictures";
-                uploadRequest.key = [NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType];
+                uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
                 uploadRequest.body = uploadingFileURL;
                 [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
                                                                    withBlock:^id(AWSTask *task) {
@@ -373,18 +369,18 @@
                 
                 profileImage.name = @"custom:profilePicture";
                 //phone number must be prefixed by country code
-                profileImage.value = [NSString stringWithFormat:@"%@-profilePicture-%@.jpg", self.usernameTextField.text,loginType];
+                profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
             }
             AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
             NSData *pngData = UIImagePNGRepresentation(self.driversLicenseImageView.image);
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsPath = [paths objectAtIndex:0];
-            NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-license.jpg", self.usernameTextField.text]];
+            NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text]];
             [pngData writeToFile:filePath atomically:YES];
             NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
             AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
             uploadRequest.bucket = @"drinksdriverlicenses";
-            uploadRequest.key = [NSString stringWithFormat:@"%@-license.jpg", self.usernameTextField.text];
+            uploadRequest.key = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
             uploadRequest.body = uploadingFileURL;
             [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
                                                                withBlock:^id(AWSTask *task) {
@@ -414,7 +410,7 @@
 
             AWSCognitoIdentityUserAttributeType *driversLicense = [AWSCognitoIdentityUserAttributeType new];
             driversLicense.name = @"picture";
-            driversLicense.value = [NSString stringWithFormat:@"%@-license.jpg", self.usernameTextField.text];
+            driversLicense.value = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
             
             AWSCognitoIdentityUserAttributeType *isAccepted = [AWSCognitoIdentityUserAttributeType new];
             isAccepted.name = @"custom:isAccepted";

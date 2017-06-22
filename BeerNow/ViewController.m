@@ -38,6 +38,12 @@
     self.bookImageView.image = [self.bookImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.starImangeView.image = [self.starImangeView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.pinImageView.image = [self.pinImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
     
     //create a pool
@@ -64,6 +70,44 @@
                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                     if ([attribute.name isEqualToString:@"name"]) {
                         self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
+                    } else if([attribute.name isEqualToString:@"picture"]) {
+                        AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+
+                        NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:attribute.value];
+                        NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+                        
+                        AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+                        
+                        downloadRequest.bucket = @"drinksprofilepictures";
+                        downloadRequest.key = attribute.value;
+                        downloadRequest.downloadingFileURL = downloadingFileURL;
+                        [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                                withBlock:^id(AWSTask *task) {
+                                                                                    if (task.error){
+                                                                                        if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                            switch (task.error.code) {
+                                                                                                case AWSS3TransferManagerErrorCancelled:
+                                                                                                case AWSS3TransferManagerErrorPaused:
+                                                                                                    break;
+                                                                                                    
+                                                                                                default:
+                                                                                                    NSLog(@"Error: %@", task.error);
+                                                                                                    break;
+                                                                                            }
+                                                                                            
+                                                                                        } else {
+                                                                                            NSLog(@"Error: %@", task.error);
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    if (task.result) {
+                                                                                        AWSS3TransferManagerDownloadOutput *downloadOutput = task.result;
+                                                                                        self.profileImageView.image = [UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                                        self.profileImageView.layer.cornerRadius = 50;
+                                                                                        self.profileImageView.clipsToBounds = YES;
+                                                                                    }
+                                                                                    return nil;
+                                                                                }];
                     }
                 }
             }
