@@ -35,17 +35,58 @@
         [self.sidebarButton setAction: @selector( revealToggle: )];
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
-    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
     
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
     
     AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
-    
+    if (_selectedAddress != nil) {
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+        //scanExpression.limit = @10;
+        
+        [[dynamoDBObjectMapper scan:[Locations class]
+                         expression:scanExpression]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             } else {
+                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                 for (Locations *location in paginatedOutput.items) {
+                     //Do something with book.
+                     if([location.Address isEqualToString:_selectedAddress]) {
+//                         [allLocations addObject:location];
+//                         [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:allLocations.count+1 inSection:2]].accessoryType = UITableViewCellAccessoryCheckmark;
+                         selectedArea = location.Area;
+                         selectedLocationObject = location;
+                     }
+                 }
+             }
+             return nil;
+         }];
+        greyView = [[UIView alloc] initWithFrame:self.view.frame];
+        greyView.backgroundColor = [UIColor grayColor];
+        greyView.alpha = 0.5;
+        [self.view addSubview:greyView];
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+    } else {
+        greyView = [[UIView alloc] initWithFrame:self.view.frame];
+        greyView.backgroundColor = [UIColor grayColor];
+        greyView.alpha = 0.5;
+        [self.view addSubview:greyView];
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+    }
     AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
 
     AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
-    scanExpression.limit = @10;
+    //scanExpression.limit = @10;
     
     [[dynamoDBObjectMapper scan:[Areas class]
                      expression:scanExpression]
@@ -57,32 +98,84 @@
              for (Areas *area in paginatedOutput.items) {
                  //Do something with book.
                  [allAreas addObject:area];
+                 if (selectedArea != nil) {
+                     if ([selectedArea isEqualToString:area.Name]) {
+                         selectedAreaObject = area;
+                     }
+                 }
              }
          }
          return nil;
      }];
-    greyView = [[UIView alloc] initWithFrame:self.view.frame];
-    greyView.backgroundColor = [UIColor grayColor];
-    greyView.alpha = 0.5;
-    [self.view addSubview:greyView];
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
-    [self.view addSubview:spinner];
-    [spinner startAnimating];
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void)getTable {
     [self.tableView reloadData];
     [timer invalidate];
-    [spinner stopAnimating];
-    [spinner removeFromSuperview];
-    [greyView removeFromSuperview];
+    if (_selectedAddress != nil) {
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
+        
+        queryExpression.keyConditionExpression = @"Area = :areaName";
+        queryExpression.indexName = @"Area-index";
+        queryExpression.expressionAttributeValues = @{@":areaName": selectedArea};
+        
+        [[dynamoDBObjectMapper query:[Locations class]
+                          expression:queryExpression]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             } else {
+                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                 for (Locations *locations in paginatedOutput.items) {
+                     //Do something with book.
+                     [allLocations addObject:locations];
+                     
+                 }
+             }
+             _selectedAddress = nil;
+             return nil;
+         }];
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    } else {
+        if (selectedArea != nil) {
+            [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[allLocations indexOfObject:selectedLocationObject] inSection:1]].accessoryType = UITableViewCellAccessoryCheckmark;
+            [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[allAreas indexOfObject:selectedAreaObject] inSection:0]].accessoryType = UITableViewCellAccessoryCheckmark;
+            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+            
+            AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
+            
+            queryExpression.keyConditionExpression = @"MenuLocation = :locationName AND Address = :addressName";
+            queryExpression.indexName = @"MenuLocation-Address-index";
+            queryExpression.expressionAttributeValues = @{@":locationName": [selectedLocationObject Name], @":addressName": [selectedLocationObject Address]};
+            
+            [[dynamoDBObjectMapper query:[MenuItems class]
+                              expression:queryExpression]
+             continueWithBlock:^id(AWSTask *task) {
+                 if (task.error) {
+                     NSLog(@"The request failed. Error: [%@]", task.error);
+                 } else {
+                     AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                     for (MenuItems *menuItem in paginatedOutput.items) {
+                         //Do something with book.
+                         [allMenuItems addObject:menuItem];
+                     }
+                     selectedArea = nil;
+                 }
+                 return nil;
+             }];
+            timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+
+        } else {
+            [spinner stopAnimating];
+            [spinner removeFromSuperview];
+            [greyView removeFromSuperview];
+        }
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -337,6 +430,7 @@
                      AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
                      for (Locations *locations in paginatedOutput.items) {
                          //Do something with book.
+                         
                          [allLocations addObject:locations];
                      }
                  }

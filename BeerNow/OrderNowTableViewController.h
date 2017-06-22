@@ -21,7 +21,13 @@
     NSMutableArray *allMenuItems;
     NSMutableArray *selectedMenuItems;
     NSString *orderString;
+    NSString *selectedArea;
+    Areas *selectedAreaObject;
+    Locations *selectedLocationObject;
+
 }
+
+@property (strong) NSString *selectedAddress;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 
 @end
