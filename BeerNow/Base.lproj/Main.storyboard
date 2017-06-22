@@ -1838,6 +1838,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="6Y6-0r-z3T"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1855,6 +1858,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="hLb-Cb-E2h"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1895,6 +1901,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="EF7-Ic-JwN"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1915,6 +1924,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="a9g-IT-QWV"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1935,6 +1947,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="Ih1-Tz-Ume"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1955,6 +1970,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="GWJ-Uf-WGo" id="Au9-lm-kk4"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1988,24 +2006,44 @@
                                     </label>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="x6z-2Z-VPr">
                                         <rect key="frame" x="132" y="78" width="100" height="100"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="BPC-Zv-g6M"/>
+                                            <constraint firstAttribute="width" constant="100" id="xhu-43-YbF"/>
+                                        </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="D3G-SC-m84" appends="YES" id="Iks-8C-6oT"/>
+                                        </connections>
                                     </imageView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Profile Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5q-qj-HKg">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P2v-SI-xT1">
                                         <rect key="frame" x="122" y="188" width="130" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Drivers License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CcS-HI-SYP">
+                                        <state key="normal" title="Add Profile Photo">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addProfilePhotoAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="EMx-qv-kPw"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Rv-fW-DS3">
                                         <rect key="frame" x="90" y="707" width="196" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="22"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jLH-8d-b4v">
-                                        <rect key="frame" x="63" y="717" width="240" height="320"/>
+                                        <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="18"/>
+                                        <state key="normal" title="Add Drivers License">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addDriversLicenseAction:" destination="GWJ-Uf-WGo" eventType="touchUpInside" id="RJr-Tj-8bV"/>
+                                        </connections>
+                                    </button>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fakeId" translatesAutoresizingMaskIntoConstraints="NO" id="jLH-8d-b4v">
+                                        <rect key="frame" x="32" y="744" width="312" height="194"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="1sL-L2-uSU" appends="YES" id="YJ3-ck-9vT"/>
+                                        </connections>
                                     </imageView>
                                 </subviews>
                                 <constraints>
@@ -2128,8 +2166,8 @@
                         <barButtonItem key="leftBarButtonItem" image="hamburgericon" id="LgN-ly-uy9"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="addDriversLicenseLabel" destination="CcS-HI-SYP" id="dzC-vK-Ngh"/>
-                        <outlet property="addPhotoLabel" destination="c5q-qj-HKg" id="IS7-Gh-vZQ"/>
+                        <outlet property="addDriversLicenseButton" destination="0Rv-fW-DS3" id="47T-ex-FhF"/>
+                        <outlet property="addProfilePhotoButton" destination="P2v-SI-xT1" id="819-Fj-hhb"/>
                         <outlet property="addressTextField" destination="A6a-WB-jf5" id="0cg-1M-0Km"/>
                         <outlet property="addressView" destination="7Hl-pV-Gl7" id="yjx-Dq-xdR"/>
                         <outlet property="backButton" destination="rcW-lV-8ZS" id="pgQ-yd-C4f"/>
@@ -2166,6 +2204,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fa7-N6-euN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="1sL-L2-uSU">
+                    <connections>
+                        <action selector="addDriversLicenseAction:" destination="GWJ-Uf-WGo" id="t5E-vn-Qmg"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="D3G-SC-m84">
+                    <connections>
+                        <action selector="addProfilePhotoAction:" destination="GWJ-Uf-WGo" id="1yR-1B-AJs"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1733.5999999999999" y="-546.47676161919048"/>
         </scene>
@@ -2426,6 +2474,7 @@
         <image name="carLogin" width="168" height="300"/>
         <image name="clemsonserving" width="225" height="225"/>
         <image name="emailIcon" width="256" height="256"/>
+        <image name="fakeId" width="900" height="600"/>
         <image name="hamburgericon" width="35" height="35"/>
         <image name="homeIcon" width="256" height="256"/>
         <image name="lockedicon" width="512" height="512"/>

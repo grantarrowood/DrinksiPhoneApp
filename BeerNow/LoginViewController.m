@@ -33,7 +33,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%f", self.signUpScrollView.contentSize.height);
     loginType = @"";
     [self.backgroundImage setFrame:CGRectMake(self.backgroundImage.bounds.origin.x-55, self.backgroundImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
     [self.carLoginImage setFrame:CGRectMake(self.view.bounds.size.width/2, self.carLoginImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
@@ -85,7 +84,16 @@
     self.phoneView.layer.cornerRadius = 20;
     self.addressView.layer.cornerRadius = 20;
     self.birthdateView.layer.cornerRadius = 20;
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
+    [self.signUpScrollView addGestureRecognizer:recognizer];
+    UITapGestureRecognizer *profileRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addProfilePhotoAction:)];
+    [self.profileImageView addGestureRecognizer:profileRecognizer];
+    UITapGestureRecognizer *licenseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addDriversLicenseAction:)];
+    [self.driversLicenseImageView addGestureRecognizer:licenseRecognizer];
+}
 
+-(void)returnTextField {
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -304,14 +312,14 @@
     } else {
         self.drinksLabel.text = @"DRINKS DRIVER";
         self.driversLicenseImageView.hidden = NO;
-        self.addDriversLicenseLabel.hidden = NO;
+        self.addDriversLicenseButton.hidden = NO;
     }
     [self.drinksLabel sizeToFit];
     self.usernameTextField.placeholder = @"Username";
     self.profileImageView.alpha = 0.0;
     self.profileImageView.hidden = NO;
-    self.addPhotoLabel.alpha = 0.0;
-    self.addPhotoLabel.hidden = NO;
+    self.addProfilePhotoButton.alpha = 0.0;
+    self.addProfilePhotoButton.hidden = NO;
     self.nameView.alpha = 0.0;
     self.nameView.hidden = NO;
     self.emailView.alpha = 0.0;
@@ -328,8 +336,8 @@
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         self.profileImageView.alpha = 0.75;
-                         self.addPhotoLabel.alpha = 0.75;
+                         self.profileImageView.alpha = 1.0;
+                         self.addProfilePhotoButton.alpha = 1.0;
                          self.nameView.alpha = 0.75;
                          self.emailView.alpha = 0.75;
                          self.phoneView.alpha = 0.75;
@@ -349,7 +357,7 @@
                          if([loginType isEqualToString:@"CUSTOMER"]) {
                              self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 340);
                          } else {
-                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 726);
+                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 599);
                          }
                          self.signUpScrollView.contentSize = CGSizeMake(375, self.loginButtonView.frame.origin.y + self.loginButtonView.frame.size.height + 50);
                          self.notAMemberLabel.alpha = 0.0;
@@ -417,6 +425,8 @@
         self.customerLoginButton.hidden = NO;
         self.driverLoginButton.hidden = NO;
     } else {
+        self.driversLicenseImageView.hidden = YES;
+        self.addDriversLicenseButton.hidden = YES;
         [self.loginButton setTitle: @"Login" forState: UIControlStateNormal];
         self.usernameTextField.placeholder = @"Username or Email";
         self.notAMemberLabel.alpha = 0.0;
@@ -430,7 +440,7 @@
                             options: UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              self.profileImageView.alpha = 0.0;
-                             self.addPhotoLabel.alpha = 0.0;
+                             self.addProfilePhotoButton.alpha = 0.0;
                              self.nameView.alpha = 0.0;
                              self.emailView.alpha = 0.0;
                              self.phoneView.alpha = 0.0;
@@ -440,7 +450,7 @@
                          }
                          completion:^(BOOL finished){
                              self.profileImageView.hidden = YES;
-                             self.addPhotoLabel.hidden = YES;
+                             self.addProfilePhotoButton.hidden = YES;
                              self.nameView.hidden = YES;
                              self.emailView.hidden = YES;
                              self.phoneView.hidden = YES;
@@ -453,6 +463,7 @@
                          animations:^{
                              self.drinksLabel.transform = CGAffineTransformIdentity;
                              self.loginButtonView.transform = CGAffineTransformIdentity;
+                             self.signUpScrollView.contentSize = CGSizeMake(375, 667);
                              self.notAMemberLabel.alpha = 1.0;
                              self.signUpButton.alpha = 1.0;
                              self.forgotPasswordButton.alpha = 1.0;
@@ -602,4 +613,70 @@
                      completion:^(BOOL finished){
                      }];
 }
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    //Keyboard becomes visible
+//    CGPoint point = CGPointMake(0, textField.frame.origin.y) ;
+//    [self.signUpScrollView setContentOffset:point animated:YES];   //resize
+    CGRect rect = [textField bounds];
+    rect = [textField convertRect:rect toView:self.signUpScrollView];
+    rect.origin.x = 0 ;
+    rect.origin.y -= 60 ;
+    rect.size.height = 600;
+    [self.signUpScrollView scrollRectToVisible:rect animated:YES];
+
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    //keyboard will hide
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    if (profilePhoto) {
+        self.profileImageView.image = chosenImage;
+        self.profileImageView.layer.cornerRadius = 50;
+        self.profileImageView.clipsToBounds = YES;
+        [self.addProfilePhotoButton setTitle:@"Retake Profile Photo" forState:UIControlStateNormal];
+        [self.addProfilePhotoButton sizeToFit];
+    } else {
+        self.driversLicenseImageView.image = chosenImage;
+        [self.addDriversLicenseButton setTitle:@"Retake Drivers License Photo" forState:UIControlStateNormal];
+        [self.addDriversLicenseButton sizeToFit];
+    }
+
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+}
+- (IBAction)addProfilePhotoAction:(id)sender {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+
+    [self presentViewController:picker animated:YES completion:NULL];
+    profilePhoto = YES;
+}
+
+- (IBAction)addDriversLicenseAction:(id)sender {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+    profilePhoto = NO;
+}
+
 @end

@@ -12,9 +12,10 @@
 #import "ViewController.h"
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate>
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 {
     NSString *loginType;
+    BOOL profilePhoto;
 }
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
@@ -30,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *addProfilePhotoButton;
 @property (weak, nonatomic) IBOutlet UILabel *addPhotoLabel;
 @property (weak, nonatomic) IBOutlet UIView *addressView;
 @property (weak, nonatomic) IBOutlet UITextField *addressTextField;
@@ -56,8 +58,11 @@
 - (IBAction)customerLoginAction:(id)sender;
 - (IBAction)driverLoginAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *addDriversLicenseLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addDriversLicenseButton;
 @property (weak, nonatomic) IBOutlet UIImageView *driversLicenseImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *signUpScrollView;
+- (IBAction)addProfilePhotoAction:(id)sender;
+- (IBAction)addDriversLicenseAction:(id)sender;
 
 
 @end
