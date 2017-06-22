@@ -10,8 +10,18 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "SWRevealViewController.h"
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import "Locations.h"
+#import "OrderNowTableViewController.h"
 
-@interface NearYouViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+@interface NearYouViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate> {
+    
+    NSMutableArray *locationsArray;
+    NSTimer *timer;
+    NSString *selectedLocationAddress;
+    BOOL locationUpdated;
+}
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
@@ -20,5 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIView *handleView;
 @property (weak, nonatomic) IBOutlet UIView *pullView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *backgroundView;
 
 @end
