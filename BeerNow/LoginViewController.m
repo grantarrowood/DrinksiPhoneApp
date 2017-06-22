@@ -24,13 +24,21 @@
 -(id<AWSCognitoIdentityPasswordAuthentication>) startPasswordAuthentication {
     return self;
 }
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //NSLog(@"SCROLLING");
+}
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    //NSLog(@"SCROLLING");
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"%f", self.signUpScrollView.contentSize.height);
     loginType = @"";
     [self.backgroundImage setFrame:CGRectMake(self.backgroundImage.bounds.origin.x-55, self.backgroundImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
     [self.carLoginImage setFrame:CGRectMake(self.view.bounds.size.width/2, self.carLoginImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
+    [self.carLoginImage layoutIfNeeded];
     [self.drinksLabel setFont:[UIFont fontWithName:@"Optima" size:45]];
-//    [self.drinksLabel setFrame:CGRectMake((self.view.bounds.size.width/2)-48, (self.view.bounds.size.height/2)-23, self.drinksLabel.bounds.size.width, self.drinksLabel.bounds.size.height)];
     [self.drinksLabel sizeToFit];
     [UIView animateWithDuration:0.75
                           delay:0.0
@@ -169,6 +177,11 @@
 }
 */
 
+
+
+
+
+
 - (IBAction)loginButtonAction:(id)sender {
     if([self.loginButton.titleLabel.text isEqualToString:@"Login"]) {
         self.passwordAuthenticationCompletion.result = [[AWSCognitoIdentityPasswordAuthenticationDetails alloc] initWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
@@ -290,6 +303,8 @@
         self.drinksLabel.text = @"DRINKS CUSTOMER";
     } else {
         self.drinksLabel.text = @"DRINKS DRIVER";
+        self.driversLicenseImageView.hidden = NO;
+        self.addDriversLicenseLabel.hidden = NO;
     }
     [self.drinksLabel sizeToFit];
     self.usernameTextField.placeholder = @"Username";
@@ -330,10 +345,13 @@
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         self.drinksLabel.transform = CGAffineTransformMakeTranslation(0, -100);
-                         self.usernameView.transform = CGAffineTransformMakeTranslation(0, -23);
-                         self.passwordView.transform = CGAffineTransformMakeTranslation(0, -34);
-                         self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 237);
+                         self.drinksLabel.transform = CGAffineTransformMakeTranslation(0, -105);
+                         if([loginType isEqualToString:@"CUSTOMER"]) {
+                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 340);
+                         } else {
+                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 726);
+                         }
+                         self.signUpScrollView.contentSize = CGSizeMake(375, self.loginButtonView.frame.origin.y + self.loginButtonView.frame.size.height + 50);
                          self.notAMemberLabel.alpha = 0.0;
                          self.signUpButton.alpha = 0.0;
                          self.forgotPasswordButton.alpha = 0.0;
@@ -376,7 +394,7 @@
                              [self.drinksLabel setFont:[UIFont fontWithName:@"Optima" size:45]];
                              self.drinksLabel.text = @"DRINKS";
                              [self.drinksLabel sizeToFit];
-                             self.drinksLabel.transform = CGAffineTransformMakeTranslation(0, 155);
+                             self.drinksLabel.transform = CGAffineTransformMakeTranslation(0, 150);
                              [self.backgroundImage setFrame:CGRectMake(self.backgroundImage.bounds.origin.x-55, self.backgroundImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
                              [self.carLoginImage setFrame:CGRectMake(self.view.bounds.size.width/2, self.carLoginImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
                              self.backButton.alpha = 0.0;
@@ -434,8 +452,6 @@
                             options: UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              self.drinksLabel.transform = CGAffineTransformIdentity;
-                             self.usernameView.transform = CGAffineTransformIdentity;
-                             self.passwordView.transform = CGAffineTransformIdentity;
                              self.loginButtonView.transform = CGAffineTransformIdentity;
                              self.notAMemberLabel.alpha = 1.0;
                              self.signUpButton.alpha = 1.0;
@@ -505,8 +521,8 @@
                          self.backgroundImage.frame = self.view.frame;
                          self.carLoginImage.transform = CGAffineTransformMakeTranslation(self.view.bounds.size.width/2, 0);
                          self.backButton.alpha = 1.0;
-                         self.usernameView.alpha = 1.0;
-                         self.passwordView.alpha = 1.0;
+                         self.usernameView.alpha = 0.75;
+                         self.passwordView.alpha = 0.75;
                          self.loginButtonView.alpha = 1.0;
                          self.notAMemberLabel.alpha = 1.0;
                          self.signUpButton.alpha = 1.0;
@@ -575,8 +591,8 @@
                          self.carLoginImage.frame = self.view.frame;
                          self.backgroundImage.transform = CGAffineTransformMakeTranslation(-(self.view.bounds.size.width/2), 0);
                          self.backButton.alpha = 1.0;
-                         self.usernameView.alpha = 1.0;
-                         self.passwordView.alpha = 1.0;
+                         self.usernameView.alpha = 0.75;
+                         self.passwordView.alpha = 0.75;
                          self.loginButtonView.alpha = 1.0;
                          self.notAMemberLabel.alpha = 1.0;
                          self.signUpButton.alpha = 1.0;

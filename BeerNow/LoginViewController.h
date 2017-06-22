@@ -12,7 +12,7 @@
 #import "ViewController.h"
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate>
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate>
 {
     NSString *loginType;
 }
@@ -55,6 +55,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *driverLoginButton;
 - (IBAction)customerLoginAction:(id)sender;
 - (IBAction)driverLoginAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *addDriversLicenseLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *driversLicenseImageView;
+@property (weak, nonatomic) IBOutlet UIScrollView *signUpScrollView;
 
 
 @end
