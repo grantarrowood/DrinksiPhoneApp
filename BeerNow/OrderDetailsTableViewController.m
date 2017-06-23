@@ -18,6 +18,10 @@
     [super viewDidLoad];
     orderItems = [[NSMutableArray alloc] init];
     locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [locationManager startUpdatingLocation];
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -231,7 +235,7 @@
                 separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
                 [footerView addSubview:separatorView];
                 UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-                [acceptButton setTitle:@"Order Delivered" forState:UIControlStateNormal];
+                [acceptButton setTitle:@"Accept Delivery" forState:UIControlStateNormal];
                 [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
                 //[acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
                 [footerView addSubview:acceptButton];
@@ -261,7 +265,7 @@
             UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
             [acceptButton setTitle:@"Deliver" forState:UIControlStateNormal];
             [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            //[acceptButton addTarget:self action:@selector(acceptAction) forControlEvents:UIControlEventTouchUpInside];
+            [acceptButton addTarget:self action:@selector(deliverOrder) forControlEvents:UIControlEventTouchUpInside];
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         }
@@ -276,7 +280,8 @@
     [locationManager startUpdatingLocation];
     sleep(0.5);
     CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
-    CLLocation *restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+    
     CLLocationCoordinate2D customerCoordinate = [self geoCodeUsingAddress:customerAddress];
     CLLocation *customerLoc = [[CLLocation alloc] initWithLatitude:customerCoordinate.latitude longitude:customerCoordinate.longitude];
     float milesToHouse = ([restaurantLoc distanceFromLocation:customerLoc]/1000)/1.60934;
@@ -687,6 +692,15 @@
      }];
 }
 
+
+-(void)deliverOrder {
+
+//    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
+//    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+//    
+//    NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f",currentLoc.coordinate.latitude, currentLoc.coordinate.longitude, restaurantLoc.coordinate.latitude, restaurantLoc.coordinate.longitude];
+//    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: directionsURL]];
+}
 
 #pragma mark - Navigation
 /*

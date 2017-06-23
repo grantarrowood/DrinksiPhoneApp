@@ -34,6 +34,7 @@
     double deliveryFee;
     CLLocationManager *locationManager;
     CLLocation *currentLoc;
+    CLLocation *restaurantLoc;
 }
 
 @property (strong) NSNumber *orderId;
