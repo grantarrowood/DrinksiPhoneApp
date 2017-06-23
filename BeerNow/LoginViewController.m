@@ -114,6 +114,9 @@
                                        delegate:nil
                               cancelButtonTitle:nil
                               otherButtonTitles:@"Ok", nil] show];
+            [spinner stopAnimating];
+            [spinner removeFromSuperview];
+            [greyView removeFromSuperview];
         }else{
             if ([loginType isEqualToString:@"CUSTOMER"]) {
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

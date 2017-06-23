@@ -63,6 +63,14 @@
          }
          return nil;
      }];
+    greyView = [[UIView alloc] initWithFrame:self.view.frame];
+    greyView.backgroundColor = [UIColor grayColor];
+    greyView.alpha = 0.5;
+    [self.view addSubview:greyView];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getLocations) userInfo:nil repeats:YES];
     
     
@@ -95,7 +103,9 @@
     ordersArray = sortedOrdersArray;
     distanceAwayArray = sortedDistanceArray;
     [self.tableView reloadData];
-    
+    [spinner stopAnimating];
+    [spinner removeFromSuperview];
+    [greyView removeFromSuperview];
 }
 
 -(NSMutableArray *)sortDistance:(NSMutableArray *)unsortedDistance {

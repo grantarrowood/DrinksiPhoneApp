@@ -16,7 +16,7 @@
 #import "OrderDetailsTableViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface AvailableOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate> {
+@interface AvailableOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,  CLLocationManagerDelegate> {
     
     NSMutableArray *ordersArray;
     NSMutableArray *locationsArray;
@@ -25,7 +25,8 @@
     NSNumber *orderNumSelected;
     CLLocationManager *locationManager;
     CLLocation *currentLoc;
-    
+    UIActivityIndicatorView *spinner;
+    UIView *greyView;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
