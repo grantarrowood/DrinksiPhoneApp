@@ -1315,6 +1315,30 @@
                                     <outlet property="itemPriceLabel" destination="Cei-6z-B10" id="2em-yS-VVF"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customerLicense" rowHeight="290" id="RP5-Mo-dbz" customClass="CustomerLicenseTableViewCell">
+                                <rect key="frame" x="0.0" y="188" width="375" height="290"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RP5-Mo-dbz" id="rnK-vW-2cK">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="290"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Customer Drivers License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omg-p8-hed">
+                                            <rect key="frame" x="93" y="8" width="188" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7A3-SI-Gw4">
+                                            <rect key="frame" x="25" y="45" width="324" height="200"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="licenseImageView" destination="7A3-SI-Gw4" id="yAn-6I-39c"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -1471,7 +1495,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" textLabel="VVC-xS-1Kq" detailTextLabel="yOc-je-MjM" style="IBUITableViewCellStyleSubtitle" id="kyg-so-fVh">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kyg-so-fVh" id="F8r-qg-Tlk">
                                     <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -2507,12 +2531,12 @@
         <segue reference="ZpT-jh-ir3"/>
         <segue reference="UJB-xp-wLm"/>
         <segue reference="3KM-hX-ggk"/>
+        <segue reference="Qav-AW-Hcj"/>
+        <segue reference="cJY-wE-PV3"/>
         <segue reference="HHQ-Hf-bRH"/>
-        <segue reference="ney-H2-6up"/>
-        <segue reference="OGW-dt-X8w"/>
-        <segue reference="j3I-d0-PZp"/>
-        <segue reference="gbh-sS-q5G"/>
-        <segue reference="meJ-Ko-rwZ"/>
+        <segue reference="Qxm-GP-ZpM"/>
+        <segue reference="Lal-Yi-dfw"/>
         <segue reference="odx-CB-N57"/>
+        <segue reference="gbh-sS-q5G"/>
     </inferredMetricsTieBreakers>
 </document>

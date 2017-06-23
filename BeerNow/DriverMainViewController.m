@@ -61,10 +61,17 @@
                 //do something with response.userAttributes
                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
                     //print the user attributes
-                    NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                        //NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                     if ([attribute.name isEqualToString:@"name"]) {
                         self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
                     } else if([attribute.name isEqualToString:@"custom:profilePicture"]) {
+                        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                                                                                                                       identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+                                                                              
+                        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+                                                                                                       
+                        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+
                         AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
                         
                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:attribute.value];
@@ -109,7 +116,6 @@
         });
         return nil;
     }];
-
 
 }
 

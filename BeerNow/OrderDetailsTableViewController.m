@@ -81,74 +81,119 @@
                      NSString *userPool = [defaults stringForKey:@"userPool"];
                      if ([userPool isEqualToString:@"CUSTOMER"]) {
                          AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-                         
-                         AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
-                         
-                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
-                         
-                         AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
-                        driverPool.delegate = self;
-                         [[[driverPool getUser:driverUsername] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 if(task.error){
-                                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                                 message:task.error.userInfo[@"message"]
-                                                                delegate:self
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"Retry", nil] show];
-                                 }else{
-                                     AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
-                                     //do something with response.userAttributes
-                                     for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
-                                         //print the user attributes
-                                         NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                                         if([attribute.name isEqualToString:@"name"]) {
-                                             driverName = attribute.value;
-                                         } //else if([attribute.name isEqualToString:@"address"]) {
-//                                             customerAddress = attribute.value;
-//                                         }
+                         AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+                         pool.delegate = self;
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
+                         [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
+                         user.username = driverUsername;
+                         user.userPoolId = @"us-east-1_KpiGHtI7M";
+                         [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
+                             if(task.error){
+                                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                             message:task.error.userInfo[@"message"]
+                                                            delegate:self
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"Retry", nil] show];
+                             }else{
+                                 AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                                 //do something with response.userAttributes
+                                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                                     //print the user attributes
+                                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                                     if([attribute.name isEqualToString:@"name"]) {
+                                         driverName = attribute.value;
                                      }
                                  }
-                             });
+                             }
                              return nil;
-                         }];
+                         }] waitUntilFinished];
 
                      } else {
                          AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-                         
-                         AWSCognitoIdentityUserPoolConfiguration *configurationPool = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
-                         
-                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configurationPool forKey:@"DrinksCustomerPool"];
-                         
+                         AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksCustomerPool"];
                          AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
                          pool.delegate = self;
-                         [[[pool getUser:customerUsername] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 if(task.error){
-                                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                                 message:task.error.userInfo[@"message"]
-                                                                delegate:self
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"Retry", nil] show];
-                                 }else{
-                                     AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
-                                     //do something with response.userAttributes
-                                     for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
-                                         //print the user attributes
-                                         NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                                         if([attribute.name isEqualToString:@"name"]) {
-                                             customerName = attribute.value;
-                                         } else if([attribute.name isEqualToString:@"address"]) {
-                                             customerAddress = attribute.value;
-                                         }
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
+                         [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksCustomerPool"];
+                         AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksCustomerPool"];
+                         AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
+                         user.username = customerUsername;
+                         user.userPoolId = @"us-east-1_rwnjPpBrw";
+                        [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
+                             if(task.error){
+                                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                             message:task.error.userInfo[@"message"]
+                                                            delegate:self
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"Retry", nil] show];
+                             }else{
+                                 AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                                 //do something with response.userAttributes
+                                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                                     //print the user attributes
+                                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                                     if([attribute.name isEqualToString:@"name"]) {
+                                         customerName = attribute.value;
+                                     } else if([attribute.name isEqualToString:@"address"]) {
+                                         customerAddress = attribute.value;
                                      }
                                  }
-                             });
+                             }
                              return nil;
-                         }];
+                         }] waitUntilFinished];
                      }
                      
                      isPaid = order.paid;
+                     if ([isPaid isEqualToString: @"YES"]) {
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                                         identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+                         
+                         AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+                         
+                         AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+                         
+                         AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+                         
+                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@_license.jpg",customerUsername,_orderId]];
+                         NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+                         
+                         AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+                         
+                         downloadRequest.bucket = @"drinksdriverlicenses";
+                         downloadRequest.key = [NSString stringWithFormat:@"%@_%@_license.jpg",customerUsername,_orderId];
+                         downloadRequest.downloadingFileURL = downloadingFileURL;
+                         [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                                withBlock:^id(AWSTask *task) {
+                                                                                    if (task.error){
+                                                                                        if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                            switch (task.error.code) {
+                                                                                                case AWSS3TransferManagerErrorCancelled:
+                                                                                                case AWSS3TransferManagerErrorPaused:
+                                                                                                    break;
+                                                                                                    
+                                                                                                default:
+                                                                                                    NSLog(@"Error: %@", task.error);
+                                                                                                    break;
+                                                                                            }
+                                                                                            
+                                                                                        } else {
+                                                                                            NSLog(@"Error: %@", task.error);
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    if (task.result) {
+                                                                                        AWSS3TransferManagerDownloadOutput *downloadOutput = task.result;
+                                                                                        customerDriversLicense = [UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                                    }
+                                                                                    return nil;
+                                                                                }];
+
+                     }
                      if ([driverUsername isEqualToString:@"UNKNOWN"]) {
                          orderStatus = @"Awaiting Driver";
                      } else {
@@ -191,7 +236,7 @@
     [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
     [self.view addSubview:spinner];
     [spinner startAnimating];
-    timer = [NSTimer scheduledTimerWithTimeInterval:7.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
 }
 
 -(void)getTable {
@@ -355,7 +400,11 @@
         if ([userPool isEqualToString:@"CUSTOMER"]) {
             return 5;
         } else {
-            return 6;
+            if ([isPaid isEqualToString:@"YES"]) {
+                return 7;
+            } else {
+                return 6;
+            }
         }
         return 0;
     } else if(section == 1) {
@@ -492,6 +541,10 @@
             cell.detailDynamicLabel.minimumFontSize = 10;
             cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
             return cell;
+        } else if (indexPath.row == 6) {
+            CustomerLicenseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"customerLicense" forIndexPath:indexPath];
+            cell.licenseImageView.image = customerDriversLicense;
+            return cell;
         }
     } else {
         if ([driverUsername isEqualToString:@"UNKNOWN"]) {
@@ -553,6 +606,17 @@
     }
     return nil;
 }
+
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 6) {
+        return 290;
+    }
+    return 44;
+}
+
+
 
 -(void)acceptAction {
     Orders *newOrder = [Orders new];

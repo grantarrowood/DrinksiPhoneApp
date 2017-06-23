@@ -181,6 +181,9 @@
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"Ok", nil] show];
+                            [spinner stopAnimating];
+                            [spinner removeFromSuperview];
+                            [greyView removeFromSuperview];
                         }
                     }
                 }
@@ -417,7 +420,7 @@
             
             AWSCognitoIdentityUserAttributeType *isAccepted = [AWSCognitoIdentityUserAttributeType new];
             isAccepted.name = @"custom:isAccepted";
-            isAccepted.value = @"NO";
+            isAccepted.value = @"YES";
             
             AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
             phone.name = @"phone_number";
@@ -436,7 +439,7 @@
             name.name = @"name";
             name.value = self.nameTextField.text;
             //register the user
-            [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
+            [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if(task.error){
                         [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]

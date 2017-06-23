@@ -33,6 +33,7 @@
 		9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392251EF769FC00FD458D /* DetailTableViewCell.m */; };
 		9CB392291EF822B200FD458D /* YourOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */; };
 		9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3922A1EF850BB00FD458D /* CoreLocation.framework */; };
+		9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */; };
 		9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */; };
 		9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD231ED9EABB00C61003 /* Locations.m */; };
 		9CF8AD271EDA01E400C61003 /* Areas.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD261EDA01E400C61003 /* Areas.m */; };
@@ -115,6 +116,8 @@
 		9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YourOrdersTableViewController.m; sourceTree = "<group>"; };
 		9CB3922A1EF850BB00FD458D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9CB3922C1EF86E7D00FD458D /* BeerNow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BeerNow.entitlements; sourceTree = "<group>"; };
+		9CD8F5A61EFD7A83006BC414 /* CustomerLicenseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerLicenseTableViewCell.h; sourceTree = "<group>"; };
+		9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerLicenseTableViewCell.m; sourceTree = "<group>"; };
 		9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNowTableViewController.h; sourceTree = "<group>"; };
 		9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderNowTableViewController.m; sourceTree = "<group>"; };
 		9CF8AD221ED9EABB00C61003 /* Locations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locations.h; sourceTree = "<group>"; };
@@ -222,6 +225,8 @@
 				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
 				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
 				9CB392251EF769FC00FD458D /* DetailTableViewCell.m */,
+				9CD8F5A61EFD7A83006BC414 /* CustomerLicenseTableViewCell.h */,
+				9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */,
 				9C039D961EEF29A1006476BA /* Orders.h */,
 				9C039D971EEF29A1006476BA /* Orders.m */,
 				9CF8AD221ED9EABB00C61003 /* Locations.h */,
@@ -580,6 +585,7 @@
 				9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */,
 				9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
+				9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */,
 				9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */,
 				9C58AFED1ED64A1800EB8E62 /* main.m in Sources */,
 				9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */,

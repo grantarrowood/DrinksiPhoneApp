@@ -15,6 +15,10 @@
 #import "DetailTableViewCell.h"
 #import <CoreLocation/CoreLocation.h>
 #import "PaySequencePopoverViewController.h"
+#import "AWSCognitoIdentityProviderService.h"
+#import <AWSS3/AWSS3.h>
+#import "CustomerLicenseTableViewCell.h"
+
 
 @interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate> {
     NSMutableArray *orderItems;
@@ -35,6 +39,7 @@
     CLLocationManager *locationManager;
     CLLocation *currentLoc;
     CLLocation *restaurantLoc;
+    UIImage *customerDriversLicense;
 }
 
 @property (strong) NSNumber *orderId;

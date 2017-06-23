@@ -16,6 +16,7 @@
 #import "OrderDetailsTableViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
+
 @interface AvailableOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,  CLLocationManagerDelegate> {
     
     NSMutableArray *ordersArray;
