@@ -305,8 +305,15 @@
                  NSLog(@"The request failed. Error: [%@]", task.error);
              } else {
                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-                 NSInteger numberOfOrders = paginatedOutput.items.count + 1;
-                 newOrder.OrderId = [NSNumber numberWithInteger:numberOfOrders];
+                 NSNumber *highestNumber = @0;
+                 for (Orders *order in paginatedOutput.items) {
+                     //Do something with book.
+                     if (order.OrderId > highestNumber) {
+                         highestNumber = order.OrderId;
+                     }
+                 }
+                 int value = [highestNumber intValue];
+                 newOrder.OrderId = [NSNumber numberWithInt:value + 1];
              }
              return nil;
          }];

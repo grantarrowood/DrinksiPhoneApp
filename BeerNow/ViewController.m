@@ -38,12 +38,6 @@
     self.bookImageView.image = [self.bookImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.starImangeView.image = [self.starImangeView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.pinImageView.image = [self.pinImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
-    
-    AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
-    
-    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
     
     //create a pool
@@ -71,6 +65,12 @@
                     if ([attribute.name isEqualToString:@"name"]) {
                         self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
                     } else if([attribute.name isEqualToString:@"picture"]) {
+                        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                                        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+                        
+                        AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+                        
+                        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
                         AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
 
                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:attribute.value];

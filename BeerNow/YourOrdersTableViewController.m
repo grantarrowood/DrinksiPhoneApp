@@ -37,7 +37,6 @@
     AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
     
     AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
-    //    scanExpression.limit = @10;
     
     [[dynamoDBObjectMapper scan:[Orders class]
                      expression:scanExpression]
