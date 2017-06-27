@@ -42,6 +42,9 @@ PODS:
     - AWSCore (= 2.5.7)
   - AWSSQS (2.5.7):
     - AWSCore (= 2.5.7)
+  - Braintree/Apple-Pay (4.8.2):
+    - Braintree/Core
+  - Braintree/Core (4.8.2)
 
 DEPENDENCIES:
   - AWSAutoScaling
@@ -65,6 +68,7 @@ DEPENDENCIES:
   - AWSSimpleDB
   - AWSSNS
   - AWSSQS
+  - Braintree/Apple-Pay
 
 SPEC CHECKSUMS:
   AWSAutoScaling: ab33ab35f938c312fdb189f94996ee76036e8c91
@@ -89,7 +93,8 @@ SPEC CHECKSUMS:
   AWSSimpleDB: fc128d8c29e6d6de1612f277c02b4af94d497fe2
   AWSSNS: 5c57a776f2d5b375d337d86b676458cf91b833b1
   AWSSQS: 9434de2d17e616d3009efa5fce887773368477a3
+  Braintree: 54216849aa3239401d82f2236a678b2bda7e1362
 
-PODFILE CHECKSUM: edd050bff7136b079a1da843b92fbb2f55b389af
+PODFILE CHECKSUM: d9e9c1290e2f800ac6e219befc2668671b74d3fe
 
 COCOAPODS: 1.0.1

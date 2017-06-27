@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import <PassKit/PassKit.h>
+#import <Braintree/BraintreeApplePay.h>
+#import <AWSLambda/AWSLambda.h>
+
 
 @interface PaySequencePopoverViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PKPaymentAuthorizationViewControllerDelegate> {
     NSTimer *timer;
+    NSNumber *total;
+    bool paymentSuccess;
+    NSString *transactionResult;
 }
+@property (nonatomic, strong) BTAPIClient *braintreeClient;
+
 @property (strong) NSMutableArray *orderDetails;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *canelBarButton;

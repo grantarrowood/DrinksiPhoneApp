@@ -302,15 +302,28 @@
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         } else {
+            if([isPaid isEqualToString:@"YES"]) {
+                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 579, 375, 44)];
+                footerView.backgroundColor = [UIColor whiteColor];
+                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [footerView addSubview:separatorView];
+                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+                [acceptButton setTitle:@"Deliver" forState:UIControlStateNormal];
+                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                [acceptButton addTarget:self action:@selector(deliverOrder) forControlEvents:UIControlEventTouchUpInside];
+                [footerView addSubview:acceptButton];
+                [self.navigationController.view addSubview:footerView];
+            }
             UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
             footerView.backgroundColor = [UIColor whiteColor];
             UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
             separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
             [footerView addSubview:separatorView];
             UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-            [acceptButton setTitle:@"Deliver" forState:UIControlStateNormal];
+            [acceptButton setTitle:@"Problem?" forState:UIControlStateNormal];
             [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            [acceptButton addTarget:self action:@selector(deliverOrder) forControlEvents:UIControlEventTouchUpInside];
+            //[acceptButton addTarget:self action:@selector() forControlEvents:UIControlEventTouchUpInside];
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         }

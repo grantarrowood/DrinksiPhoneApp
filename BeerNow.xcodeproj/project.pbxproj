@@ -34,6 +34,7 @@
 		9CB392291EF822B200FD458D /* YourOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */; };
 		9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3922A1EF850BB00FD458D /* CoreLocation.framework */; };
 		9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */; };
+		9CF276021F01FC910079672F /* Transactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF276011F01FC910079672F /* Transactions.m */; };
 		9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */; };
 		9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD231ED9EABB00C61003 /* Locations.m */; };
 		9CF8AD271EDA01E400C61003 /* Areas.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD261EDA01E400C61003 /* Areas.m */; };
@@ -118,6 +119,8 @@
 		9CB3922C1EF86E7D00FD458D /* BeerNow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BeerNow.entitlements; sourceTree = "<group>"; };
 		9CD8F5A61EFD7A83006BC414 /* CustomerLicenseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerLicenseTableViewCell.h; sourceTree = "<group>"; };
 		9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerLicenseTableViewCell.m; sourceTree = "<group>"; };
+		9CF276001F01FC910079672F /* Transactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transactions.h; sourceTree = "<group>"; };
+		9CF276011F01FC910079672F /* Transactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transactions.m; sourceTree = "<group>"; };
 		9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNowTableViewController.h; sourceTree = "<group>"; };
 		9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderNowTableViewController.m; sourceTree = "<group>"; };
 		9CF8AD221ED9EABB00C61003 /* Locations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locations.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 				9CF8AD261EDA01E400C61003 /* Areas.m */,
 				9CF8AD281EDA141A00C61003 /* MenuItems.h */,
 				9CF8AD291EDA141A00C61003 /* MenuItems.m */,
+				9CF276001F01FC910079672F /* Transactions.h */,
+				9CF276011F01FC910079672F /* Transactions.m */,
 				9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */,
 				9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */,
 				9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */,
@@ -572,6 +577,7 @@
 				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
 				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,
 				9C2C2FC61EF9A47300343AB0 /* ProfileTableViewController.m in Sources */,
+				9CF276021F01FC910079672F /* Transactions.m in Sources */,
 				9C219B0A1EF9C9A700DDF258 /* NearYouViewController.m in Sources */,
 				9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,

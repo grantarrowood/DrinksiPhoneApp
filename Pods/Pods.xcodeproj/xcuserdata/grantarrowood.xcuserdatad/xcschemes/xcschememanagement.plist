@@ -119,6 +119,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Braintree.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-BeerNow.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -138,11 +143,6 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>00FCAD8CA385A053003DB1DC74032714</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>076E85AE30B2153E6DDFF58B8AC29DC1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -168,6 +168,11 @@
 			<true/>
 		</dict>
 		<key>37DA8823B6E71A919A969C9729B2EC00</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4143354E7EB501CE038545FF71DD9B3A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -238,6 +243,11 @@
 			<true/>
 		</dict>
 		<key>B05430D5F057D8F5E616DAFB92E2F72C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C9F3BBDC33921AA00246BD1C0C8BCBDF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

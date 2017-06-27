@@ -16,7 +16,9 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
+    paymentSuccess = NO;
     self.imageView.hidden = YES;
+    [self fetchClientToken];
 //    if (self.imageView.image == nil) {
 //        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 //        picker.delegate = self;
@@ -93,13 +95,13 @@
             request.merchantCapabilities = PKMerchantCapabilityEMV;
             request.merchantIdentifier = @"merchant.com.drinks.pigletproducts";
             NSMutableArray *itemArray = [[NSMutableArray alloc] init];
-            double total = 0.0;
+            total = [[NSNumber alloc] init];
             for (int i = 0; i<_orderDetails.count; i++) {
                 PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
                 [itemArray addObject:item];
-                total += [[_orderDetails objectAtIndex:i][1] floatValue];
+                total = [NSNumber numberWithFloat:([total floatValue] + [[_orderDetails objectAtIndex:i][1] floatValue])];;
             }
-            PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:total]];
+            PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
             [itemArray addObject:item];
             request.paymentSummaryItems = itemArray;
             PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
@@ -112,10 +114,89 @@
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [controller dismissViewControllerAnimated:YES completion:nil];
+    if (paymentSuccess) {
+        //SET PAID TO YES AND SET TRANSACTION
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 -(void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+
+    BTApplePayClient *applePayClient = [[BTApplePayClient alloc]
+                                        initWithAPIClient:self.braintreeClient];
+    [applePayClient tokenizeApplePayPayment:payment
+                                 completion:^(BTApplePayCardNonce *tokenizedApplePayPayment,
+                                              NSError *error) {
+                                     if (tokenizedApplePayPayment) {
+                                         // On success, send nonce to your server for processing.
+                                         AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
+                                         
+                                         [[lambdaInvoker invokeFunction:@"drinksApplePayPaymentProcessing"
+                                                             JSONObject:@{@"nonce" : tokenizedApplePayPayment.nonce,
+                                                                          @"amount" : total}] continueWithBlock:^id(AWSTask *task) {
+                                             if (task.error) {
+                                                 NSLog(@"Error: %@", task.error);
+                                                 if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
+                                                     && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
+                                                     NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
+                                                     completion(PKPaymentAuthorizationStatusFailure);
+                                                     paymentSuccess = NO;
+                                                 }
+                                             }
+                                             if (task.result) {
+                                                 NSDictionary *JSONObject = task.result;
+                                                 NSLog(@"result: %@", JSONObject[@"success"]);
+                                                 if ([JSONObject[@"success"] isEqual: @1]) {
+                                                     NSLog(@"SUCCESS");
+                                                     paymentSuccess = YES;
+                                                     transactionResult = task.result;
+                                                     completion(PKPaymentAuthorizationStatusSuccess);
+                                                 } else {
+                                                     completion(PKPaymentAuthorizationStatusFailure);
+                                                     NSLog(@"FAILURE");
+                                                     paymentSuccess = NO;
+
+                                                 }
+                                                 
+                                             }
+                                             // Handle response
+                                             return nil;
+                                         }];
+
+                                         // If applicable, address information is accessible in `payment`.
+                                         NSLog(@"nonce = %@", tokenizedApplePayPayment.nonce);
+                                         
+                                         // Then indicate success or failure via the completion callback, e.g.
+                                     } else {
+                                         // Tokenization failed. Check `error` for the cause of the failure.
+                                         
+                                         // Indicate failure via the completion callback:
+                                         completion(PKPaymentAuthorizationStatusFailure);
+                                         paymentSuccess = NO;
+                                     }
+                                 }];
+}
+
+- (void)fetchClientToken {
     
+    AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
+    
+    [[lambdaInvoker invokeFunction:@"drinksGetClientToken"
+                        JSONObject:@{}] continueWithBlock:^id(AWSTask *task) {
+        if (task.error) {
+            NSLog(@"Error: %@", task.error);
+            if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
+                && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
+                NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
+            }
+        }
+        if (task.result) {
+            NSLog(@"Result: %@", task.result);
+            self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:task.result];
+        }
+        // Handle response
+        return nil;
+    }];
 }
 
 @end
