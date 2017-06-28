@@ -37,6 +37,27 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    
+    AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
+    
+    AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+    driverPool.delegate = self;
+    [[driverPool currentUser] signOut];
+    
+    //create a pool
+    AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
+    
+    AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
+    pool.delegate = self;
+    [[pool currentUser] signOut];
+    
+    
+    
     loginType = @"";
     [self.backgroundImage setFrame:CGRectMake(self.backgroundImage.bounds.origin.x-55, self.backgroundImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
     [self.carLoginImage setFrame:CGRectMake(self.view.bounds.size.width/2, self.carLoginImage.bounds.origin.y, (self.view.bounds.size.width/2)+55, self.view.bounds.size.height)];
@@ -90,6 +111,7 @@
     self.birthdateView.layer.cornerRadius = 20;
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
     [self.signUpScrollView addGestureRecognizer:recognizer];
+    
 }
 
 -(void)returnTextField {
@@ -555,16 +577,12 @@
 - (IBAction)customerLoginAction:(id)sender {
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
     
-    //create a pool
     AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
     
     [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
     
     AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
     pool.delegate = self;
-    if([[pool currentUser] getSession].result != nil) {
-        [[pool currentUser] signOut];
-    }
     [[pool getUser] getSession];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:@"CUSTOMER" forKey:@"userPool"];
@@ -632,10 +650,8 @@
     
     AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
     driverPool.delegate = self;
-    if([[driverPool currentUser] getSession].result != nil) {
-        [[driverPool currentUser] signOut];
-    }
     [[driverPool getUser] getSession];
+
     loginType = @"DRIVER";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:@"DRIVER" forKey:@"userPool"];
