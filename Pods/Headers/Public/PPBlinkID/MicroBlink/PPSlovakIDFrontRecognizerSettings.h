@@ -1,0 +1,1 @@
+../../../../PPBlinkID/MicroBlink.framework/Headers/PPSlovakIDFrontRecognizerSettings.h

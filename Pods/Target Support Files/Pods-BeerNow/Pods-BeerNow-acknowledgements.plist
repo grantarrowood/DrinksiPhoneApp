@@ -212,6 +212,15 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>&#169; 2013-2015 MicroBlink Ltd. All rights reserved.
+</string>
+			<key>Title</key>
+			<string>PPBlinkID</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License
 
 Copyright (c) 2011- Stripe, Inc. (https://stripe.com)

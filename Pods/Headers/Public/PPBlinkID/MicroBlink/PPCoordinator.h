@@ -1,0 +1,1 @@
+../../../../PPBlinkID/MicroBlink.framework/Headers/PPCoordinator.h

@@ -24,6 +24,11 @@
 		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
+		9C6DCCB81F046AA6002D5DAE /* DriverAcceptOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */; };
+		9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */; };
+		9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBF1F0470BE002D5DAE /* libz.tbd */; };
+		9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */; };
+		9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */; };
 		9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */; };
 		9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA9EACE1EF89DBA008501DE /* PassKit.framework */; };
 		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
@@ -100,6 +105,12 @@
 		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9C6DCCB61F046AA5002D5DAE /* DriverAcceptOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverAcceptOrderViewController.h; sourceTree = "<group>"; };
+		9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverAcceptOrderViewController.m; sourceTree = "<group>"; };
+		9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		9C6DCCBF1F0470BE002D5DAE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaySequencePopoverViewController.h; sourceTree = "<group>"; };
 		9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaySequencePopoverViewController.m; sourceTree = "<group>"; };
 		9CA9EACE1EF89DBA008501DE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
@@ -137,6 +148,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */,
+				9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */,
+				9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */,
+				9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */,
 				9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */,
 				9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */,
 				9C219B071EF9C94900DDF258 /* MapKit.framework in Frameworks */,
@@ -166,6 +181,10 @@
 		03854700A122053B4DB70296 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */,
+				9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */,
+				9C6DCCBF1F0470BE002D5DAE /* libz.tbd */,
+				9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */,
 				9C219B061EF9C94900DDF258 /* MapKit.framework */,
 				9CA9EACE1EF89DBA008501DE /* PassKit.framework */,
 				9CB3922A1EF850BB00FD458D /* CoreLocation.framework */,
@@ -222,6 +241,8 @@
 				9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */,
 				9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */,
 				9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */,
+				9C6DCCB61F046AA5002D5DAE /* DriverAcceptOrderViewController.h */,
+				9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */,
 				9C219B081EF9C9A700DDF258 /* NearYouViewController.h */,
 				9C219B091EF9C9A700DDF258 /* NearYouViewController.m */,
 				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
@@ -582,6 +603,7 @@
 				9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
 				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
+				9C6DCCB81F046AA6002D5DAE /* DriverAcceptOrderViewController.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
 				9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */,
 				9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */,
@@ -748,6 +770,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BeerNow",
+				);
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
@@ -766,6 +792,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BeerNow",
+				);
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
