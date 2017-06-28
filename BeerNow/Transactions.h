@@ -11,5 +11,7 @@
 @interface Transactions : AWSDynamoDBObjectModel <AWSDynamoDBModeling>
 
 @property (nonatomic, strong) NSNumber *TransactionId;
+@property (nonatomic, strong) NSString *transactionResult;
+@property (nonatomic, strong) NSString *date;
 
 @end

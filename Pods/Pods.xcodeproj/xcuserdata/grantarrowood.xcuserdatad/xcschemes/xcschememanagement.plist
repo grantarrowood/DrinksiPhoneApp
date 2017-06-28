@@ -119,11 +119,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Braintree.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-BeerNow.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -135,6 +130,16 @@
 			<false/>
 		</dict>
 		<key>Pods-BeerNowUITests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Stripe-Stripe.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Stripe.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -172,11 +177,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4143354E7EB501CE038545FF71DD9B3A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4187A5DFAC146115CF5D283EB9A121C4</key>
 		<dict>
 			<key>primary</key>
@@ -188,6 +188,11 @@
 			<true/>
 		</dict>
 		<key>4D194249CA6D4C15BA877375A355DCEE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>69514B639844D6D1FE15443368257816</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -247,17 +252,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C9F3BBDC33921AA00246BD1C0C8BCBDF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>CD3E371E7D65D451434E5FD4020BD729</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>CEA448DB544C9DC1E5BF682A484D03DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D83A874F497E8B72966C16020C936AAB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -273,6 +278,11 @@
 			<true/>
 		</dict>
 		<key>E282647A517AF04E8233A03FB7FEB9ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EBD517962172BB9A5F0DAD3733E40130</key>
 		<dict>
 			<key>primary</key>
 			<true/>

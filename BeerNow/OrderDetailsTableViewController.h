@@ -20,7 +20,7 @@
 #import "CustomerLicenseTableViewCell.h"
 
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate> {
     NSMutableArray *orderItems;
     NSTimer *timerTwo;
     NSTimer *timer;
@@ -40,6 +40,7 @@
     CLLocation *currentLoc;
     CLLocation *restaurantLoc;
     UIImage *customerDriversLicense;
+    NSString *driverStripeId;
 }
 
 @property (strong) NSNumber *orderId;

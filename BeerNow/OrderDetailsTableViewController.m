@@ -14,6 +14,14 @@
 
 @implementation OrderDetailsTableViewController
 
+
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSLog(@"View Will Appear!");
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     orderItems = [[NSMutableArray alloc] init];
@@ -106,6 +114,8 @@
                                      NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                                      if([attribute.name isEqualToString:@"name"]) {
                                          driverName = attribute.value;
+                                     } else if([attribute.name isEqualToString:@"custom:stripeUserId"]) {
+                                         driverStripeId = attribute.value;
                                      }
                                  }
                              }
@@ -673,7 +683,7 @@
                          NSString *username = [defaults stringForKey:@"currentUsername"];
                          newOrder.driverUsername = username;
                          newOrder.paid = @"NO";
-                         newOrder.receipt = @"NONE";
+                         newOrder.transactionId = @0;
                          [[dynamoDBObjectMapper save:newOrder]
                           continueWithBlock:^id(AWSTask *task) {
                               if (task.error) {
@@ -737,6 +747,9 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
     controller.orderDetails = orderItems;
+    controller.orderId = _orderId;
+    controller.driverStripeId = driverStripeId;
+    controller.myDelegate = self;
     // present the controller
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet
@@ -800,6 +813,23 @@
         } else {
             [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
         }
+    }
+}
+
+- (void)payViewControllerDismissed:(NSString *)paid
+{
+    greyView = [[UIView alloc] initWithFrame:self.view.frame];
+    greyView.backgroundColor = [UIColor grayColor];
+    greyView.alpha = 0.5;
+    [self.view addSubview:greyView];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+    if([paid isEqualToString:@"YES"]) {
+        isPaid = @"YES";
+        orderStatus = @"On the Way";
+        [self getTable];
     }
 }
 @end

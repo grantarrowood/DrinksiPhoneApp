@@ -348,7 +348,7 @@
         NSString *username = [defaults stringForKey:@"currentUsername"];
         newOrder.customerUsername = username;
         newOrder.paid = @"NO";
-        newOrder.receipt = @"NONE";
+        newOrder.transactionId = @0;
         [[dynamoDBObjectMapper save:newOrder]
          continueWithBlock:^id(AWSTask *task) {
              if (task.error) {
@@ -573,7 +573,7 @@
     NSString *username = [defaults stringForKey:@"currentUsername"];
     newOrder.customerUsername = username;
     newOrder.paid = @"NO";
-    newOrder.receipt = @"NONE";
+    newOrder.transactionId = @0;
     [[dynamoDBObjectMapper save:newOrder]
      continueWithBlock:^id(AWSTask *task) {
          if (task.error) {

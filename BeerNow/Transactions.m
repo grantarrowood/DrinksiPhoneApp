@@ -15,7 +15,7 @@
 }
 
 + (NSString *)hashKeyAttribute {
-    return @"TranasctionId";
+    return @"TransactionId";
 }
 
 @end

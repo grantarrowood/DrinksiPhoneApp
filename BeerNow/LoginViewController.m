@@ -319,146 +319,16 @@
             }];
 
         } else if([loginType isEqualToString:@"DRIVER"]) {
-            AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                                            identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+            UIWebView *webview  = [[UIWebView alloc] initWithFrame:self.view.frame];
+            webview.delegate = self;
+            [self.view addSubview:webview];
+            NSURL *url = [NSURL URLWithString:@"https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://stripe.com/connect/default/oauth/test&client_id=ca_AvNbMkYUi4id6MfQzmVXGcq1oA3WFn1r"];
             
-            AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+            //URL Requst Object
+            NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
             
-            AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
-            AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-            
-            AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
-            
-            [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
-            
-            AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
-            AWSCognitoIdentityUserAttributeType *profileImage = [AWSCognitoIdentityUserAttributeType new];
-
-            if (self.profileImageView.image != [UIImage imageNamed:@"profileIcon"]) {
-                AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
-                NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsPath = [paths objectAtIndex:0];
-                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
-                [pngData writeToFile:filePath atomically:YES];
-                NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
-                AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
-                uploadRequest.bucket = @"drinksprofilepictures";
-                uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
-                uploadRequest.body = uploadingFileURL;
-                [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
-                                                                   withBlock:^id(AWSTask *task) {
-                                                                       if (task.error) {
-                                                                           if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
-                                                                               switch (task.error.code) {
-                                                                                   case AWSS3TransferManagerErrorCancelled:
-                                                                                   case AWSS3TransferManagerErrorPaused:
-                                                                                       break;
-                                                                                       
-                                                                                   default:
-                                                                                       NSLog(@"Error: %@", task.error);
-                                                                                       break;
-                                                                               }
-                                                                           } else {
-                                                                               // Unknown error.
-                                                                               NSLog(@"Error: %@", task.error);
-                                                                           }
-                                                                       }
-                                                                       
-                                                                       if (task.result) {
-                                                                           AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
-                                                                           // The file uploaded successfully.
-                                                                       }
-                                                                       return nil;
-                                                                   }];
-                
-                
-                profileImage.name = @"custom:profilePicture";
-                //phone number must be prefixed by country code
-                profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
-            }
-            AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
-            NSData *pngData = UIImagePNGRepresentation(self.driversLicenseImageView.image);
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsPath = [paths objectAtIndex:0];
-            NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text]];
-            [pngData writeToFile:filePath atomically:YES];
-            NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
-            AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
-            uploadRequest.bucket = @"drinksdriverlicenses";
-            uploadRequest.key = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
-            uploadRequest.body = uploadingFileURL;
-            [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
-                                                               withBlock:^id(AWSTask *task) {
-                                                                   if (task.error) {
-                                                                       if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
-                                                                           switch (task.error.code) {
-                                                                               case AWSS3TransferManagerErrorCancelled:
-                                                                               case AWSS3TransferManagerErrorPaused:
-                                                                                   break;
-                                                                                   
-                                                                               default:
-                                                                                   NSLog(@"Error: %@", task.error);
-                                                                                   break;
-                                                                           }
-                                                                       } else {
-                                                                           // Unknown error.
-                                                                           NSLog(@"Error: %@", task.error);
-                                                                       }
-                                                                   }
-                                                                   
-                                                                   if (task.result) {
-                                                                       AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
-                                                                       // The file uploaded successfully.
-                                                                   }
-                                                                   return nil;
-                                                               }];
-
-            AWSCognitoIdentityUserAttributeType *driversLicense = [AWSCognitoIdentityUserAttributeType new];
-            driversLicense.name = @"picture";
-            driversLicense.value = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
-            
-            AWSCognitoIdentityUserAttributeType *isAccepted = [AWSCognitoIdentityUserAttributeType new];
-            isAccepted.name = @"custom:isAccepted";
-            isAccepted.value = @"YES";
-            
-            AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
-            phone.name = @"phone_number";
-            //phone number must be prefixed by country code
-            phone.value = self.phoneTextField.text;
-            AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
-            email.name = @"email";
-            email.value = self.emailTextField.text;
-            AWSCognitoIdentityUserAttributeType * birthdate = [AWSCognitoIdentityUserAttributeType new];
-            birthdate.name = @"birthdate";
-            birthdate.value = self.birthdateTextField.text;
-            AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
-            address.name = @"address";
-            address.value = self.addressTextField.text;
-            AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
-            name.name = @"name";
-            name.value = self.nameTextField.text;
-            //register the user
-            [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(task.error){
-                        [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                    message:task.error.userInfo[@"message"]
-                                                   delegate:self
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil] show];
-                    }else {
-                        AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
-                        if(!response.userConfirmed){
-                            //need to confirm user using user.confirmUser:
-                        }
-                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                        [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
-                        [defaults synchronize];
-                        [self backButtonAction:self.backButton];
-                    }});
-                return nil;
-            }];
+            //Load the request in the UIWebView.
+            [webview loadRequest:requestObj];
 
         }
     }
@@ -907,6 +777,198 @@
     
     [self presentViewController:picker animated:YES completion:NULL];
     profilePhoto = YES;
+}
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ([[request.URL.absoluteString substringToIndex:45] isEqualToString:@"https://stripe.com/connect/default/oauth/test"]) {
+        [webView removeFromSuperview];
+        NSString *post = [NSString stringWithFormat:@"client_secret=sk_test_qCqgy1i7lugfoaD1ghoJzcqc&code=%@&grant_type=authorization_code",[request.URL.absoluteString substringFromIndex:51]];
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:@"https://connect.stripe.com/oauth/token"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        if(conn) {
+            NSLog(@"Connection Successful");
+        } else {
+            NSLog(@"Connection could not be made");
+        }
+        return YES;
+    } else if ([request.URL.absoluteString isEqualToString:@"https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://stripe.com/connect/default/oauth/test&client_id=ca_AvNbMkYUi4id6MfQzmVXGcq1oA3WFn1r"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+// This method is used to receive the data which we get using post method.
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data
+{
+    id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    NSLog(@"%@", [JSONObject objectForKey:@"stripe_user_id"]);
+//    if ([[_birthdateTextField.text substringFromIndex:5] integerValue] >= 1997) {
+//        return;
+//    }
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
+    AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    
+    AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
+    
+    AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+    AWSCognitoIdentityUserAttributeType *profileImage = [AWSCognitoIdentityUserAttributeType new];
+    
+    if (self.profileImageView.image != [UIImage imageNamed:@"profileIcon"]) {
+        AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+        NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
+        [pngData writeToFile:filePath atomically:YES];
+        NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
+        AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
+        uploadRequest.bucket = @"drinksprofilepictures";
+        uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
+        uploadRequest.body = uploadingFileURL;
+        [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                           withBlock:^id(AWSTask *task) {
+                                                               if (task.error) {
+                                                                   if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                       switch (task.error.code) {
+                                                                           case AWSS3TransferManagerErrorCancelled:
+                                                                           case AWSS3TransferManagerErrorPaused:
+                                                                               break;
+                                                                               
+                                                                           default:
+                                                                               NSLog(@"Error: %@", task.error);
+                                                                               break;
+                                                                       }
+                                                                   } else {
+                                                                       // Unknown error.
+                                                                       NSLog(@"Error: %@", task.error);
+                                                                   }
+                                                               }
+                                                               
+                                                               if (task.result) {
+                                                                   AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
+                                                                   // The file uploaded successfully.
+                                                               }
+                                                               return nil;
+                                                           }];
+        
+        
+        profileImage.name = @"custom:profilePicture";
+        //phone number must be prefixed by country code
+        profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
+    }
+    AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+    NSData *pngData = UIImagePNGRepresentation(self.driversLicenseImageView.image);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text]];
+    [pngData writeToFile:filePath atomically:YES];
+    NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
+    AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
+    uploadRequest.bucket = @"drinksdriverlicenses";
+    uploadRequest.key = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
+    uploadRequest.body = uploadingFileURL;
+    [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                       withBlock:^id(AWSTask *task) {
+                                                           if (task.error) {
+                                                               if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                   switch (task.error.code) {
+                                                                       case AWSS3TransferManagerErrorCancelled:
+                                                                       case AWSS3TransferManagerErrorPaused:
+                                                                           break;
+                                                                           
+                                                                       default:
+                                                                           NSLog(@"Error: %@", task.error);
+                                                                           break;
+                                                                   }
+                                                               } else {
+                                                                   // Unknown error.
+                                                                   NSLog(@"Error: %@", task.error);
+                                                               }
+                                                           }
+                                                           
+                                                           if (task.result) {
+                                                               AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
+                                                               // The file uploaded successfully.
+                                                           }
+                                                           return nil;
+                                                       }];
+    
+    AWSCognitoIdentityUserAttributeType *driversLicense = [AWSCognitoIdentityUserAttributeType new];
+    driversLicense.name = @"picture";
+    driversLicense.value = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
+    
+    AWSCognitoIdentityUserAttributeType *isAccepted = [AWSCognitoIdentityUserAttributeType new];
+    isAccepted.name = @"custom:isAccepted";
+    isAccepted.value = @"YES";
+    
+    AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
+    phone.name = @"phone_number";
+    //phone number must be prefixed by country code
+    phone.value = self.phoneTextField.text;
+    AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
+    email.name = @"email";
+    email.value = self.emailTextField.text;
+
+    AWSCognitoIdentityUserAttributeType * birthdate = [AWSCognitoIdentityUserAttributeType new];
+    birthdate.name = @"birthdate";
+    birthdate.value = self.birthdateTextField.text;
+    AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
+    address.name = @"address";
+    address.value = self.addressTextField.text;
+    AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
+    name.name = @"name";
+    name.value = self.nameTextField.text;
+    AWSCognitoIdentityUserAttributeType *stripeUserId = [AWSCognitoIdentityUserAttributeType new];
+    stripeUserId.name = @"custom:stripeUserId";
+    stripeUserId.value = [JSONObject objectForKey:@"stripe_user_id"];
+
+    //register the user
+    [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense,stripeUserId] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(task.error){
+                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                            message:task.error.userInfo[@"message"]
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+            }else {
+                AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
+                if(!response.userConfirmed){
+                    //need to confirm user using user.confirmUser:
+                }
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
+                [defaults synchronize];
+                [self backButtonAction:self.backButton];
+                //[self backButtonAction:self.backButton];
+            }});
+        return nil;
+    }];
+}
+
+// This method receives the error report in case of connection is not made to server.
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"Error, %@", error);
+}
+
+// This method is used to process the data after connection has made successfully.
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
 }
 
 @end

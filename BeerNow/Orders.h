@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *driverUsername;
 @property (nonatomic, strong) NSString *customerUsername;
 @property (nonatomic, strong) NSString *paid;
-@property (nonatomic, strong) NSString *receipt;
+@property (nonatomic, strong) NSNumber *transactionId;
 
 
 
