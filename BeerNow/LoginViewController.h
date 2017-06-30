@@ -18,6 +18,10 @@
 {
     NSString *loginType;
     BOOL profilePhoto;
+    NSURLConnection *stripeConnection;
+    NSURLConnection *accurateCustomerConnection;
+    NSString *stripeDriverId;
+    NSString *accurateCustomerId;
 }
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;

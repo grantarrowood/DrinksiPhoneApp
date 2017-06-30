@@ -29,6 +29,8 @@
 		9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBF1F0470BE002D5DAE /* libz.tbd */; };
 		9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */; };
 		9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */; };
+		9C861E1B1F0487C00003098C /* MicroBlink.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C861E191F0487C00003098C /* MicroBlink.bundle */; };
+		9C861E1C1F0487C00003098C /* MicroBlink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C861E1A1F0487C00003098C /* MicroBlink.framework */; };
 		9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */; };
 		9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA9EACE1EF89DBA008501DE /* PassKit.framework */; };
 		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
@@ -111,6 +113,8 @@
 		9C6DCCBF1F0470BE002D5DAE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		9C861E191F0487C00003098C /* MicroBlink.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MicroBlink.bundle; sourceTree = "<group>"; };
+		9C861E1A1F0487C00003098C /* MicroBlink.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MicroBlink.framework; sourceTree = "<group>"; };
 		9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaySequencePopoverViewController.h; sourceTree = "<group>"; };
 		9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaySequencePopoverViewController.m; sourceTree = "<group>"; };
 		9CA9EACE1EF89DBA008501DE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
@@ -151,6 +155,7 @@
 				9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */,
 				9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */,
 				9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */,
+				9C861E1C1F0487C00003098C /* MicroBlink.framework in Frameworks */,
 				9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */,
 				9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */,
 				9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */,
@@ -277,6 +282,8 @@
 		9C58AFEB1ED64A1800EB8E62 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9C861E191F0487C00003098C /* MicroBlink.bundle */,
+				9C861E1A1F0487C00003098C /* MicroBlink.framework */,
 				9C58B01E1ED6730E00EB8E62 /* SWRevealViewController.h */,
 				9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */,
 				9C58AFEC1ED64A1800EB8E62 /* main.m */,
@@ -447,6 +454,7 @@
 				9C58AFFB1ED64A1800EB8E62 /* LaunchScreen.storyboard in Resources */,
 				9C58AFF81ED64A1800EB8E62 /* Assets.xcassets in Resources */,
 				9C58AFF61ED64A1800EB8E62 /* Main.storyboard in Resources */,
+				9C861E1B1F0487C00003098C /* MicroBlink.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

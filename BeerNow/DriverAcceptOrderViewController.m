@@ -14,20 +14,8 @@
 
 @implementation DriverAcceptOrderViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No Username" message:@"Please enter your username." preferredStyle:UIAlertControllerStyleAlert];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    }]];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//    picker.delegate = self;
-//    picker.allowsEditing = YES;
-//    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//
-//    [self presentViewController:picker animated:YES completion:NULL];
+-(void)viewDidAppear:(BOOL)animated {
+    /** Instantiate the scanning coordinator */
     NSError *error;
     PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
     
@@ -48,6 +36,17 @@
     
     /** You can use other presentation methods as well */
     [self presentViewController:scanningViewController animated:YES completion:nil];
+
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No Username" message:@"Please enter your username." preferredStyle:UIAlertControllerStyleAlert];
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }]];
+//    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,31 +125,6 @@
     return coordinator;
 }
 
-- (IBAction)didTapScan:(id)sender {
-    
-    /** Instantiate the scanning coordinator */
-    NSError *error;
-    PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
-    
-    /** If scanning isn't supported, present an error */
-    if (coordinator == nil) {
-        NSString *messageString = [error localizedDescription];
-        [[[UIAlertView alloc] initWithTitle:@"Warning"
-                                    message:messageString
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
-        
-        return;
-    }
-    
-    /** Allocate and present the scanning view controller */
-    UIViewController<PPScanningViewController>* scanningViewController = [PPViewControllerFactory cameraViewControllerWithDelegate:self coordinator:coordinator error:nil];
-    
-    /** You can use other presentation methods as well */
-    [self presentViewController:scanningViewController animated:YES completion:nil];
-}
-
 - (void)scanningViewControllerUnauthorizedCamera:(UIViewController<PPScanningViewController> *)scanningViewController {
     // Add any logic which handles UI when app user doesn't allow usage of the phone's camera
 }
@@ -180,14 +154,15 @@
     // Collect data from the result
     for (PPRecognizerResult* result in results) {
         
-        if ([result isKindOfClass:[PPMrtdRecognizerResult class]]) {
-            PPMrtdRecognizerResult* mrtdResult = (PPMrtdRecognizerResult*)result;
-            title = @"MRTD";
-            message = [mrtdResult description];
-        }
+//        if ([result isKindOfClass:[PPMrtdRecognizerResult class]]) {
+//            PPMrtdRecognizerResult* mrtdResult = (PPMrtdRecognizerResult*)result;
+//            title = @"MRTD";
+//            message = [mrtdResult description];
+//        }
         if ([result isKindOfClass:[PPUsdlRecognizerResult class]]) {
             PPUsdlRecognizerResult* usdlResult = (PPUsdlRecognizerResult*)result;
-            title = @"USDL";
+            title = @"Does the info match?";
+            NSLog(@"element: %@", [usdlResult getAllStringElements][@"Customer Name"]);
             message = [usdlResult description];
         }
     };
@@ -213,4 +188,28 @@
 }
 */
 
+- (IBAction)cancelAction:(id)sender {
+    /** Instantiate the scanning coordinator */
+    NSError *error;
+    PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
+    
+    /** If scanning isn't supported, present an error */
+    if (coordinator == nil) {
+        NSString *messageString = [error localizedDescription];
+        [[[UIAlertView alloc] initWithTitle:@"Warning"
+                                    message:messageString
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
+        
+        return;
+    }
+    
+    /** Allocate and present the scanning view controller */
+    UIViewController<PPScanningViewController>* scanningViewController = [PPViewControllerFactory cameraViewControllerWithDelegate:self coordinator:coordinator error:nil];
+    
+    /** You can use other presentation methods as well */
+    [self presentViewController:scanningViewController animated:YES completion:nil];
+
+}
 @end

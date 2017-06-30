@@ -12,5 +12,6 @@
 @interface DriverAcceptOrderViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PPScanningDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+- (IBAction)cancelAction:(id)sender;
 
 @end

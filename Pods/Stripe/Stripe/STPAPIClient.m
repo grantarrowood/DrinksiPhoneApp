@@ -245,8 +245,10 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 
 - (void)createTokenWithBankAccount:(STPBankAccountParams *)bankAccount
                         completion:(STPTokenCompletionBlock)completion {
-    NSDictionary *params = [STPFormEncoder dictionaryForObject:bankAccount];
+    NSMutableDictionary *params = [[STPFormEncoder dictionaryForObject:bankAccount] mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
     [self createTokenWithParameters:params completion:completion];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
 }
 
 @end
@@ -255,8 +257,10 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 @implementation STPAPIClient (PII)
 
 - (void)createTokenWithPersonalIDNumber:(NSString *)pii completion:(__nullable STPTokenCompletionBlock)completion {
-    NSDictionary *params = @{@"pii": @{ @"personal_id_number": pii }};
+    NSMutableDictionary *params = [@{@"pii": @{ @"personal_id_number": pii }} mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
     [self createTokenWithParameters:params completion:completion];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
 }
 
 @end
@@ -369,12 +373,18 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
 }
 
 + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier {
+    return [self paymentRequestWithMerchantIdentifier:merchantIdentifier country:@"US" currency:@"USD"];
+}
+
++ (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier
+                                                   country:(NSString *)countryCode
+                                                  currency:(NSString *)currencyCode {
     PKPaymentRequest *paymentRequest = [PKPaymentRequest new];
     [paymentRequest setMerchantIdentifier:merchantIdentifier];
     [paymentRequest setSupportedNetworks:[self supportedPKPaymentNetworks]];
     [paymentRequest setMerchantCapabilities:PKMerchantCapability3DS];
-    [paymentRequest setCountryCode:@"US"];
-    [paymentRequest setCurrencyCode:@"USD"];
+    [paymentRequest setCountryCode:countryCode];
+    [paymentRequest setCurrencyCode:currencyCode];
     return paymentRequest;
 }
 
@@ -391,7 +401,8 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
     [[STPAnalyticsClient sharedClient] logSourceCreationAttemptWithConfiguration:self.configuration
                                                                       sourceType:sourceType];
     sourceParams.redirectMerchantName = self.configuration.companyName ?: [NSBundle stp_applicationName];
-    NSDictionary *params = [STPFormEncoder dictionaryForObject:sourceParams];
+    NSMutableDictionary *params = [[STPFormEncoder dictionaryForObject:sourceParams] mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
     [STPAPIRequest<STPSource *> postWithAPIClient:self
                                          endpoint:sourcesEndpoint
                                        parameters:params
@@ -399,6 +410,7 @@ static NSString *const stripeAPIVersion = @"2015-10-12";
                                        completion:^(STPSource *object, __unused NSHTTPURLResponse *response, NSError *error) {
                                            completion(object, error);
                                        }];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
 }
 
 - (void)retrieveSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret completion:(STPSourceCompletionBlock)completion {

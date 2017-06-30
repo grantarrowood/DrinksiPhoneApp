@@ -784,7 +784,21 @@
 
 
 -(void)deliverOrder {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DriverAcceptOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"driverAcceptViewController"];
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
     
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    popController.sourceView = self.view;
+    popController.sourceRect = CGRectMake(10, 50, 355, 567);
+
 //    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
 //    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
 //    

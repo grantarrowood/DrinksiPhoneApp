@@ -24,7 +24,6 @@ target ‘BeerNow’ do
     pod 'AWSSNS'
     pod 'AWSSQS'
     pod ‘Stripe’
-    pod 'PPBlinkID', '~> 2.9.0'
   target ‘BeerNowTests’ do
     inherit! :search_paths
     # Pods for testing

@@ -2505,7 +2505,7 @@
         <!--Driver Accept Order View Controller-->
         <scene sceneID="j60-13-qRD">
             <objects>
-                <viewController storyboardIdentifier="paySequenceViewController" modalPresentationStyle="formSheet" id="GMl-Br-6Dy" customClass="DriverAcceptOrderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="driverAcceptViewController" modalPresentationStyle="formSheet" id="GMl-Br-6Dy" customClass="DriverAcceptOrderViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qle-pM-oGa"/>
                         <viewControllerLayoutGuide type="bottom" id="EjJ-I2-4y2"/>
@@ -2525,7 +2525,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="X" id="HqD-K1-a4U">
                                             <color key="tintColor" red="0.78823529410000004" green="0.30196078430000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
-                                                <action selector="cancelAction:" destination="GMl-Br-6Dy" id="rO4-c0-INs"/>
+                                                <action selector="cancelAction:" destination="GMl-Br-6Dy" id="jaB-2U-cBy"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -2594,14 +2594,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="canelBarButton" destination="HqD-K1-a4U" id="Fwf-OP-g1o"/>
-                        <outlet property="detailView" destination="px7-GG-Oe1" id="sDN-8d-ZbX"/>
                         <outlet property="imageView" destination="D5M-NU-f8T" id="YtH-UK-cem"/>
-                        <outlet property="navigationBar" destination="7F1-En-pml" id="mTy-ez-IUa"/>
-                        <outlet property="navigationItem" destination="tl3-vo-4rS" id="VOx-Aw-Bgk"/>
-                        <outlet property="termsAndConditionsSwitch" destination="28O-TK-6yx" id="lfZ-PH-yCq"/>
-                        <outlet property="termsAndConditionsTextView" destination="cY9-V5-XgP" id="MFb-SW-ncF"/>
-                        <outlet property="totalLabel" destination="596-Wh-uP2" id="VgW-6q-nFl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4c5-ue-XIf" userLabel="First Responder" sceneMemberID="firstResponder"/>

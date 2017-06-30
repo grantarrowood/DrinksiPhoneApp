@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define FAUXPAS_IGNORED_IN_FILE(...)
 FAUXPAS_IGNORED_IN_FILE(APIAvailability)
 
-static NSString *const STPSDKVersion = @"10.1.0";
+static NSString *const STPSDKVersion = @"10.2.0";
 
 @class STPBankAccount, STPBankAccountParams, STPCard, STPCardParams, STPSourceParams, STPToken, STPPaymentConfiguration;
 
@@ -103,16 +103,16 @@ static NSString *const STPSDKVersion = @"10.1.0";
 
 
 /**
- *  Uses the Stripe file upload API to upload an image. This can be used for 
+ *  Uses the Stripe file upload API to upload an image. This can be used for
  *  identity veritfication and evidence disputes.
  *
- *  @param image The image to be uploaded. The maximum allowed file size is 4MB 
- *         for identity documents and 8MB for evidence disputes. Cannot be nil. 
+ *  @param image The image to be uploaded. The maximum allowed file size is 4MB
+ *         for identity documents and 8MB for evidence disputes. Cannot be nil.
  *         Your image will be automatically resized down if you pass in one that
  *         is too large
- *  @param purpose The purpose of this file. This can be either an identifing 
+ *  @param purpose The purpose of this file. This can be either an identifing
  *         document or an evidence dispute.
- *  @param completion The callback to run with the returned Stripe file 
+ *  @param completion The callback to run with the returned Stripe file
  *         (and any errors that may have occurred).
  *
  *  @see https://stripe.com/docs/file-upload
@@ -154,20 +154,47 @@ static NSString *const STPSDKVersion = @"10.1.0";
  *
  *  @return whether or not the user is currently able to pay with Apple Pay.
  */
-+ (BOOL)canSubmitPaymentRequest:(PKPaymentRequest *)paymentRequest NS_AVAILABLE_IOS(8_0);
++ (BOOL)canSubmitPaymentRequest:(PKPaymentRequest *)paymentRequest;
 
 + (BOOL)deviceSupportsApplePay;
 
 /**
- *  A convenience method to return a `PKPaymentRequest` with sane default values. You will still need to configure the `paymentSummaryItems` property to indicate
- *what the user is purchasing, as well as the optional `requiredShippingAddressFields`, `requiredBillingAddressFields`, and `shippingMethods` properties to indicate
- *what contact information your application requires.
+ *  A convenience method to build a `PKPaymentRequest` with sane default values.
+ *  You will still need to configure the `paymentSummaryItems` property to indicate
+ *  what the user is purchasing, as well as the optional `requiredShippingAddressFields`,
+ *  `requiredBillingAddressFields`, and `shippingMethods` properties to indicate
+ *  what contact information your application requires.
+ *  Note that this method sets the payment request's countryCode to "US" and its
+ *  currencyCode to "USD".
  *
- *  @param merchantIdentifier Your Apple Merchant ID, as obtained at https://developer.apple.com/account/ios/identifiers/merchant/merchantCreate.action
+ *  @param merchantIdentifier Your Apple Merchant ID.
+ *
+ *  @return a `PKPaymentRequest` with proper default values. Returns nil if running on < iOS8.
+ *  @deprecated Use `paymentRequestWithMerchantIdentifier:country:currency:` instead.
+ *  Apple Pay is available in many countries and currencies, and you should use
+ *  the appropriate values for your business.
+ */
++ (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier __attribute__((deprecated));
+
+/**
+ *  A convenience method to build a `PKPaymentRequest` with sane default values.
+ *  You will still need to configure the `paymentSummaryItems` property to indicate
+ *  what the user is purchasing, as well as the optional `requiredShippingAddressFields`,
+ *  `requiredBillingAddressFields`, and `shippingMethods` properties to indicate
+ *  what contact information your application requires.
+ *
+ *  @param merchantIdentifier Your Apple Merchant ID.
+ *  @param countryCode        The two-letter code for the country where the payment
+ *  will be processed. This should be the country of your Stripe account.
+ *  @param currencyCode       The three-letter code for the currency used by this
+ *  payment request. Apple Pay interprets the amounts provided by the summary items
+ *  attached to this request as amounts in this currency.
  *
  *  @return a `PKPaymentRequest` with proper default values. Returns nil if running on < iOS8.
  */
-+ (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier NS_AVAILABLE_IOS(8_0);
++ (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier
+                                                   country:(NSString *)countryCode
+                                                  currency:(NSString *)currencyCode NS_AVAILABLE_IOS(8_0);
 
 @end
 
@@ -212,7 +239,7 @@ static NSString *const STPSDKVersion = @"10.1.0";
  *  @param timeout     The timeout for the polling operation, in seconds. Timeouts are capped at 5 minutes.
  *  @param completion  The callback to run with the returned Source object, or an error.
  */
-- (void)startPollingSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret timeout:(NSTimeInterval)timeout completion:(STPSourceCompletionBlock)completion NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions");;
+- (void)startPollingSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret timeout:(NSTimeInterval)timeout completion:(STPSourceCompletionBlock)completion NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions") DEPRECATED_MSG_ATTRIBUTE("You should poll your own backend to update based on source status change webhook events it may receive.");
 
 /**
  *  Stops polling the Source object with the given ID. Note that the completion block passed to
@@ -220,7 +247,7 @@ static NSString *const STPSDKVersion = @"10.1.0";
  *
  *  @param identifier  The identifier of the source to be retrieved. Cannot be nil.
  */
-- (void)stopPollingSourceWithId:(NSString *)identifier NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions");;
+- (void)stopPollingSourceWithId:(NSString *)identifier NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions") DEPRECATED_ATTRIBUTE;
 
 @end
 
