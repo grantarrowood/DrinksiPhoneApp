@@ -786,6 +786,7 @@
 -(void)deliverOrder {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DriverAcceptOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"driverAcceptViewController"];
+    controller.orderDetails = orderItems;
     // present the controller
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet

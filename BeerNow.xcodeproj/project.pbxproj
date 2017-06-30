@@ -24,6 +24,7 @@
 		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
+		9C6113911F06D379007D0789 /* ServingAtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6113901F06D379007D0789 /* ServingAtViewController.m */; };
 		9C6DCCB81F046AA6002D5DAE /* DriverAcceptOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */; };
 		9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */; };
 		9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBF1F0470BE002D5DAE /* libz.tbd */; };
@@ -107,6 +108,8 @@
 		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9C61138F1F06D379007D0789 /* ServingAtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServingAtViewController.h; sourceTree = "<group>"; };
+		9C6113901F06D379007D0789 /* ServingAtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServingAtViewController.m; sourceTree = "<group>"; };
 		9C6DCCB61F046AA5002D5DAE /* DriverAcceptOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverAcceptOrderViewController.h; sourceTree = "<group>"; };
 		9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverAcceptOrderViewController.m; sourceTree = "<group>"; };
 		9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -230,6 +233,8 @@
 				9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */,
 				9C58AFF11ED64A1800EB8E62 /* ViewController.h */,
 				9C58AFF21ED64A1800EB8E62 /* ViewController.m */,
+				9C61138F1F06D379007D0789 /* ServingAtViewController.h */,
+				9C6113901F06D379007D0789 /* ServingAtViewController.m */,
 				9C5DCCBD1ED6756500FA93E6 /* SidebarTableViewController.h */,
 				9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */,
 				9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */,
@@ -602,6 +607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C6113911F06D379007D0789 /* ServingAtViewController.m in Sources */,
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
 				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,

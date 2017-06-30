@@ -10,8 +10,24 @@
 #import <MicroBlink/MicroBlink.h>
 
 @interface DriverAcceptOrderViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PPScanningDelegate>
+{
+    CGPoint lastPoint;
+    CGFloat red;
+    CGFloat green;
+    CGFloat blue;
+    CGFloat brush;
+    CGFloat opacity;
+    int matches;
+    UIAlertView *matchesAlertView;
+    UIAlertView *infoAlertView;
+}
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong) NSMutableArray *orderDetails;
+@property (weak, nonatomic) IBOutlet UIView *signatureView;
+@property (weak, nonatomic) IBOutlet UIImageView *signatureImageView;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
+
+
 - (IBAction)cancelAction:(id)sender;
 
 @end

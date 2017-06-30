@@ -15,28 +15,60 @@
 @implementation DriverAcceptOrderViewController
 
 -(void)viewDidAppear:(BOOL)animated {
-    /** Instantiate the scanning coordinator */
-    NSError *error;
-    PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
-    
-    /** If scanning isn't supported, present an error */
-    if (coordinator == nil) {
-        NSString *messageString = [error localizedDescription];
-        [[[UIAlertView alloc] initWithTitle:@"Warning"
-                                    message:messageString
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
+    if (matches == 1) {
+        int y = 150;
+        float total = 0.0;
+        for (int i = 0; i < self.orderDetails.count; i++) {
+            UILabel *itemNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, y, 65, 30)];
+            itemNameLabel.text = [self.orderDetails objectAtIndex:i][0];
+            [self.view addSubview:itemNameLabel];
+            UILabel *itemPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(250, y, 65, 30)];
+            itemPriceLabel.text = [self.orderDetails objectAtIndex:i][1];
+            [self.view addSubview:itemPriceLabel];
+            y += 55;
+            total += [[self.orderDetails objectAtIndex:i][1] floatValue];
+        }
+        UILabel *itemNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, y, 65, 30)];
+        itemNameLabel.text = @"Total:";
+        [self.view addSubview:itemNameLabel];
+        UILabel *itemPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(250, y, 65, 30)];
+        itemPriceLabel.text = [NSString stringWithFormat:@"%.2f", total];
+        [self.view addSubview:itemPriceLabel];
+        self.signatureView.layer.borderColor = [UIColor blackColor].CGColor;
+        self.signatureView.layer.borderWidth = 1.0f;
+        red = 0.0/255.0;
+        green = 0.0/255.0;
+        blue = 0.0/255.0;
+        brush = 2.0;
+        opacity = 1.0;
+    } else if(matches == 0) {
+        /** Instantiate the scanning coordinator */
+        NSError *error;
+        PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
         
-        return;
-    }
-    
-    /** Allocate and present the scanning view controller */
-    UIViewController<PPScanningViewController>* scanningViewController = [PPViewControllerFactory cameraViewControllerWithDelegate:self coordinator:coordinator error:nil];
-    
-    /** You can use other presentation methods as well */
-    [self presentViewController:scanningViewController animated:YES completion:nil];
+        /** If scanning isn't supported, present an error */
+        if (coordinator == nil) {
+            NSString *messageString = [error localizedDescription];
+            [[[UIAlertView alloc] initWithTitle:@"Warning"
+                                        message:messageString
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil, nil] show];
+            
+            return;
+        }
+        
+        /** Allocate and present the scanning view controller */
+        UIViewController<PPScanningViewController>* scanningViewController = [PPViewControllerFactory cameraViewControllerWithDelegate:self coordinator:coordinator error:nil];
+        
+        /** You can use other presentation methods as well */
+        [self presentViewController:scanningViewController animated:YES completion:nil];
+        infoAlertView = [[UIAlertView alloc] initWithTitle:@"Drivers License" message:@"Please scan the barcode on the back of the customer's license." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [infoAlertView show];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
 
+    }
 }
 
 - (void)viewDidLoad {
@@ -52,22 +84,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    self.imageView.image = chosenImage;
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    self.navigationItem.title = @"Step 2: Sign for Order";
-    
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 /**
@@ -162,19 +178,29 @@
         if ([result isKindOfClass:[PPUsdlRecognizerResult class]]) {
             PPUsdlRecognizerResult* usdlResult = (PPUsdlRecognizerResult*)result;
             title = @"Does the info match?";
-            NSLog(@"element: %@", [usdlResult getAllStringElements][@"Customer Name"]);
-            message = [usdlResult description];
+            message = [NSString stringWithFormat:@"Name: %@ %@\nAddress: %@\nDate of Birth: %@\nLicense Number: %@",[usdlResult getAllStringElements][@"Customer First Name"],[usdlResult getAllStringElements][@"Customer Family Name"],[usdlResult getAllStringElements][@"Full Address"],[usdlResult getAllStringElements][@"Date of Birth"],[usdlResult getAllStringElements][@"Customer ID Number"] ];
         }
     };
     
     // present the alert view with scanned results
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
+    matchesAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"YES",@"NO", nil];
+    [matchesAlertView show];
 }
 
 // dismiss the scanning view controller when user presses OK.
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (buttonIndex == 0) {
+        if (alertView == matchesAlertView) {
+            self.navigationItem.title = @"Step 2: Receipt Signature";
+            [infoAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            matches = 1;
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+        }
+    } else {
+        matches = 3;
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 
@@ -189,27 +215,57 @@
 */
 
 - (IBAction)cancelAction:(id)sender {
-    /** Instantiate the scanning coordinator */
-    NSError *error;
-    PPCameraCoordinator *coordinator = [self coordinatorWithError:&error];
-    
-    /** If scanning isn't supported, present an error */
-    if (coordinator == nil) {
-        NSString *messageString = [error localizedDescription];
-        [[[UIAlertView alloc] initWithTitle:@"Warning"
-                                    message:messageString
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
-        
-        return;
-    }
-    
-    /** Allocate and present the scanning view controller */
-    UIViewController<PPScanningViewController>* scanningViewController = [PPViewControllerFactory cameraViewControllerWithDelegate:self coordinator:coordinator error:nil];
-    
-    /** You can use other presentation methods as well */
-    [self presentViewController:scanningViewController animated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [touches anyObject];
+    lastPoint = [touch locationInView:self.signatureImageView];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint currentPoint = [touch locationInView:self.signatureImageView];
+    
+    UIGraphicsBeginImageContext(self.signatureImageView.frame.size);
+    [self.signatureImageView.image drawInRect:CGRectMake(0, 0, self.signatureImageView.frame.size.width, self.signatureImageView.frame.size.height)];
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.signatureImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    [self.signatureImageView setAlpha:opacity];
+    UIGraphicsEndImageContext();
+    
+    lastPoint = currentPoint;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UIGraphicsBeginImageContext(self.signatureImageView.frame.size);
+    [self.signatureImageView.image drawInRect:CGRectMake(0, 0, self.signatureImageView.frame.size.width, self.signatureImageView.frame.size.height)];
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush);
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, opacity);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    CGContextFlush(UIGraphicsGetCurrentContext());
+    self.signatureImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //UIGraphicsBeginImageContext(self.signatureImageView.frame.size);
+//    [self.mainImage.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    [self.signatureImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:opacity];
+    //self.mainImage.image = UIGraphicsGetImageFromCurrentImageContext();
+    //self.tempDrawImage.image = nil;
+    UIGraphicsEndImageContext();
 }
 @end
