@@ -103,7 +103,7 @@
                                                                                     if (task.result) {
                                                                                         AWSS3TransferManagerDownloadOutput *downloadOutput = task.result;
                                                                                         self.profileImageView.image = [UIImage imageWithContentsOfFile:downloadingFilePath];
-                                                                                        self.profileImageView.layer.cornerRadius = 50;
+                                                                                        self.profileImageView.layer.cornerRadius = 37.5;
                                                                                         self.profileImageView.clipsToBounds = YES;
                                                                                     }
                                                                                     return nil;

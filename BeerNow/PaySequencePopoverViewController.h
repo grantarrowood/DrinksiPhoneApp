@@ -13,6 +13,8 @@
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import "Transactions.h"
 #import <Stripe/Stripe.h>
+#import <AWSS3/AWSS3.h>
+
 
 @protocol PayDelegate <NSObject>
 -(void)payViewControllerDismissed:(NSString *)paid;
@@ -29,7 +31,7 @@
 @property (strong) NSMutableArray *orderDetails;
 @property (strong) NSNumber *orderId;
 @property (strong) NSString *driverStripeId;
-@property (nonatomic, assign) id<PayDelegate> myDelegate;
+@property (nonatomic, assign) id<PayDelegate> payDelegate;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *canelBarButton;
 - (IBAction)cancelAction:(id)sender;

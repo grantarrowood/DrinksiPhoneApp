@@ -11,8 +11,8 @@
 @interface Orders : AWSDynamoDBObjectModel <AWSDynamoDBModeling>
 
 
-@property (nonatomic, strong) NSString *Selected;
-@property (nonatomic, strong) NSString *Completed;
+@property (nonatomic, strong) NSString *AcceptedDelivery;
+@property (nonatomic, strong) NSString *DeliveryDate;
 @property (nonatomic, strong) NSString *Order;
 @property (nonatomic, strong) NSString *Location;
 @property (nonatomic, strong) NSNumber *OrderId;

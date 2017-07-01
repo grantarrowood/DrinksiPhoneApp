@@ -13,13 +13,13 @@
 @end
 
 @implementation PaySequencePopoverViewController
-@synthesize myDelegate;
+@synthesize payDelegate;
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     paymentSuccess = NO;
     self.imageView.hidden = YES;
-    //[self fetchClientToken];
+    self.imageView.image = [UIImage imageNamed:@"campusImage"];
 //    if (self.imageView.image == nil) {
 //        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 //        picker.delegate = self;
@@ -114,11 +114,16 @@
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [controller dismissViewControllerAnimated:YES completion:nil];
     if (paymentSuccess) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *username = [defaults stringForKey:@"currentUsername"];
         //SET PAID TO YES AND SET TRANSACTION
-        Orders *newOrder = [Orders new];
-        
         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
                                                                                                         identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
+
+        Orders *newOrder = [Orders new];
         
         AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
         
@@ -130,6 +135,7 @@
         Transactions *newTransaction = [Transactions new];
         newTransaction.transactionResult = transactionResultId;
         newTransaction.date = [NSString stringWithFormat:@"%@", [NSDate date]];
+        newTransaction.scannedCustomerLicenseInfo = @"INCOMPLETE";
         [[[dynamoDBObjectMapper scan:[Transactions class]
                          expression:scanExpression]
          continueWithBlock:^id(AWSTask *task) {
@@ -160,7 +166,43 @@
              }
              return nil;
          }] waitUntilFinished];
-        
+        AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+        NSData *pngData = UIImagePNGRepresentation(self.imageView.image);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", username,transactionId]];
+        [pngData writeToFile:filePath atomically:YES];
+        NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
+        AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
+        uploadRequest.bucket = @"drinkscustomerdriverslicense";
+        uploadRequest.key = [NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", username,transactionId];
+        uploadRequest.body = uploadingFileURL;
+        [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                           withBlock:^id(AWSTask *task) {
+                                                               if (task.error) {
+                                                                   if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                       switch (task.error.code) {
+                                                                           case AWSS3TransferManagerErrorCancelled:
+                                                                           case AWSS3TransferManagerErrorPaused:
+                                                                               break;
+                                                                               
+                                                                           default:
+                                                                               NSLog(@"Error: %@", task.error);
+                                                                               break;
+                                                                       }
+                                                                   } else {
+                                                                       // Unknown error.
+                                                                       NSLog(@"Error: %@", task.error);
+                                                                   }
+                                                               }
+                                                               
+                                                               if (task.result) {
+                                                                   AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
+                                                                   // The file uploaded successfully.
+                                                               }
+                                                               return nil;
+                                                           }];
+
         AWSDynamoDBObjectMapper *dynamoDBObjectMapperOrder = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
         AWSDynamoDBScanExpression *scanExpressionOrder = [AWSDynamoDBScanExpression new];
         
@@ -178,11 +220,9 @@
                          newOrder.Order = order.Order;
                          newOrder.customerUsername = order.customerUsername;
                          newOrder.OrderId = _orderId;
-                         newOrder.Completed = @"NO";
-                         newOrder.Selected = @"YES";
-                         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                         NSString *username = [defaults stringForKey:@"currentUsername"];
-                         newOrder.driverUsername = username;
+                         newOrder.AcceptedDelivery = @"NO";
+                         newOrder.DeliveryDate = @"UNKNOWN";
+                         newOrder.driverUsername = order.driverUsername;
                          newOrder.paid = @"YES";
                          newOrder.transactionId = transactionId;
                          [[dynamoDBObjectMapper save:newOrder]
@@ -200,7 +240,7 @@
              return nil;
          }] waitUntilFinished];
         
-        [self.myDelegate payViewControllerDismissed:@"YES"];
+        [self.payDelegate payViewControllerDismissed:@"YES"];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -333,4 +373,8 @@
     }];
 }
 */
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
+}
 @end

@@ -341,8 +341,8 @@
             
         }
         newOrder.Order = orderString;
-        newOrder.Completed = @"NO";
-        newOrder.Selected = @"NO";
+        newOrder.AcceptedDelivery = @"NO";
+        newOrder.DeliveryDate = @"UNKNOWN";
         newOrder.driverUsername = @"UNKNOWN";
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *username = [defaults stringForKey:@"currentUsername"];
@@ -566,8 +566,9 @@
         
     }
     newOrder.Order = orderString;
-    newOrder.Completed = @"NO";
-    newOrder.Selected = @"NO";
+    newOrder.AcceptedDelivery = @"NO";
+    newOrder.DeliveryDate = @"UNKNOWN";
+
     newOrder.driverUsername = @"UNKNOWN";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [defaults stringForKey:@"currentUsername"];

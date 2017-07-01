@@ -55,7 +55,7 @@
          } else {
              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
              for (Orders *order in paginatedOutput.items) {
-                 if (![order.Selected isEqualToString:@"YES"]) {
+                 if ([order.driverUsername isEqualToString:@"UNKNOWN"]) {
                      [ordersArray addObject:order];
                  }
                  

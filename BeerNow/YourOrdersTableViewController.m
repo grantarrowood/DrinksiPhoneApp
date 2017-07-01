@@ -60,7 +60,7 @@
                  NSString *userPool = [defaults stringForKey:@"userPool"];
                  if([userPool isEqualToString:@"CUSTOMER"]) {
                      if ([order.customerUsername isEqualToString:username]) {
-                         if ([order.Completed isEqualToString:@"YES"]) {
+                         if ([order.AcceptedDelivery isEqualToString:@"YES"]) {
                              [pastOrdersArray addObject:order];
                          } else {
                              [currentOrdersArray addObject:order];
@@ -68,7 +68,7 @@
                      }
                  } else {
                      if ([order.driverUsername isEqualToString:username]) {
-                         if ([order.Completed isEqualToString:@"YES"]) {
+                         if ([order.AcceptedDelivery isEqualToString:@"YES"]) {
                              [pastOrdersArray addObject:order];
                          } else {
                              [currentOrdersArray addObject:order];

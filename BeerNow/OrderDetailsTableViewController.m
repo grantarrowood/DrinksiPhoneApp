@@ -59,6 +59,7 @@
              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
              for (Orders *order in paginatedOutput.items) {
                  if (order.OrderId == _orderId) {
+                     transactionId = order.transactionId;
                      driverUsername = order.driverUsername;
                      customerUsername = order.customerUsername;
                      locationName = order.Location;
@@ -169,15 +170,15 @@
                          
                          AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
                          
-                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@_license.jpg",customerUsername,_orderId]];
+                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", customerUsername,transactionId]];
                          NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
                          
                          AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
                          
-                         downloadRequest.bucket = @"drinksdriverlicenses";
-                         downloadRequest.key = [NSString stringWithFormat:@"%@_%@_license.jpg",customerUsername,_orderId];
+                         downloadRequest.bucket = @"drinkscustomerdriverslicense";
+                         downloadRequest.key = [NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", customerUsername,transactionId];
                          downloadRequest.downloadingFileURL = downloadingFileURL;
-                         [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                         [[[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
                                                                                 withBlock:^id(AWSTask *task) {
                                                                                     if (task.error){
                                                                                         if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
@@ -201,7 +202,7 @@
                                                                                         customerDriversLicense = [UIImage imageWithContentsOfFile:downloadingFilePath];
                                                                                     }
                                                                                     return nil;
-                                                                                }];
+                                                                                }] waitUntilFinished];
 
                      }
                      if ([driverUsername isEqualToString:@"UNKNOWN"]) {
@@ -210,7 +211,7 @@
                          if ([isPaid isEqualToString:@"NO"]) {
                              orderStatus = @"Awaiting Payment";
                          } else {
-                             if ([order.Completed isEqualToString:@"NO"]) {
+                             if ([order.AcceptedDelivery isEqualToString:@"NO"]) {
                                  orderStatus = @"On the Way";
                              } else {
                                  orderStatus = @"Order Completed";
@@ -246,7 +247,7 @@
     [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
     [self.view addSubview:spinner];
     [spinner startAnimating];
-    timer = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:4.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
 }
 
 -(void)getTable {
@@ -290,7 +291,7 @@
                 separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
                 [footerView addSubview:separatorView];
                 UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-                [acceptButton setTitle:@"Accept Delivery" forState:UIControlStateNormal];
+                [acceptButton setTitle:@"Problem?" forState:UIControlStateNormal];
                 [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
                 //[acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
                 [footerView addSubview:acceptButton];
@@ -677,8 +678,7 @@
                          newOrder.Order = [NSString stringWithFormat:@"%@, {DeliveryFee, %.2f}", order.Order, deliveryFee];
                          newOrder.customerUsername = order.customerUsername;
                          newOrder.OrderId = _orderId;
-                         newOrder.Completed = @"NO";
-                         newOrder.Selected = @"YES";
+                         newOrder.AcceptedDelivery = @"NO";
                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                          NSString *username = [defaults stringForKey:@"currentUsername"];
                          newOrder.driverUsername = username;
@@ -749,7 +749,7 @@
     controller.orderDetails = orderItems;
     controller.orderId = _orderId;
     controller.driverStripeId = driverStripeId;
-    controller.myDelegate = self;
+    controller.payDelegate = self;
     // present the controller
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet
@@ -787,6 +787,9 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DriverAcceptOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"driverAcceptViewController"];
     controller.orderDetails = orderItems;
+    controller.transactionId = transactionId;
+    controller.orderId = _orderId;
+    controller.acceptDelegate = self;
     // present the controller
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet
@@ -845,6 +848,13 @@
         isPaid = @"YES";
         orderStatus = @"On the Way";
         [self getTable];
+    }
+}
+
+- (void)acceptViewControllerDismissed:(NSString *)accepted
+{
+    if([accepted isEqualToString:@"YES"]) {
+        [self performSegueWithIdentifier:@"acceptedOrder" sender:nil];
     }
 }
 @end

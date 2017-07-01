@@ -20,7 +20,7 @@
 #import "CustomerLicenseTableViewCell.h"
 #import "DriverAcceptOrderViewController.h"
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate, AcceptDelegate> {
     NSMutableArray *orderItems;
     NSTimer *timerTwo;
     NSTimer *timer;
@@ -41,6 +41,7 @@
     CLLocation *restaurantLoc;
     UIImage *customerDriversLicense;
     NSString *driverStripeId;
+    NSNumber *transactionId;
 }
 
 @property (strong) NSNumber *orderId;

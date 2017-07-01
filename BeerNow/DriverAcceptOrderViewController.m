@@ -13,6 +13,8 @@
 @end
 
 @implementation DriverAcceptOrderViewController
+@synthesize acceptDelegate;
+
 
 -(void)viewDidAppear:(BOOL)animated {
     if (matches == 1) {
@@ -73,12 +75,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No Username" message:@"Please enter your username." preferredStyle:UIAlertControllerStyleAlert];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    }]];
-//    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -179,6 +175,47 @@
             PPUsdlRecognizerResult* usdlResult = (PPUsdlRecognizerResult*)result;
             title = @"Does the info match?";
             message = [NSString stringWithFormat:@"Name: %@ %@\nAddress: %@\nDate of Birth: %@\nLicense Number: %@",[usdlResult getAllStringElements][@"Customer First Name"],[usdlResult getAllStringElements][@"Customer Family Name"],[usdlResult getAllStringElements][@"Full Address"],[usdlResult getAllStringElements][@"Date of Birth"],[usdlResult getAllStringElements][@"Customer ID Number"] ];
+            AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                            identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+            
+            AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+            
+            AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+            
+            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+            AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+
+            Transactions *newTransaction = [Transactions new];
+            newTransaction.TransactionId = self.transactionId;
+            newTransaction.scannedCustomerLicenseInfo = [NSString stringWithFormat:@"Name: %@ %@, Address: %@, Date of Birth: %@, License Number: %@",[usdlResult getAllStringElements][@"Customer First Name"],[usdlResult getAllStringElements][@"Customer Family Name"],[usdlResult getAllStringElements][@"Full Address"],[usdlResult getAllStringElements][@"Date of Birth"],[usdlResult getAllStringElements][@"Customer ID Number"] ];
+            [[[dynamoDBObjectMapper scan:[Transactions class]
+                              expression:scanExpression]
+              continueWithBlock:^id(AWSTask *task) {
+                  if (task.error) {
+                      NSLog(@"The request failed. Error: [%@]", task.error);
+                  } else {
+                      AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                      for (Transactions *transaction in paginatedOutput.items) {
+                          //Do something with book.
+                          if (transaction.TransactionId == self.transactionId) {
+                              newTransaction.transactionResult = transaction.transactionResult;
+                              newTransaction.date = transaction.date;
+                          }
+                      }
+                  }
+                  return nil;
+              }] waitUntilFinished];
+            
+            [[dynamoDBObjectMapper save:newTransaction]
+              continueWithBlock:^id(AWSTask *task) {
+                  if (task.error) {
+                      NSLog(@"The request failed. Error: [%@]", task.error);
+                  } else {
+                      //Do something with task.result or perform other operations.
+                  }
+                  return nil;
+              }];
+
         }
     };
     
@@ -187,7 +224,7 @@
     [matchesAlertView show];
 }
 
-// dismiss the scanning view controller when user presses OK.
+    // dismiss the scanning view controller when user presses OK.
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         if (alertView == matchesAlertView) {
@@ -216,6 +253,207 @@
 
 - (IBAction)cancelAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)acceptDeliveryAction:(id)sender {
+    if(!self.signatureImageView.image) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No Signature" message:@"Please sign below." preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+
+    } else {
+        Orders *newOrder = [Orders new];
+        
+        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        
+        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapperOrder = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        AWSDynamoDBScanExpression *scanExpressionOrder = [AWSDynamoDBScanExpression new];
+        
+        [[[dynamoDBObjectMapperOrder scan:[Orders class]
+                               expression:scanExpressionOrder]
+          continueWithBlock:^id(AWSTask *task) {
+              if (task.error) {
+                  NSLog(@"The request failed. Error: [%@]", task.error);
+              } else {
+                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                  for (Orders *order in paginatedOutput.items) {
+                      if (order.OrderId == _orderId) {
+                          newOrder.Area = order.Area;
+                          newOrder.Location = order.Location;
+                          newOrder.Order = order.Order;
+                          newOrder.customerUsername = order.customerUsername;
+                          newOrder.OrderId = _orderId;
+                          newOrder.AcceptedDelivery = @"YES";
+                          newOrder.DeliveryDate = [NSString stringWithFormat:@"%@",[NSDate date]];
+                          newOrder.driverUsername = order.driverUsername;
+                          newOrder.paid = order.paid;
+                          newOrder.transactionId = order.transactionId;
+                          [[dynamoDBObjectMapper save:newOrder]
+                           continueWithBlock:^id(AWSTask *task) {
+                               if (task.error) {
+                                   NSLog(@"The request failed. Error: [%@]", task.error);
+                               } else {
+                                   //Do something with task.result or perform other operations.
+                               }
+                               return nil;
+                           }];
+                      }
+                  }
+              }
+              return nil;
+          }] waitUntilFinished];
+        //Get Document Directory path
+        NSArray * dirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        //Define path for PDF file
+        NSString * documentPath = [[dirPath objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"RecieptOrderNumber%@", self.orderId]];
+        
+        // Prepare the text using a Core Text Framesetter.
+        float total = 0.0;
+        NSString *theText = [NSString stringWithFormat:@"Reciept For Order Number: %@", self.orderId];
+        
+        for (int i = 0; i < _orderDetails.count; i++) {
+            theText = [NSString stringWithFormat:@"%@\nItem Name:%@      Price:%@",theText,[_orderDetails objectAtIndex:i][0],[_orderDetails objectAtIndex:i][1]];
+            total += [[self.orderDetails objectAtIndex:i][1] floatValue];
+        }
+        theText = [NSString stringWithFormat:@"%@\nTotal:%.2f", theText,total];
+        CFAttributedStringRef currentText = CFAttributedStringCreate(NULL, (__bridge CFStringRef)theText, NULL);
+        if (currentText) {
+            CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(currentText);
+            if (framesetter) {
+                
+                
+                // Create the PDF context using the default page size of 612 x 792.
+                UIGraphicsBeginPDFContextToFile(documentPath, CGRectZero, nil);
+                
+                CFRange currentRange = CFRangeMake(0, 0);
+                NSInteger currentPage = 0;
+                BOOL done = NO;
+                
+                do {
+                    // Mark the beginning of a new page.
+                    UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 612, 792), nil);
+                    
+                    // Draw a page number at the bottom of each page.
+                    currentPage++;
+                    [self drawPageNbr:currentPage];
+                    
+                    // Render the current page and update the current range to
+                    // point to the beginning of the next page.
+                    currentRange = *[self updatePDFPage:currentPage setTextRange:&currentRange setFramesetter:&framesetter];
+                    
+                    // If we're at the end of the text, exit the loop.
+                    if (currentRange.location == CFAttributedStringGetLength((CFAttributedStringRef)currentText))
+                        [self.signatureImageView.image drawAtPoint:CGPointMake(10, currentRange.location+25)];
+                        done = YES;
+                } while (!done);
+                
+                // Close the PDF context and write the contents out.
+                UIGraphicsEndPDFContext();
+                
+                // Release the framewetter.
+                CFRelease(framesetter);
+                
+            } else {
+                NSLog(@"Could not create the framesetter..");
+            }
+            // Release the attributed string.
+            CFRelease(currentText);
+        } else {
+            NSLog(@"currentText could not be created");
+        }
+        
+//        AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+//        NSURL *uploadingFileURL = [NSURL fileURLWithPath:documentPath];
+//        
+//        AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
+//        uploadRequest.bucket = @"drinksdriverlicenses";
+//        uploadRequest.key = [NSString stringWithFormat:@"RecieptOrderNumber%@", self.orderId];
+//        uploadRequest.body = uploadingFileURL;
+//        [[[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+//                                                           withBlock:^id(AWSTask *task) {
+//                                                               if (task.error) {
+//                                                                   if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+//                                                                       switch (task.error.code) {
+//                                                                           case AWSS3TransferManagerErrorCancelled:
+//                                                                           case AWSS3TransferManagerErrorPaused:
+//                                                                               break;
+//                                                                               
+//                                                                           default:
+//                                                                               NSLog(@"Error: %@", task.error);
+//                                                                               break;
+//                                                                       }
+//                                                                   } else {
+//                                                                       // Unknown error.
+//                                                                       NSLog(@"Error: %@", task.error);
+//                                                                   }
+//                                                               }
+//                                                               
+//                                                               if (task.result) {
+//                                                                   AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
+//                                                                   // The file uploaded successfully.
+//                                                                   
+//                                                               }
+//                                                               return nil;
+//                                                           }] waitUntilFinished];
+
+        [self.acceptDelegate acceptViewControllerDismissed:@"YES"];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)drawPageNbr:(int)pageNumber{
+    NSString *setPageNum = [NSString stringWithFormat:@"Page %d", pageNumber];
+    UIFont *pageNbrFont = [UIFont systemFontOfSize:14];
+    
+    CGSize maxSize = CGSizeMake(612, 72);
+    CGSize pageStringSize = [setPageNum sizeWithFont:pageNbrFont
+                                   constrainedToSize:maxSize
+                                       lineBreakMode:UILineBreakModeClip];
+    
+    CGRect stringRect = CGRectMake(((612.0 - pageStringSize.width) / 2.0),
+                                   720.0 + ((72.0 - pageStringSize.height) / 2.0),
+                                   pageStringSize.width,
+                                   pageStringSize.height);
+    [setPageNum drawInRect:stringRect withFont:pageNbrFont];
+}
+
+-(CFRange*)updatePDFPage:(int)pageNumber setTextRange:(CFRange*)pageRange setFramesetter:(CTFramesetterRef*)framesetter{
+    // Get the graphics context.
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
+    // Put the text matrix into a known state. This ensures
+    // that no old scaling factors are left in place.
+    CGContextSetTextMatrix(currentContext, CGAffineTransformIdentity);
+    // Create a path object to enclose the text. Use 72 point
+    // margins all around the text.
+    CGRect frameRect = CGRectMake(72, 72, 468, 648);
+    CGMutablePathRef framePath = CGPathCreateMutable();
+    CGPathAddRect(framePath, NULL, frameRect);
+    // Get the frame that will do the rendering.
+    // The currentRange variable specifies only the starting point. The framesetter
+    // lays out as much text as will fit into the frame.
+    CTFrameRef frameRef = CTFramesetterCreateFrame(*framesetter, *pageRange,
+                                                   framePath, NULL);
+    CGPathRelease(framePath);
+    // Core Text draws from the bottom-left corner up, so flip
+    // the current transform prior to drawing.
+    CGContextTranslateCTM(currentContext, 0, 792);
+    CGContextScaleCTM(currentContext, 1.0, -1.0);
+    // Draw the frame.
+    CTFrameDraw(frameRef, currentContext);
+    // Update the current range based on what was drawn.
+    *pageRange = CTFrameGetVisibleStringRange(frameRef);
+    pageRange->location += pageRange->length;
+    pageRange->length = 0;
+    CFRelease(frameRef);
+    return pageRange;
 }
 
 
@@ -267,5 +505,9 @@
     //self.mainImage.image = UIGraphicsGetImageFromCurrentImageContext();
     //self.tempDrawImage.image = nil;
     UIGraphicsEndImageContext();
+}
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
 }
 @end
