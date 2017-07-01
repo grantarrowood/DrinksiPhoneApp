@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
+#import <AWSS3/AWSS3.h>
+
 
 @interface ProfileTableViewController : UITableViewController
 

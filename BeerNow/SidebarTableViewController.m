@@ -24,9 +24,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userPool = [defaults stringForKey:@"userPool"];
     if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
+        menuItems = @[@"logo", @"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
     } else {
-        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
+        menuItems = @[@"logo", @"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
     }
     
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"beerBackground"]];
@@ -43,9 +43,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userPool = [defaults stringForKey:@"userPool"];
     if ([userPool isEqualToString:@"CUSTOMER"]) {
-        menuItems = @[@"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
+        menuItems = @[@"logo", @"customerHome", @"orderNow", @"yourOrders", @"profile", @"faq", @"login"];
     } else {
-        menuItems = @[@"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
+        menuItems = @[@"logo", @"driverHome", @"avalibleOrders", @"yourOrders", @"profile", @"faq", @"login"];
     }
     [self.tableView reloadData];
 }

@@ -10,11 +10,18 @@
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
 #import "ViewController.h"
+#import <AWSS3/AWSS3.h>
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate>
+
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIWebViewDelegate>
 {
     NSString *loginType;
+    BOOL profilePhoto;
+    NSURLConnection *stripeConnection;
+    NSURLConnection *accurateCustomerConnection;
+    NSString *stripeDriverId;
+    NSString *accurateCustomerId;
 }
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
@@ -30,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *addProfilePhotoButton;
 @property (weak, nonatomic) IBOutlet UILabel *addPhotoLabel;
 @property (weak, nonatomic) IBOutlet UIView *addressView;
 @property (weak, nonatomic) IBOutlet UITextField *addressTextField;
@@ -55,6 +63,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *driverLoginButton;
 - (IBAction)customerLoginAction:(id)sender;
 - (IBAction)driverLoginAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *addDriversLicenseLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addDriversLicenseButton;
+@property (weak, nonatomic) IBOutlet UIImageView *driversLicenseImageView;
+@property (weak, nonatomic) IBOutlet UIScrollView *signUpScrollView;
+- (IBAction)addProfilePhotoAction:(id)sender;
+- (IBAction)addDriversLicenseAction:(id)sender;
+- (IBAction)addDriversLicenseTapAction:(id)sender;
+- (IBAction)addProfilePhotoTapAction:(id)sender;
+
 
 
 @end

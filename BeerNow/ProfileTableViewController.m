@@ -95,7 +95,7 @@
         NSString *username = [defaults stringForKey:@"currentUsername"];
         self.usernameLabel.text = username;
         self.passwordLabel.text = @"*****";
-        [[[driverPool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
+        [[[[driverPool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(task.error){
                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
@@ -134,7 +134,49 @@
                 }
             });
             return nil;
-        }];
+        }] waitUntilFinished];
+        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        
+        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+        
+        AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+        
+        NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_license.jpg", username]];
+        NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+        
+        AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+        
+        downloadRequest.bucket = @"drinksdriverlicenses";
+        downloadRequest.key = [NSString stringWithFormat:@"%@_license.jpg", username];
+        downloadRequest.downloadingFileURL = downloadingFileURL;
+        [[[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                withBlock:^id(AWSTask *task) {
+                                                                    if (task.error){
+                                                                        if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                            switch (task.error.code) {
+                                                                                case AWSS3TransferManagerErrorCancelled:
+                                                                                case AWSS3TransferManagerErrorPaused:
+                                                                                    break;
+                                                                                    
+                                                                                default:
+                                                                                    NSLog(@"Error: %@", task.error);
+                                                                                    break;
+                                                                            }
+                                                                            
+                                                                        } else {
+                                                                            NSLog(@"Error: %@", task.error);
+                                                                        }
+                                                                    }
+                                                                    
+                                                                    if (task.result) {
+                                                                        AWSS3TransferManagerDownloadOutput *downloadOutput = task.result;
+                                                                        self.driversLicenseImageView.image = [UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                    }
+                                                                    return nil;
+                                                                }] waitUntilFinished];
 
     }
     

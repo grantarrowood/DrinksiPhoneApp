@@ -23,6 +23,7 @@ target ‘BeerNow’ do
     pod 'AWSSimpleDB'
     pod 'AWSSNS'
     pod 'AWSSQS'
+    pod ‘Stripe’
   target ‘BeerNowTests’ do
     inherit! :search_paths
     # Pods for testing

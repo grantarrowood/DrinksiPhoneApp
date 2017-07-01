@@ -167,6 +167,18 @@
                  }
                  return nil;
              }];
+            UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-44, 375, 44)];
+            footerView.backgroundColor = [UIColor whiteColor];
+            UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+            separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+            [footerView addSubview:separatorView];
+            UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+            [acceptButton setTitle:@"Submit Order" forState:UIControlStateNormal];
+            [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [acceptButton addTarget:self action:@selector(submitOrder) forControlEvents:UIControlEventTouchUpInside];
+            [footerView addSubview:acceptButton];
+            [self.navigationController.view addSubview:footerView];
+
             timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
 
         } else {
@@ -211,7 +223,7 @@
                     if (section == 1) {
                         return allLocations.count;
                     } else {
-                        return allMenuItems.count + 1;
+                        return allMenuItems.count;
                     }
                 } else {
                     return allLocations.count;
@@ -240,13 +252,13 @@
                         cell.textLabel.text = [(Locations *)[allLocations objectAtIndex:indexPath.row] Name];
                         cell.detailTextLabel.text = [(Locations *)[allLocations objectAtIndex:indexPath.row] Address];
                     } else {
-                        if(indexPath.row == allMenuItems.count) {
-                            cell = [tableView dequeueReusableCellWithIdentifier:@"submit" forIndexPath:indexPath];
-                        } else {
+//                        if(indexPath.row == allMenuItems.count) {
+//                            cell = [tableView dequeueReusableCellWithIdentifier:@"submit" forIndexPath:indexPath];
+//                        } else {
                             cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
                             cell.textLabel.text = [(MenuItems *)[allMenuItems objectAtIndex:indexPath.row] Name];
                             cell.detailTextLabel.text = [NSString stringWithFormat:@"$%@.00", [(MenuItems *)[allMenuItems objectAtIndex:indexPath.row] Price]];
-                        }
+                       // }
                     }
                 } else {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -305,8 +317,15 @@
                  NSLog(@"The request failed. Error: [%@]", task.error);
              } else {
                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-                 NSInteger numberOfOrders = paginatedOutput.items.count + 1;
-                 newOrder.OrderId = [NSNumber numberWithInteger:numberOfOrders];
+                 NSNumber *highestNumber = @0;
+                 for (Orders *order in paginatedOutput.items) {
+                     //Do something with book.
+                     if (order.OrderId > highestNumber) {
+                         highestNumber = order.OrderId;
+                     }
+                 }
+                 int value = [highestNumber intValue];
+                 newOrder.OrderId = [NSNumber numberWithInt:value + 1];
              }
              return nil;
          }];
@@ -322,14 +341,14 @@
             
         }
         newOrder.Order = orderString;
-        newOrder.Completed = @"NO";
-        newOrder.Selected = @"NO";
+        newOrder.AcceptedDelivery = @"NO";
+        newOrder.DeliveryDate = @"UNKNOWN";
         newOrder.driverUsername = @"UNKNOWN";
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *username = [defaults stringForKey:@"currentUsername"];
         newOrder.customerUsername = username;
         newOrder.paid = @"NO";
-        newOrder.receipt = @"NONE";
+        newOrder.transactionId = @0;
         [[dynamoDBObjectMapper save:newOrder]
          continueWithBlock:^id(AWSTask *task) {
              if (task.error) {
@@ -409,6 +428,17 @@
                      }
                      return nil;
                  }];
+                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-44, 375, 44)];
+                footerView.backgroundColor = [UIColor whiteColor];
+                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [footerView addSubview:separatorView];
+                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+                [acceptButton setTitle:@"Submit Order" forState:UIControlStateNormal];
+                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                [acceptButton addTarget:self action:@selector(submitOrder) forControlEvents:UIControlEventTouchUpInside];
+                [footerView addSubview:acceptButton];
+                [self.navigationController.view addSubview:footerView];
             }
         } else {
             [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
@@ -492,5 +522,72 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)submitOrder {
+    
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+    
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+    Orders *newOrder = [Orders new];
+    
+    [[dynamoDBObjectMapper scan:[Orders class]
+                     expression:scanExpression]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         } else {
+             AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+             NSNumber *highestNumber = @0;
+             for (Orders *order in paginatedOutput.items) {
+                 //Do something with book.
+                 if (order.OrderId > highestNumber) {
+                     highestNumber = order.OrderId;
+                 }
+             }
+             int value = [highestNumber intValue];
+             newOrder.OrderId = [NSNumber numberWithInt:value + 1];
+         }
+         return nil;
+     }];
+    sleep(2);
+    newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
+    newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
+    for (int i = 0; i < selectedMenuItems.count; i++) {
+        if (orderString.length > 0) {
+            orderString = [NSString stringWithFormat:@"%@, {%@, %@}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+        } else {
+            orderString = [NSString stringWithFormat:@"{%@, %@}", [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+        }
+        
+    }
+    newOrder.Order = orderString;
+    newOrder.AcceptedDelivery = @"NO";
+    newOrder.DeliveryDate = @"UNKNOWN";
+
+    newOrder.driverUsername = @"UNKNOWN";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults stringForKey:@"currentUsername"];
+    newOrder.customerUsername = username;
+    newOrder.paid = @"NO";
+    newOrder.transactionId = @0;
+    [[[dynamoDBObjectMapper save:newOrder]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         } else {
+             //Do something with task.result or perform other operations.
+
+         }
+         return nil;
+     }] waitUntilFinished];
+    [self performSegueWithIdentifier:@"submitOrder" sender:nil];
+
+}
 
 @end

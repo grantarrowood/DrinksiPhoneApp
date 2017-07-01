@@ -24,6 +24,14 @@
 		9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */; };
 		9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */; };
 		9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */; };
+		9C6113911F06D379007D0789 /* ServingAtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6113901F06D379007D0789 /* ServingAtViewController.m */; };
+		9C6DCCB81F046AA6002D5DAE /* DriverAcceptOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */; };
+		9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */; };
+		9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCBF1F0470BE002D5DAE /* libz.tbd */; };
+		9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */; };
+		9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */; };
+		9C861E1B1F0487C00003098C /* MicroBlink.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C861E191F0487C00003098C /* MicroBlink.bundle */; };
+		9C861E1C1F0487C00003098C /* MicroBlink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C861E1A1F0487C00003098C /* MicroBlink.framework */; };
 		9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */; };
 		9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA9EACE1EF89DBA008501DE /* PassKit.framework */; };
 		9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392191EF4D3EE00FD458D /* DriverMainViewController.m */; };
@@ -33,6 +41,8 @@
 		9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392251EF769FC00FD458D /* DetailTableViewCell.m */; };
 		9CB392291EF822B200FD458D /* YourOrdersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */; };
 		9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3922A1EF850BB00FD458D /* CoreLocation.framework */; };
+		9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */; };
+		9CF276021F01FC910079672F /* Transactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF276011F01FC910079672F /* Transactions.m */; };
 		9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */; };
 		9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD231ED9EABB00C61003 /* Locations.m */; };
 		9CF8AD271EDA01E400C61003 /* Areas.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF8AD261EDA01E400C61003 /* Areas.m */; };
@@ -98,6 +108,16 @@
 		9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C5DCCC11ED6853500FA93E6 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9C61138F1F06D379007D0789 /* ServingAtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServingAtViewController.h; sourceTree = "<group>"; };
+		9C6113901F06D379007D0789 /* ServingAtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServingAtViewController.m; sourceTree = "<group>"; };
+		9C6DCCB61F046AA5002D5DAE /* DriverAcceptOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverAcceptOrderViewController.h; sourceTree = "<group>"; };
+		9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverAcceptOrderViewController.m; sourceTree = "<group>"; };
+		9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		9C6DCCBF1F0470BE002D5DAE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		9C861E191F0487C00003098C /* MicroBlink.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MicroBlink.bundle; sourceTree = "<group>"; };
+		9C861E1A1F0487C00003098C /* MicroBlink.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MicroBlink.framework; sourceTree = "<group>"; };
 		9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaySequencePopoverViewController.h; sourceTree = "<group>"; };
 		9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaySequencePopoverViewController.m; sourceTree = "<group>"; };
 		9CA9EACE1EF89DBA008501DE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
@@ -115,6 +135,10 @@
 		9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YourOrdersTableViewController.m; sourceTree = "<group>"; };
 		9CB3922A1EF850BB00FD458D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9CB3922C1EF86E7D00FD458D /* BeerNow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BeerNow.entitlements; sourceTree = "<group>"; };
+		9CD8F5A61EFD7A83006BC414 /* CustomerLicenseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerLicenseTableViewCell.h; sourceTree = "<group>"; };
+		9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerLicenseTableViewCell.m; sourceTree = "<group>"; };
+		9CF276001F01FC910079672F /* Transactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transactions.h; sourceTree = "<group>"; };
+		9CF276011F01FC910079672F /* Transactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transactions.m; sourceTree = "<group>"; };
 		9CF8AD1F1ED9CC5F00C61003 /* OrderNowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNowTableViewController.h; sourceTree = "<group>"; };
 		9CF8AD201ED9CC5F00C61003 /* OrderNowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderNowTableViewController.m; sourceTree = "<group>"; };
 		9CF8AD221ED9EABB00C61003 /* Locations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locations.h; sourceTree = "<group>"; };
@@ -131,6 +155,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C6DCCC41F0470D1002D5DAE /* Accelerate.framework in Frameworks */,
+				9C6DCCC21F0470C9002D5DAE /* libiconv.tbd in Frameworks */,
+				9C6DCCC01F0470BE002D5DAE /* libz.tbd in Frameworks */,
+				9C861E1C1F0487C00003098C /* MicroBlink.framework in Frameworks */,
+				9C6DCCBE1F0470B5002D5DAE /* libc++.tbd in Frameworks */,
 				9CA9EACF1EF89DBA008501DE /* PassKit.framework in Frameworks */,
 				9CB3922B1EF850BB00FD458D /* CoreLocation.framework in Frameworks */,
 				9C219B071EF9C94900DDF258 /* MapKit.framework in Frameworks */,
@@ -160,6 +189,10 @@
 		03854700A122053B4DB70296 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C6DCCC31F0470D1002D5DAE /* Accelerate.framework */,
+				9C6DCCC11F0470C9002D5DAE /* libiconv.tbd */,
+				9C6DCCBF1F0470BE002D5DAE /* libz.tbd */,
+				9C6DCCBD1F0470B5002D5DAE /* libc++.tbd */,
 				9C219B061EF9C94900DDF258 /* MapKit.framework */,
 				9CA9EACE1EF89DBA008501DE /* PassKit.framework */,
 				9CB3922A1EF850BB00FD458D /* CoreLocation.framework */,
@@ -200,6 +233,8 @@
 				9C58AFEF1ED64A1800EB8E62 /* AppDelegate.m */,
 				9C58AFF11ED64A1800EB8E62 /* ViewController.h */,
 				9C58AFF21ED64A1800EB8E62 /* ViewController.m */,
+				9C61138F1F06D379007D0789 /* ServingAtViewController.h */,
+				9C6113901F06D379007D0789 /* ServingAtViewController.m */,
 				9C5DCCBD1ED6756500FA93E6 /* SidebarTableViewController.h */,
 				9C5DCCBE1ED6756500FA93E6 /* SidebarTableViewController.m */,
 				9C5DCCC01ED6853500FA93E6 /* LoginViewController.h */,
@@ -216,12 +251,16 @@
 				9CB392281EF822B200FD458D /* YourOrdersTableViewController.m */,
 				9CA9EACB1EF890FD008501DE /* PaySequencePopoverViewController.h */,
 				9CA9EACC1EF890FD008501DE /* PaySequencePopoverViewController.m */,
+				9C6DCCB61F046AA5002D5DAE /* DriverAcceptOrderViewController.h */,
+				9C6DCCB71F046AA6002D5DAE /* DriverAcceptOrderViewController.m */,
 				9C219B081EF9C9A700DDF258 /* NearYouViewController.h */,
 				9C219B091EF9C9A700DDF258 /* NearYouViewController.m */,
 				9CB392211EF70BBB00FD458D /* ItemTableViewCell.h */,
 				9CB392221EF70BBB00FD458D /* ItemTableViewCell.m */,
 				9CB392241EF769FC00FD458D /* DetailTableViewCell.h */,
 				9CB392251EF769FC00FD458D /* DetailTableViewCell.m */,
+				9CD8F5A61EFD7A83006BC414 /* CustomerLicenseTableViewCell.h */,
+				9CD8F5A71EFD7A83006BC414 /* CustomerLicenseTableViewCell.m */,
 				9C039D961EEF29A1006476BA /* Orders.h */,
 				9C039D971EEF29A1006476BA /* Orders.m */,
 				9CF8AD221ED9EABB00C61003 /* Locations.h */,
@@ -230,6 +269,8 @@
 				9CF8AD261EDA01E400C61003 /* Areas.m */,
 				9CF8AD281EDA141A00C61003 /* MenuItems.h */,
 				9CF8AD291EDA141A00C61003 /* MenuItems.m */,
+				9CF276001F01FC910079672F /* Transactions.h */,
+				9CF276011F01FC910079672F /* Transactions.m */,
 				9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */,
 				9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */,
 				9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */,
@@ -246,6 +287,8 @@
 		9C58AFEB1ED64A1800EB8E62 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9C861E191F0487C00003098C /* MicroBlink.bundle */,
+				9C861E1A1F0487C00003098C /* MicroBlink.framework */,
 				9C58B01E1ED6730E00EB8E62 /* SWRevealViewController.h */,
 				9C58B01F1ED6730E00EB8E62 /* SWRevealViewController.m */,
 				9C58AFEC1ED64A1800EB8E62 /* main.m */,
@@ -416,6 +459,7 @@
 				9C58AFFB1ED64A1800EB8E62 /* LaunchScreen.storyboard in Resources */,
 				9C58AFF81ED64A1800EB8E62 /* Assets.xcassets in Resources */,
 				9C58AFF61ED64A1800EB8E62 /* Main.storyboard in Resources */,
+				9C861E1B1F0487C00003098C /* MicroBlink.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,14 +607,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C6113911F06D379007D0789 /* ServingAtViewController.m in Sources */,
 				9C5DCCBF1ED6756500FA93E6 /* SidebarTableViewController.m in Sources */,
 				9CB3921A1EF4D3EE00FD458D /* DriverMainViewController.m in Sources */,
 				9CB3921D1EF5B85900FD458D /* AvailableOrdersTableViewController.m in Sources */,
 				9C2C2FC61EF9A47300343AB0 /* ProfileTableViewController.m in Sources */,
+				9CF276021F01FC910079672F /* Transactions.m in Sources */,
 				9C219B0A1EF9C9A700DDF258 /* NearYouViewController.m in Sources */,
 				9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */,
 				9C58AFF31ED64A1800EB8E62 /* ViewController.m in Sources */,
 				9C039D981EEF29A1006476BA /* Orders.m in Sources */,
+				9C6DCCB81F046AA6002D5DAE /* DriverAcceptOrderViewController.m in Sources */,
 				9CF8AD241ED9EABB00C61003 /* Locations.m in Sources */,
 				9CA9EACD1EF890FD008501DE /* PaySequencePopoverViewController.m in Sources */,
 				9CB392261EF769FC00FD458D /* DetailTableViewCell.m in Sources */,
@@ -580,6 +627,7 @@
 				9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */,
 				9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
+				9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */,
 				9CB392231EF70BBB00FD458D /* ItemTableViewCell.m in Sources */,
 				9C58AFED1ED64A1800EB8E62 /* main.m in Sources */,
 				9C58B0201ED6730E00EB8E62 /* SWRevealViewController.m in Sources */,
@@ -736,6 +784,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BeerNow",
+				);
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
@@ -754,6 +806,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
 				DEVELOPMENT_TEAM = N5WA24M8FS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BeerNow",
+				);
 				INFOPLIST_FILE = BeerNow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;

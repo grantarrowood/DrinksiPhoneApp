@@ -14,12 +14,21 @@
 #import "MenuItems.h"
 #import "Orders.h"
 #import "OrderDetailsTableViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface YourOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+
+@interface YourOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate> {
     
-    NSMutableArray *ordersArray;
+    NSMutableArray *currentOrdersArray;
+    NSMutableArray *pastOrdersArray;
     NSTimer *timer;
     NSNumber *orderNumSelected;
+    CLLocationManager *locationManager;
+    CLLocation *currentLoc;
+    NSMutableArray *locationsArray;
+    NSMutableArray *distanceAwayArray;
+    UIActivityIndicatorView *spinner;
+    UIView *greyView;
     
 }
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

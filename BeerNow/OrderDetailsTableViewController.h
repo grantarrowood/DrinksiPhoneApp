@@ -15,8 +15,12 @@
 #import "DetailTableViewCell.h"
 #import <CoreLocation/CoreLocation.h>
 #import "PaySequencePopoverViewController.h"
+#import "AWSCognitoIdentityProviderService.h"
+#import <AWSS3/AWSS3.h>
+#import "CustomerLicenseTableViewCell.h"
+#import "DriverAcceptOrderViewController.h"
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate, AcceptDelegate> {
     NSMutableArray *orderItems;
     NSTimer *timerTwo;
     NSTimer *timer;
@@ -34,6 +38,10 @@
     double deliveryFee;
     CLLocationManager *locationManager;
     CLLocation *currentLoc;
+    CLLocation *restaurantLoc;
+    UIImage *customerDriversLicense;
+    NSString *driverStripeId;
+    NSNumber *transactionId;
 }
 
 @property (strong) NSNumber *orderId;

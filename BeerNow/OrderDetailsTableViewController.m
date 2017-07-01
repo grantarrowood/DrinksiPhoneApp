@@ -14,10 +14,22 @@
 
 @implementation OrderDetailsTableViewController
 
+
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSLog(@"View Will Appear!");
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     orderItems = [[NSMutableArray alloc] init];
     locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [locationManager startUpdatingLocation];
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -47,6 +59,7 @@
              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
              for (Orders *order in paginatedOutput.items) {
                  if (order.OrderId == _orderId) {
+                     transactionId = order.transactionId;
                      driverUsername = order.driverUsername;
                      customerUsername = order.customerUsername;
                      locationName = order.Location;
@@ -77,81 +90,128 @@
                      NSString *userPool = [defaults stringForKey:@"userPool"];
                      if ([userPool isEqualToString:@"CUSTOMER"]) {
                          AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-                         
-                         AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
-                         
-                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
-                         
-                         AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
-                        driverPool.delegate = self;
-                         [[[driverPool getUser:driverUsername] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 if(task.error){
-                                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                                 message:task.error.userInfo[@"message"]
-                                                                delegate:self
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"Retry", nil] show];
-                                 }else{
-                                     AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
-                                     //do something with response.userAttributes
-                                     for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
-                                         //print the user attributes
-                                         NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                                         if([attribute.name isEqualToString:@"name"]) {
-                                             driverName = attribute.value;
-                                         } //else if([attribute.name isEqualToString:@"address"]) {
-//                                             customerAddress = attribute.value;
-//                                         }
+                         AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+                         pool.delegate = self;
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
+                         [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksDriverPool"];
+                         AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
+                         user.username = driverUsername;
+                         user.userPoolId = @"us-east-1_KpiGHtI7M";
+                         [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
+                             if(task.error){
+                                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                             message:task.error.userInfo[@"message"]
+                                                            delegate:self
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"Retry", nil] show];
+                             }else{
+                                 AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                                 //do something with response.userAttributes
+                                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                                     //print the user attributes
+                                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                                     if([attribute.name isEqualToString:@"name"]) {
+                                         driverName = attribute.value;
+                                     } else if([attribute.name isEqualToString:@"custom:stripeUserId"]) {
+                                         driverStripeId = attribute.value;
                                      }
                                  }
-                             });
+                             }
                              return nil;
-                         }];
+                         }] waitUntilFinished];
 
                      } else {
                          AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-                         
-                         AWSCognitoIdentityUserPoolConfiguration *configurationPool = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
-                         
-                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configurationPool forKey:@"DrinksCustomerPool"];
-                         
+                         AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksCustomerPool"];
                          AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
                          pool.delegate = self;
-                         [[[pool getUser:customerUsername] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 if(task.error){
-                                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                                 message:task.error.userInfo[@"message"]
-                                                                delegate:self
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"Retry", nil] show];
-                                 }else{
-                                     AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
-                                     //do something with response.userAttributes
-                                     for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
-                                         //print the user attributes
-                                         NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                                         if([attribute.name isEqualToString:@"name"]) {
-                                             customerName = attribute.value;
-                                         } else if([attribute.name isEqualToString:@"address"]) {
-                                             customerAddress = attribute.value;
-                                         }
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
+                         [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksCustomerPool"];
+                         AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksCustomerPool"];
+                         AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
+                         user.username = customerUsername;
+                         user.userPoolId = @"us-east-1_rwnjPpBrw";
+                        [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
+                             if(task.error){
+                                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                             message:task.error.userInfo[@"message"]
+                                                            delegate:self
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"Retry", nil] show];
+                             }else{
+                                 AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                                 //do something with response.userAttributes
+                                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                                     //print the user attributes
+                                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                                     if([attribute.name isEqualToString:@"name"]) {
+                                         customerName = attribute.value;
+                                     } else if([attribute.name isEqualToString:@"address"]) {
+                                         customerAddress = attribute.value;
                                      }
                                  }
-                             });
+                             }
                              return nil;
-                         }];
+                         }] waitUntilFinished];
                      }
                      
                      isPaid = order.paid;
+                     if ([isPaid isEqualToString: @"YES"]) {
+                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                                         identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+                         
+                         AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+                         
+                         AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+                         
+                         AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+                         
+                         NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", customerUsername,transactionId]];
+                         NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+                         
+                         AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+                         
+                         downloadRequest.bucket = @"drinkscustomerdriverslicense";
+                         downloadRequest.key = [NSString stringWithFormat:@"%@_CUSTOMERDRIVERSLICENSE_%@.jpg", customerUsername,transactionId];
+                         downloadRequest.downloadingFileURL = downloadingFileURL;
+                         [[[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                                withBlock:^id(AWSTask *task) {
+                                                                                    if (task.error){
+                                                                                        if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                            switch (task.error.code) {
+                                                                                                case AWSS3TransferManagerErrorCancelled:
+                                                                                                case AWSS3TransferManagerErrorPaused:
+                                                                                                    break;
+                                                                                                    
+                                                                                                default:
+                                                                                                    NSLog(@"Error: %@", task.error);
+                                                                                                    break;
+                                                                                            }
+                                                                                            
+                                                                                        } else {
+                                                                                            NSLog(@"Error: %@", task.error);
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    if (task.result) {
+                                                                                        AWSS3TransferManagerDownloadOutput *downloadOutput = task.result;
+                                                                                        customerDriversLicense = [UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                                    }
+                                                                                    return nil;
+                                                                                }] waitUntilFinished];
+
+                     }
                      if ([driverUsername isEqualToString:@"UNKNOWN"]) {
                          orderStatus = @"Awaiting Driver";
                      } else {
                          if ([isPaid isEqualToString:@"NO"]) {
                              orderStatus = @"Awaiting Payment";
                          } else {
-                             if ([order.Completed isEqualToString:@"NO"]) {
+                             if ([order.AcceptedDelivery isEqualToString:@"NO"]) {
                                  orderStatus = @"On the Way";
                              } else {
                                  orderStatus = @"Order Completed";
@@ -187,7 +247,7 @@
     [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
     [self.view addSubview:spinner];
     [spinner startAnimating];
-    timer = [NSTimer scheduledTimerWithTimeInterval:7.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:4.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
 }
 
 -(void)getTable {
@@ -231,7 +291,7 @@
                 separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
                 [footerView addSubview:separatorView];
                 UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-                [acceptButton setTitle:@"Order Delivered" forState:UIControlStateNormal];
+                [acceptButton setTitle:@"Problem?" forState:UIControlStateNormal];
                 [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
                 //[acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
                 [footerView addSubview:acceptButton];
@@ -253,15 +313,28 @@
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         } else {
+            if([isPaid isEqualToString:@"YES"]) {
+                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 579, 375, 44)];
+                footerView.backgroundColor = [UIColor whiteColor];
+                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+                [footerView addSubview:separatorView];
+                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+                [acceptButton setTitle:@"Deliver" forState:UIControlStateNormal];
+                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+                [acceptButton addTarget:self action:@selector(deliverOrder) forControlEvents:UIControlEventTouchUpInside];
+                [footerView addSubview:acceptButton];
+                [self.navigationController.view addSubview:footerView];
+            }
             UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
             footerView.backgroundColor = [UIColor whiteColor];
             UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
             separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
             [footerView addSubview:separatorView];
             UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-            [acceptButton setTitle:@"Deliver" forState:UIControlStateNormal];
+            [acceptButton setTitle:@"Problem?" forState:UIControlStateNormal];
             [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            //[acceptButton addTarget:self action:@selector(acceptAction) forControlEvents:UIControlEventTouchUpInside];
+            //[acceptButton addTarget:self action:@selector() forControlEvents:UIControlEventTouchUpInside];
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         }
@@ -270,25 +343,26 @@
 
 -(void)getDeliveryFee {
     [timerTwo invalidate];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    [locationManager startUpdatingLocation];
-    sleep(0.5);
-    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
-    CLLocation *restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
-    CLLocationCoordinate2D customerCoordinate = [self geoCodeUsingAddress:customerAddress];
-    CLLocation *customerLoc = [[CLLocation alloc] initWithLatitude:customerCoordinate.latitude longitude:customerCoordinate.longitude];
-    float milesToHouse = ([restaurantLoc distanceFromLocation:customerLoc]/1000)/1.60934;
-    float milesToStore = ([restaurantLoc distanceFromLocation:currentLoc]/1000)/1.60934;
-    float totalMiles = milesToHouse+milesToStore;
-    
-    // 18 mi / g --- $2.50 / g
-    float gasCosts = (totalMiles/18.0) * 2.5;
-    // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
-    float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
-    float totalCosts = gasCosts+timeCosts;
-    deliveryFee = totalCosts+6.0;
+//    locationManager.delegate = self;
+//    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    
+//    [locationManager startUpdatingLocation];
+//    sleep(0.5);
+//    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
+//    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+//    
+//    CLLocationCoordinate2D customerCoordinate = [self geoCodeUsingAddress:customerAddress];
+//    CLLocation *customerLoc = [[CLLocation alloc] initWithLatitude:customerCoordinate.latitude longitude:customerCoordinate.longitude];
+//    float milesToHouse = ([restaurantLoc distanceFromLocation:customerLoc]/1000)/1.60934;
+//    float milesToStore = ([restaurantLoc distanceFromLocation:currentLoc]/1000)/1.60934;
+//    float totalMiles = milesToHouse+milesToStore;
+//    
+//    // 18 mi / g --- $2.50 / g
+//    float gasCosts = (totalMiles/18.0) * 2.5;
+//    // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
+//    float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
+//    float totalCosts = gasCosts+timeCosts;
+    deliveryFee = 4.0+6.0;
 }
 
 - (CLLocationCoordinate2D) geoCodeUsingAddress:(NSString *)address
@@ -350,7 +424,11 @@
         if ([userPool isEqualToString:@"CUSTOMER"]) {
             return 5;
         } else {
-            return 6;
+            if ([isPaid isEqualToString:@"YES"]) {
+                return 7;
+            } else {
+                return 6;
+            }
         }
         return 0;
     } else if(section == 1) {
@@ -487,6 +565,10 @@
             cell.detailDynamicLabel.minimumFontSize = 10;
             cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
             return cell;
+        } else if (indexPath.row == 6) {
+            CustomerLicenseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"customerLicense" forIndexPath:indexPath];
+            cell.licenseImageView.image = customerDriversLicense;
+            return cell;
         }
     } else {
         if ([driverUsername isEqualToString:@"UNKNOWN"]) {
@@ -549,6 +631,17 @@
     return nil;
 }
 
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 6) {
+        return 290;
+    }
+    return 44;
+}
+
+
+
 -(void)acceptAction {
     Orders *newOrder = [Orders new];
 
@@ -585,13 +678,12 @@
                          newOrder.Order = [NSString stringWithFormat:@"%@, {DeliveryFee, %.2f}", order.Order, deliveryFee];
                          newOrder.customerUsername = order.customerUsername;
                          newOrder.OrderId = _orderId;
-                         newOrder.Completed = @"NO";
-                         newOrder.Selected = @"YES";
+                         newOrder.AcceptedDelivery = @"NO";
                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                          NSString *username = [defaults stringForKey:@"currentUsername"];
                          newOrder.driverUsername = username;
                          newOrder.paid = @"NO";
-                         newOrder.receipt = @"NONE";
+                         newOrder.transactionId = @0;
                          [[dynamoDBObjectMapper save:newOrder]
                           continueWithBlock:^id(AWSTask *task) {
                               if (task.error) {
@@ -655,6 +747,9 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
     controller.orderDetails = orderItems;
+    controller.orderId = _orderId;
+    controller.driverStripeId = driverStripeId;
+    controller.payDelegate = self;
     // present the controller
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet
@@ -688,6 +783,33 @@
 }
 
 
+-(void)deliverOrder {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DriverAcceptOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"driverAcceptViewController"];
+    controller.orderDetails = orderItems;
+    controller.transactionId = transactionId;
+    controller.orderId = _orderId;
+    controller.acceptDelegate = self;
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    popController.sourceView = self.view;
+    popController.sourceRect = CGRectMake(10, 50, 355, 567);
+
+//    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
+//    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+//    
+//    NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f",currentLoc.coordinate.latitude, currentLoc.coordinate.longitude, restaurantLoc.coordinate.latitude, restaurantLoc.coordinate.longitude];
+//    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: directionsURL]];
+}
+
 #pragma mark - Navigation
 /*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -709,6 +831,30 @@
         } else {
             [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
         }
+    }
+}
+
+- (void)payViewControllerDismissed:(NSString *)paid
+{
+    greyView = [[UIView alloc] initWithFrame:self.view.frame];
+    greyView.backgroundColor = [UIColor grayColor];
+    greyView.alpha = 0.5;
+    [self.view addSubview:greyView];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+    if([paid isEqualToString:@"YES"]) {
+        isPaid = @"YES";
+        orderStatus = @"On the Way";
+        [self getTable];
+    }
+}
+
+- (void)acceptViewControllerDismissed:(NSString *)accepted
+{
+    if([accepted isEqualToString:@"YES"]) {
+        [self performSegueWithIdentifier:@"acceptedOrder" sender:nil];
     }
 }
 @end

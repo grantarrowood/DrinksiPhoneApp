@@ -14,7 +14,9 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_C6FhEd8zoD4zqkHDTJ5iWEy9"];
+    [[STPPaymentConfiguration sharedConfiguration] setAppleMerchantIdentifier:@"merchant.com.drinks.pigletproducts"];
     return YES;
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -42,6 +44,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
 
 
 @end

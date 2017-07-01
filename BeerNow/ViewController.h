@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
+#import <AWSS3/AWSS3.h>
+
 
 @interface ViewController : UIViewController
 
@@ -20,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *starImangeView;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 
 @end
 

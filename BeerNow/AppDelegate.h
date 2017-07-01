@@ -10,6 +10,7 @@
 #import <AWSCore/AWSCore.h>
 #import <AWSCognito/AWSCognito.h>
 #import "AWSCognitoIdentityProvider.h"
+#import <Stripe/Stripe.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
