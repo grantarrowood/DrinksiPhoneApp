@@ -18,16 +18,16 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     paymentSuccess = NO;
-    self.imageView.hidden = YES;
-    self.imageView.image = [UIImage imageNamed:@"campusImage"];
-//    if (self.imageView.image == nil) {
-//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//        picker.delegate = self;
-//        picker.allowsEditing = YES;
-//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        
-//        [self presentViewController:picker animated:YES completion:NULL];
-//    }
+//    self.imageView.hidden = YES;
+//    self.imageView.image = [UIImage imageNamed:@"campusImage"];
+    if (self.imageView.image == nil) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+    }
     total = [[NSNumber alloc] init];
     for (int i = 0; i<_orderDetails.count; i++) {
         total = [NSNumber numberWithFloat:([total floatValue] + [[_orderDetails objectAtIndex:i][1] floatValue])];

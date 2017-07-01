@@ -343,26 +343,26 @@
 
 -(void)getDeliveryFee {
     [timerTwo invalidate];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    [locationManager startUpdatingLocation];
-    sleep(0.5);
-    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
-    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
-    
-    CLLocationCoordinate2D customerCoordinate = [self geoCodeUsingAddress:customerAddress];
-    CLLocation *customerLoc = [[CLLocation alloc] initWithLatitude:customerCoordinate.latitude longitude:customerCoordinate.longitude];
-    float milesToHouse = ([restaurantLoc distanceFromLocation:customerLoc]/1000)/1.60934;
-    float milesToStore = ([restaurantLoc distanceFromLocation:currentLoc]/1000)/1.60934;
-    float totalMiles = milesToHouse+milesToStore;
-    
-    // 18 mi / g --- $2.50 / g
-    float gasCosts = (totalMiles/18.0) * 2.5;
-    // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
-    float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
-    float totalCosts = gasCosts+timeCosts;
-    deliveryFee = totalCosts+6.0;
+//    locationManager.delegate = self;
+//    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    
+//    [locationManager startUpdatingLocation];
+//    sleep(0.5);
+//    CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:locationAddress];
+//    restaurantLoc = [[CLLocation alloc] initWithLatitude:locationCoordinate.latitude longitude:locationCoordinate.longitude];
+//    
+//    CLLocationCoordinate2D customerCoordinate = [self geoCodeUsingAddress:customerAddress];
+//    CLLocation *customerLoc = [[CLLocation alloc] initWithLatitude:customerCoordinate.latitude longitude:customerCoordinate.longitude];
+//    float milesToHouse = ([restaurantLoc distanceFromLocation:customerLoc]/1000)/1.60934;
+//    float milesToStore = ([restaurantLoc distanceFromLocation:currentLoc]/1000)/1.60934;
+//    float totalMiles = milesToHouse+milesToStore;
+//    
+//    // 18 mi / g --- $2.50 / g
+//    float gasCosts = (totalMiles/18.0) * 2.5;
+//    // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
+//    float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
+//    float totalCosts = gasCosts+timeCosts;
+    deliveryFee = 4.0+6.0;
 }
 
 - (CLLocationCoordinate2D) geoCodeUsingAddress:(NSString *)address

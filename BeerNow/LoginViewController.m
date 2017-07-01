@@ -305,7 +305,7 @@
             AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
             phone.name = @"phone_number";
             //phone number must be prefixed by country code
-            phone.value = self.phoneTextField.text;
+            phone.value = [NSString stringWithFormat:@"+1%@",self.phoneTextField.text];
             AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
             email.name = @"email";
             email.value = self.emailTextField.text;
@@ -982,7 +982,7 @@
         AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
         phone.name = @"phone_number";
         //phone number must be prefixed by country code
-        phone.value = self.phoneTextField.text;
+        phone.value = [NSString stringWithFormat:@"+1%@",self.phoneTextField.text];
         AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
         email.name = @"email";
         email.value = self.emailTextField.text;

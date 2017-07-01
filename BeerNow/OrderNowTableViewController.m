@@ -523,6 +523,7 @@
 }
 */
 -(void)submitOrder {
+    
     AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
                                                                                                     identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
     
@@ -575,15 +576,17 @@
     newOrder.customerUsername = username;
     newOrder.paid = @"NO";
     newOrder.transactionId = @0;
-    [[dynamoDBObjectMapper save:newOrder]
+    [[[dynamoDBObjectMapper save:newOrder]
      continueWithBlock:^id(AWSTask *task) {
          if (task.error) {
              NSLog(@"The request failed. Error: [%@]", task.error);
          } else {
              //Do something with task.result or perform other operations.
+
          }
          return nil;
-     }];
+     }] waitUntilFinished];
+    [self performSegueWithIdentifier:@"submitOrder" sender:nil];
 
 }
 
