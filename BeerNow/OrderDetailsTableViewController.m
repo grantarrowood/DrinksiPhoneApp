@@ -79,7 +79,7 @@
                                       locationAddress = location.Address;
                                       if ([driverUsername isEqualToString:@"UNKNOWN"]) {
                                           sleep(1);
-                                          [self getDeliveryFee];
+                                          //[self getDeliveryFee];
                                       }
                                   }
                               }
@@ -434,9 +434,9 @@
     } else if(section == 1) {
         if (orderItems.count > 0) {
             if ([driverUsername isEqualToString:@"UNKNOWN"]) {
-                return orderItems.count+3;
+                return orderItems.count+1;
             } else {
-                return orderItems.count+2;
+                return orderItems.count+1;
             }
         }
         return 1;
@@ -575,14 +575,14 @@
             if (indexPath.row == 0) {
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"static6" forIndexPath:indexPath];
                 return cell;
-            } else if (indexPath.row == orderItems.count+1) {
+            } /*else if (indexPath.row == orderItems.count+1) {
                 ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"items" forIndexPath:indexPath];
                 cell.itemNameLabel.text = @"Delivery Fee";
                 cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%.2f", deliveryFee];
                 //[cell.itemPriceLabel sizeToFit];
                 [cell.itemNameLabel sizeToFit];
                 return cell;
-            } else if (indexPath.row == orderItems.count+2) {
+            }*/ else if (indexPath.row == orderItems.count+1) {
                 ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"items" forIndexPath:indexPath];
                 cell.itemNameLabel.text = @"Total:";
                 float total = 0;
@@ -675,7 +675,8 @@
                      } else {
                          newOrder.Area = order.Area;
                          newOrder.Location = order.Location;
-                         newOrder.Order = [NSString stringWithFormat:@"%@, {DeliveryFee, %.2f}", order.Order, deliveryFee];
+//                         newOrder.Order = [NSString stringWithFormat:@"%@, {DeliveryFee, %.2f}", order.Order, deliveryFee];
+                         newOrder.Order = order.Order;
                          newOrder.customerUsername = order.customerUsername;
                          newOrder.OrderId = _orderId;
                          newOrder.AcceptedDelivery = @"NO";

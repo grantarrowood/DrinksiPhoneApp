@@ -13,6 +13,7 @@
     NSTimer *timer;
     UIActivityIndicatorView *spinner;
     UIView *greyView;
+    CGPoint svos;
 }
 @end
 
@@ -100,22 +101,39 @@
     [self.carLoginImage addSubview:carEffectView];
     
     
-    
+    UIColor *color = [UIColor colorWithRed:169.0/255.0 green:169.0/255.0 blue:169.0/255.0 alpha:1.0];
+
     self.usernameView.layer.cornerRadius = 20;
     self.passwordView.layer.cornerRadius = 20;
     self.loginButtonView.layer.cornerRadius = 20;
     self.nameView.layer.cornerRadius = 20;
     self.emailView.layer.cornerRadius = 20;
     self.phoneView.layer.cornerRadius = 20;
-    self.addressView.layer.cornerRadius = 20;
+    self.streetAddressView.layer.cornerRadius = 20;
+    self.cityView.layer.cornerRadius = 20;
+    self.stateView.layer.cornerRadius = 20;
     self.birthdateView.layer.cornerRadius = 20;
+    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username or Email" attributes:@{NSForegroundColorAttributeName: color}];
+    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
+    self.nameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Full Name" attributes:@{NSForegroundColorAttributeName: color}];
+    self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
+    self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Phone Number" attributes:@{NSForegroundColorAttributeName: color}];
+    self.streetAddressTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Street Address" attributes:@{NSForegroundColorAttributeName: color}];
+    self.cityTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"City" attributes:@{NSForegroundColorAttributeName: color}];
+    self.stateTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"State" attributes:@{NSForegroundColorAttributeName: color}];
+    self.birthdateTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Birthday(MM/DD/YYYY)" attributes:@{NSForegroundColorAttributeName: color}];
+    
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
     [self.signUpScrollView addGestureRecognizer:recognizer];
     
 }
 
 -(void)returnTextField {
-    [self.view endEditing:YES];
+    if(([self.usernameTextField isFirstResponder]) || ([self.passwordTextField isFirstResponder]) || ([self.nameTextField isFirstResponder]) || ([self.emailTextField isFirstResponder]) || ([self.phoneTextField isFirstResponder]) || ([self.streetAddressTextField isFirstResponder]) || ([self.cityTextField isFirstResponder]) || ([self.stateTextField isFirstResponder]) || ([self.birthdateTextField isFirstResponder])) {
+        [self.signUpScrollView setContentOffset:svos animated:YES];
+        [self.view endEditing:YES];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -314,7 +332,7 @@
             birthdate.value = self.birthdateTextField.text;
             AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
             address.name = @"address";
-            address.value = self.addressTextField.text;
+            address.value = [NSString stringWithFormat:@"%@, %@, %@",self.streetAddressTextField.text,self.cityTextField.text,self.stateTextField.text];
             AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
             name.name = @"name";
             name.value = self.nameTextField.text;
@@ -366,7 +384,9 @@
         self.addDriversLicenseButton.hidden = NO;
     }
     [self.drinksLabel sizeToFit];
-    self.usernameTextField.placeholder = @"Username";
+    UIColor *color = [UIColor colorWithRed:169.0/255.0 green:169.0/255.0 blue:169.0/255.0 alpha:1.0];
+
+    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username" attributes:@{NSForegroundColorAttributeName: color}];
     self.profileImageView.alpha = 0.0;
     self.profileImageView.hidden = NO;
     self.addProfilePhotoButton.alpha = 0.0;
@@ -377,8 +397,12 @@
     self.emailView.hidden = NO;
     self.phoneView.alpha = 0.0;
     self.phoneView.hidden = NO;
-    self.addressView.alpha = 0.0;
-    self.addressView.hidden = NO;
+    self.streetAddressView.alpha = 0.0;
+    self.streetAddressView.hidden = NO;
+    self.cityView.alpha = 0.0;
+    self.cityView.hidden = NO;
+    self.stateView.alpha = 0.0;
+    self.stateView.hidden = NO;
     self.birthdateView.alpha = 0.0;
     self.birthdateView.hidden = NO;
     self.backButton.alpha = 0.0;
@@ -392,7 +416,9 @@
                          self.nameView.alpha = 0.75;
                          self.emailView.alpha = 0.75;
                          self.phoneView.alpha = 0.75;
-                         self.addressView.alpha = 0.75;
+                         self.streetAddressView.alpha = 0.75;
+                         self.cityView.alpha = 0.75;
+                         self.stateView.alpha = 0.75;
                          self.birthdateView.alpha = 0.75;
                          self.backButton.alpha = 1.0;
 
@@ -406,9 +432,9 @@
                      animations:^{
                          self.drinksLabel.transform = CGAffineTransformMakeTranslation(0, -105);
                          if([loginType isEqualToString:@"CUSTOMER"]) {
-                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 340);
+                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 477);
                          } else {
-                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 599);
+                             self.loginButtonView.transform = CGAffineTransformMakeTranslation(0, 736);
                          }
                          self.signUpScrollView.contentSize = CGSizeMake(375, self.loginButtonView.frame.origin.y + self.loginButtonView.frame.size.height + 50);
                          self.notAMemberLabel.alpha = 0.0;
@@ -470,6 +496,7 @@
 }
 - (IBAction)backButtonAction:(id)sender {
     if([self.loginButton.titleLabel.text  isEqual: @"Login"]) {
+        [self returnTextField];
         self.customerLoginLabel.alpha = 0.0;
         self.driverLoginLabel.alpha = 0.0;
         self.customerLoginLabel.hidden = NO;
@@ -515,6 +542,7 @@
         self.customerLoginButton.hidden = NO;
         self.driverLoginButton.hidden = NO;
     } else {
+        [self returnTextField];
         self.driversLicenseImageView.hidden = YES;
         self.addDriversLicenseButton.hidden = YES;
         self.usernameTextField.text = @"";
@@ -522,14 +550,18 @@
         self.nameTextField.text = @"";
         self.emailTextField.text= @"";
         self.phoneTextField.text = @"";
-        self.addressTextField.text= @"";
+        self.streetAddressTextField.text= @"";
+        self.cityTextField.text= @"";
+        self.stateTextField.text= @"";
         self.birthdateTextField.text = @"";
         self.profileImageView.image = [UIImage imageNamed:@"profileIcon"];
         self.driversLicenseImageView.image = [UIImage imageNamed:@"fakeId"];
         [self.addDriversLicenseButton setTitle:@"Add Drivers License" forState:UIControlStateNormal];
         [self.addProfilePhotoButton setTitle:@"Add Profile Photo" forState:UIControlStateNormal];
         [self.loginButton setTitle: @"Login" forState: UIControlStateNormal];
-        self.usernameTextField.placeholder = @"Username or Email";
+        UIColor *color = [UIColor colorWithRed:169.0/255.0 green:169.0/255.0 blue:169.0/255.0 alpha:1.0];
+
+        self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username or Email" attributes:@{NSForegroundColorAttributeName: color}];
         self.notAMemberLabel.alpha = 0.0;
         self.signUpButton.alpha = 0.0;
         self.forgotPasswordButton.alpha = 0.0;
@@ -545,7 +577,9 @@
                              self.nameView.alpha = 0.0;
                              self.emailView.alpha = 0.0;
                              self.phoneView.alpha = 0.0;
-                             self.addressView.alpha = 0.0;
+                             self.streetAddressView.alpha = 0.0;
+                             self.cityView.alpha = 0.0;
+                             self.stateView.alpha = 0.0;
                              self.birthdateView.alpha = 0.0;
                              
                          }
@@ -555,7 +589,9 @@
                              self.nameView.hidden = YES;
                              self.emailView.hidden = YES;
                              self.phoneView.hidden = YES;
-                             self.addressView.hidden = YES;
+                             self.streetAddressView.hidden = YES;
+                             self.cityView.hidden = YES;
+                             self.stateView.hidden = YES;
                              self.birthdateView.hidden = YES;
                          }];
         [UIView animateWithDuration:0.75
@@ -712,15 +748,29 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
     //Keyboard becomes visible
-//    CGPoint point = CGPointMake(0, textField.frame.origin.y) ;
-//    [self.signUpScrollView setContentOffset:point animated:YES];   //resize
-    CGRect rect = [textField bounds];
-    rect = [textField convertRect:rect toView:self.signUpScrollView];
-    rect.origin.x = 0 ;
-    rect.origin.y -= 60 ;
-    rect.size.height = 600;
-    [self.signUpScrollView scrollRectToVisible:rect animated:YES];
+//    if (textField == self.cityTextField || self.stateTextField || self.birthdateTextField) {
+//        CGPoint point = CGPointMake(0, textField.frame.origin.y) ;
+//        [self.signUpScrollView setContentOffset:point animated:YES];
+//    }
+//    CGRect rect = [textField bounds];
+//    rect = [textField convertRect:rect toView:self.signUpScrollView];
+//    rect.origin.x = 0;
+//    rect.origin.y -= 60;
+//    rect.size.height = 600;
+//    [self.signUpScrollView scrollRectToVisible:rect animated:YES];
+    if ((textField == self.passwordTextField) &&([self.loginButton.titleLabel.text isEqualToString:@"Login"])) {
+        
+    } else {
+        svos = self.signUpScrollView.contentOffset;
+        CGPoint pt;
+        CGRect rc = [textField bounds];
+        rc = [textField convertRect:rc toView:self.signUpScrollView];
+        pt = rc.origin;
+        pt.x = 0;
+        pt.y -= 220;
+        [self.signUpScrollView setContentOffset:pt animated:YES];
 
+    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
@@ -728,6 +778,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.signUpScrollView setContentOffset:svos animated:YES];
     [textField resignFirstResponder];
     return NO;
 }
@@ -758,7 +809,7 @@
 - (IBAction)addProfilePhotoAction:(id)sender {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing = YES;
+    //picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 
     [self presentViewController:picker animated:YES completion:NULL];
@@ -768,7 +819,7 @@
 - (IBAction)addDriversLicenseAction:(id)sender {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing = YES;
+    //picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -778,7 +829,7 @@
 - (IBAction)addDriversLicenseTapAction:(id)sender {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing = YES;
+    //picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -789,7 +840,7 @@
 - (IBAction)addProfilePhotoTapAction:(id)sender {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing = YES;
+    //picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -992,7 +1043,7 @@
         birthdate.value = self.birthdateTextField.text;
         AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
         address.name = @"address";
-        address.value = self.addressTextField.text;
+        address.value = [NSString stringWithFormat:@"%@, %@, %@",self.streetAddressTextField.text,self.cityTextField.text,self.stateTextField.text];
         AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
         name.name = @"name";
         name.value = self.nameTextField.text;

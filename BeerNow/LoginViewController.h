@@ -38,9 +38,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addProfilePhotoButton;
-@property (weak, nonatomic) IBOutlet UILabel *addPhotoLabel;
-@property (weak, nonatomic) IBOutlet UIView *addressView;
-@property (weak, nonatomic) IBOutlet UITextField *addressTextField;
+@property (weak, nonatomic) IBOutlet UIView *cityView;
+@property (weak, nonatomic) IBOutlet UIView *streetAddressView;
+@property (weak, nonatomic) IBOutlet UITextField *cityTextField;
+@property (weak, nonatomic) IBOutlet UITextField *stateTextField;
+@property (weak, nonatomic) IBOutlet UIView *stateView;
+@property (weak, nonatomic) IBOutlet UITextField *streetAddressTextField;
 @property (weak, nonatomic) IBOutlet UIView *birthdateView;
 @property (weak, nonatomic) IBOutlet UITextField *birthdateTextField;
 @property (weak, nonatomic) IBOutlet UIView *emailView;
@@ -63,7 +66,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *driverLoginButton;
 - (IBAction)customerLoginAction:(id)sender;
 - (IBAction)driverLoginAction:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *addDriversLicenseLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addDriversLicenseButton;
 @property (weak, nonatomic) IBOutlet UIImageView *driversLicenseImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *signUpScrollView;

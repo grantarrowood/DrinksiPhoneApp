@@ -523,7 +523,6 @@
 }
 */
 -(void)submitOrder {
-    
     AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
                                                                                                     identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
     
@@ -560,16 +559,18 @@
     newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
     for (int i = 0; i < selectedMenuItems.count; i++) {
         if (orderString.length > 0) {
-            orderString = [NSString stringWithFormat:@"%@, {%@, %@}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+            orderString = [NSString stringWithFormat:@"%@, {%@, %.2f}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [[(MenuItems *)[selectedMenuItems objectAtIndex:i] Price] floatValue]];
         } else {
             orderString = [NSString stringWithFormat:@"{%@, %@}", [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
         }
         
     }
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 10.00}", orderString];
+    
     newOrder.Order = orderString;
     newOrder.AcceptedDelivery = @"NO";
     newOrder.DeliveryDate = @"UNKNOWN";
-
+    newOrder.DeliveryAddress = @"DELIVERY ADDRESS";
     newOrder.driverUsername = @"UNKNOWN";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [defaults stringForKey:@"currentUsername"];
