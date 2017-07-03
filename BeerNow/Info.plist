@@ -99,6 +99,33 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).place-order</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Place Order</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeAdd</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).place-order</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Your Orders</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeStar</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).place-order</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Your Profile</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeStar</string>
+		</dict>
+	</array>
 	<key>AWS</key>
 	<dict>
 		<key>CredentialsProvider</key>
