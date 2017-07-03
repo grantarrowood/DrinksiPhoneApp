@@ -937,7 +937,7 @@
     [self.tableView setScrollEnabled:NO];
     greyView = [[UIView alloc] initWithFrame:self.view.frame];
     greyView.backgroundColor = [UIColor grayColor];
-    greyView.alpha = 0.5;
+    greyView.alpha = 0.0;
     [self.view addSubview:greyView];
     CGPoint centerView = self.view.center;
     centerView.y = centerView.y - 44.0;
@@ -1010,12 +1010,33 @@
     [modalView addSubview:savedLocButton];
     [modalView addSubview:currentLocButton];
     [modalView addSubview:titleLabel];
+    modalView.alpha = 0.0;
     [self.view addSubview:modalView];
+
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         modalView.alpha = 1.0;
+                         greyView.alpha = 0.5;
+                     }
+                     completion:^(BOOL finished){
+                     }];
+
 }
 -(void)closeModalView {
     [self.tableView setScrollEnabled:YES];
-    [modalView removeFromSuperview];
-    [greyView removeFromSuperview];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         modalView.alpha = 0.0;
+                         greyView.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished){
+                         [modalView removeFromSuperview];
+                         [greyView removeFromSuperview];
+                     }];
 }
 - (void)payViewControllerDismissed:(NSString *)paid
 {

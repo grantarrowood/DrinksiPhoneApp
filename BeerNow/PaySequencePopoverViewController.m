@@ -64,6 +64,19 @@
 */
 
 - (IBAction)cancelAction:(id)sender {
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    Orders *orderToCancel = [Orders new];
+    orderToCancel.OrderId = _orderId;
+    
+    [[[dynamoDBObjectMapper remove:orderToCancel]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         } else {
+             //Item deleted.
+         }
+         return nil;
+     }] waitUntilFinished];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

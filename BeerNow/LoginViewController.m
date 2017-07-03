@@ -14,6 +14,7 @@
     UIActivityIndicatorView *spinner;
     UIView *greyView;
     CGPoint svos;
+    UIDatePicker *datePicker;
 }
 @end
 
@@ -38,6 +39,20 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    datePicker =[[UIDatePicker alloc]init];
+    datePicker.datePickerMode=UIDatePickerModeDate;
+    datePicker.date=[NSDate date];
+    [datePicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
+    [self.birthdateTextField setInputView:datePicker];
+
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    [toolbar setTintColor:[UIColor grayColor]];
+    
+    UIBarButtonItem *rightBtn=[[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [toolbar setItems:[NSArray arrayWithObjects:space,rightBtn,nil]];
+    [self.birthdateTextField setInputAccessoryView:toolbar];
+
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
     
     AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
@@ -323,15 +338,91 @@
             phone.name = @"phone_number";
             //phone number must be prefixed by country code
             phone.value = [NSString stringWithFormat:@"+1%@",self.phoneTextField.text];
+            if([self.emailTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have an email address."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            if(![self NSStringIsValidEmail:self.emailTextField.text]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have an valid email address. (ie. your@example.com)"
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            
             AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
             email.name = @"email";
             email.value = self.emailTextField.text;
+            if([self.birthdateTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must enter your birthday."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = @"MM/DD/YYYY";
+            dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+            
+            NSDate *date = [dateFormatter dateFromString:self.birthdateTextField.text];
+            unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+            NSDate *now = [NSDate date];
+            NSCalendar *gregorian = [NSCalendar currentCalendar];
+            NSDateComponents *comps = [gregorian components:unitFlags fromDate:now];
+            [comps setYear:[comps year] - 21];
+            NSDate *twentyoneAgo = [gregorian dateFromComponents:comps];
+            if ([date timeIntervalSinceReferenceDate] > [twentyoneAgo timeIntervalSinceReferenceDate]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must be 21 to use this app."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
             AWSCognitoIdentityUserAttributeType * birthdate = [AWSCognitoIdentityUserAttributeType new];
             birthdate.name = @"birthdate";
             birthdate.value = self.birthdateTextField.text;
+            if([self.streetAddressTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have a street address."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            if([self.cityTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have a city."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
+            if([self.stateTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have a state."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
             AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
             address.name = @"address";
             address.value = [NSString stringWithFormat:@"%@, %@, %@",self.streetAddressTextField.text,self.cityTextField.text,self.stateTextField.text];
+            if([self.nameTextField.text isEqualToString:@""]) {
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:@"Your must have a name."
+                                           delegate:self
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil] show];
+                return;
+            }
             AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
             name.name = @"name";
             name.value = self.nameTextField.text;
@@ -369,25 +460,25 @@
                             }
                         } else if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidPasswordException"]) {
                             if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password not long enough"]) {
-                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Your password must contain 8 or more characters."
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil] show];
                             } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have uppercase characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Your password must contain an uppercase character."
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil] show];
                             } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have lowercase characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Your password must contain a lowercase character."
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil] show];
                             } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have numeric characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Your password must contain a number."
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
@@ -436,6 +527,17 @@
         }
     }
 }
+
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
+    NSString *laxString = @"^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
 - (IBAction)signUpAction:(id)sender {
     self.loginButton.titleLabel.frame = CGRectMake(self.loginButton.frame.origin.x, self.loginButton.frame.origin.y, self.loginButton.frame.size.width+10, self.loginButton.frame.size.height);
     [self.loginButton setTitle: @"Sign Up" forState: UIControlStateNormal];
@@ -832,8 +934,25 @@
         pt.x = 0;
         pt.y -= 220;
         [self.signUpScrollView setContentOffset:pt animated:YES];
-
     }
+}
+
+-(void)LabelTitle:(id)sender
+{
+    NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
+    dateFormat.dateStyle=NSDateFormatterMediumStyle;
+    [dateFormat setDateFormat:@"MM/dd/yyyy"];
+    NSString *str=[NSString stringWithFormat:@"%@",[dateFormat  stringFromDate:datePicker.date]];
+    //assign text to label
+    self.birthdateTextField.text=str;
+}
+
+-(void)save:(id)sender
+{
+    self.navigationItem.rightBarButtonItem=nil;
+    [datePicker removeFromSuperview];
+    [self.signUpScrollView setContentOffset:svos animated:YES];
+    [self.birthdateTextField resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
