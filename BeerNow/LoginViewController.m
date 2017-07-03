@@ -215,9 +215,25 @@
                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
                     //print the user attributes
                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                    BOOL accepted = NO;
                     if ([attribute.name isEqualToString:@"custom:isAccepted"]) {
                         if ([attribute.value isEqualToString:@"YES"]) {
+                            accepted = YES;
+                        } else {
+                            [[[UIAlertView alloc] initWithTitle:@"You have not been accepted yet!"
+                                                        message:@"Please check again later."
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"Ok", nil] show];
+                            [spinner stopAnimating];
+                            [spinner removeFromSuperview];
+                            [greyView removeFromSuperview];
+                        }
+                    }
+                    if ([attribute.name isEqualToString:@"custom:endpointArn"]) {
+                        if (accepted) {
                             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                            [defaults setValue:attribute.value forKey:@"endpointArn"];
                             [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
                             [defaults synchronize];
                             [[NSNotificationCenter defaultCenter]
@@ -228,14 +244,7 @@
                             [greyView removeFromSuperview];
                             [self performSegueWithIdentifier:@"loginToDriver" sender:nil];
                         } else {
-                            [[[UIAlertView alloc] initWithTitle:@"You have not been accepted yet!"
-                                                        message:@"Please check again later."
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:@"Ok", nil] show];
-                            [spinner stopAnimating];
-                            [spinner removeFromSuperview];
-                            [greyView removeFromSuperview];
+                            
                         }
                     }
                 }
@@ -513,6 +522,7 @@
                         AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
                         if(!response.userConfirmed){
                             //need to confirm user using user.confirmUser:
+                            [response.user confirmSignUp:@"YES"];
                         }
                         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                         [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
@@ -1280,6 +1290,7 @@
                     AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
                     if(!response.userConfirmed){
                         //need to confirm user using user.confirmUser:
+                        [response.user confirmSignUp:@"YES"];
                     }
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];

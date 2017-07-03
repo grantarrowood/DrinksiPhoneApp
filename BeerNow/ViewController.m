@@ -64,6 +64,10 @@
                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                     if ([attribute.name isEqualToString:@"name"]) {
                         self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@", attribute.value];
+                    } else if ([attribute.name isEqualToString:@"custom:endpointArn"]) {
+                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                        [defaults setValue:attribute.value forKey:@"endpointArn"];
+                        [defaults synchronize];
                     } else if([attribute.name isEqualToString:@"picture"]) {
                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
                                                                                                                         identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
