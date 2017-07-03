@@ -23,6 +23,7 @@
     NSString *stripeDriverId;
     NSString *accurateCustomerId;
 }
+
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

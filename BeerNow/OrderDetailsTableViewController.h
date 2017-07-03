@@ -44,6 +44,8 @@
     NSString *driverStripeId;
     NSNumber *transactionId;
     NSString *stripeTransactionId;
+    NSString *customerEndpointArn;
+
 }
 
 @property (strong) NSNumber *orderId;

@@ -396,12 +396,14 @@
             }
             
         }
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *username = [defaults stringForKey:@"currentUsername"];
+        NSString *endpointArn = [defaults stringForKey:@"endpointArn"];
+        newOrder.CustomerEndpointArn = endpointArn;
         newOrder.Order = orderString;
         newOrder.AcceptedDelivery = @"NO";
         newOrder.DeliveryDate = @"UNKNOWN";
         newOrder.driverUsername = @"UNKNOWN";
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *username = [defaults stringForKey:@"currentUsername"];
         newOrder.customerUsername = username;
         newOrder.paid = @"NO";
         newOrder.transactionId = @0;
@@ -630,6 +632,8 @@
     newOrder.driverUsername = @"UNKNOWN";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [defaults stringForKey:@"currentUsername"];
+    NSString *endpointArn = [defaults stringForKey:@"endpointArn"];
+    newOrder.CustomerEndpointArn = endpointArn;
     newOrder.customerUsername = username;
     newOrder.paid = @"NO";
     newOrder.transactionId = @0;
@@ -734,6 +738,8 @@
     AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [defaults stringForKey:@"currentUsername"];
+    NSString *endpointArn = [defaults stringForKey:@"endpointArn"];
+    newOrder.CustomerEndpointArn = endpointArn;
     [[[[pool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if(task.error){
@@ -862,6 +868,8 @@
         newOrder.driverUsername = @"UNKNOWN";
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *username = [defaults stringForKey:@"currentUsername"];
+        NSString *endpointArn = [defaults stringForKey:@"endpointArn"];
+        newOrder.CustomerEndpointArn = endpointArn;
         newOrder.customerUsername = username;
         newOrder.paid = @"NO";
         newOrder.transactionId = @0;

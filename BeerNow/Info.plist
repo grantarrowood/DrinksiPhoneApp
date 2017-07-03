@@ -99,5 +99,39 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>AWS</key>
+	<dict>
+		<key>CredentialsProvider</key>
+		<dict>
+			<key>CognitoIdentity</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>PoolId</key>
+					<string>us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6</string>
+					<key>Region</key>
+					<string>USEast1</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>SNS</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>USEast1</string>
+			</dict>
+		</dict>
+		<key>MobileAnalytics</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>USEast1</string>
+				<key>AppId</key>
+				<string>de519dba22484baba972c58a63a732ba</string>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>

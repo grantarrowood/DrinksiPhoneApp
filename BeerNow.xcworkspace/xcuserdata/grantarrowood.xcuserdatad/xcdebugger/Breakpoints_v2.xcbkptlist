@@ -22,31 +22,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BeerNow/ViewController.m"
-            timestampString = "519874222.5097"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeerNow/DriverAcceptOrderViewController.m"
-            timestampString = "520567029.779146"
+            timestampString = "520800542.212586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
             landmarkName = "-acceptDeliveryAction:"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeerNow/DriverAcceptOrderViewController.m"
-            timestampString = "520567223.888815"
+            timestampString = "520800542.212586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "-acceptDeliveryAction:"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeerNow/DriverAcceptOrderViewController.m"
-            timestampString = "520567228.302463"
+            timestampString = "520800542.212586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "-acceptDeliveryAction:"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeerNow/LoginViewController.m"
-            timestampString = "520789852.859839"
+            timestampString = "520805833.608837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1245"
-            endingLineNumber = "1245"
+            startingLineNumber = "1266"
+            endingLineNumber = "1266"
             landmarkName = "-connection:didReceiveData:"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeerNow/LoginViewController.m"
-            timestampString = "520789744.539144"
+            timestampString = "520805833.608837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "433"
-            endingLineNumber = "433"
+            startingLineNumber = "443"
+            endingLineNumber = "443"
             landmarkName = "-loginButtonAction:"
             landmarkType = "7">
          </BreakpointContent>

@@ -7,6 +7,8 @@
 //
 
 #import "OrderDetailsTableViewController.h"
+#import <AWSSNS/AWSSNS.h>
+
 
 @interface OrderDetailsTableViewController ()
 
@@ -682,6 +684,9 @@
                                            cancelButtonTitle:@"Ok"
                                            otherButtonTitles:nil] show];
                      } else {
+                         newOrder.DeliveryAddress = order.DeliveryAddress;
+                         newOrder.CustomerEndpointArn = order.CustomerEndpointArn;
+                         customerEndpointArn = order.CustomerEndpointArn;
                          newOrder.Area = order.Area;
                          newOrder.Location = order.Location;
 //                         newOrder.Order = [NSString stringWithFormat:@"%@, {DeliveryFee, %.2f}", order.Order, deliveryFee];
@@ -790,8 +795,18 @@
         });
         return nil;
     }] waitUntilFinished];
-
     
+    AWSSNS *sns = [AWSSNS defaultSNS];
+    AWSSNSPublishInput *input = [AWSSNSPublishInput new];
+    input.message = [NSString stringWithFormat:@"Order #%@ was accepted by a driver. It is being fulfilled now.", _orderId];
+    input.targetArn = customerEndpointArn;
+    [sns publish:input completionHandler:^(AWSSNSPublishResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+        } else {
+            NSLog(@"Success: %@", response);
+        }
+    }];
     greyView = [[UIView alloc] initWithFrame:self.view.frame];
     greyView.backgroundColor = [UIColor grayColor];
     greyView.alpha = 0.5;

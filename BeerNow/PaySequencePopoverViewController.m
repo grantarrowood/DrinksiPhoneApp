@@ -228,6 +228,7 @@
                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
                  for (Orders *order in paginatedOutput.items) {
                      if ([order.OrderId isEqualToNumber: _orderId]) {
+                         newOrder.CustomerEndpointArn = order.CustomerEndpointArn;
                          newOrder.Area = order.Area;
                          newOrder.Location = order.Location;
                          newOrder.Order = order.Order;

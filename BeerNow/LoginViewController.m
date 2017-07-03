@@ -54,7 +54,7 @@
     [self.birthdateTextField setInputAccessoryView:toolbar];
 
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-    
+
     AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
     
     [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
@@ -184,9 +184,7 @@
                 [greyView removeFromSuperview];
                 [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
             } else {
-                
                 timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(authenticateDriver) userInfo:nil repeats:YES];
-
             }
             
             
@@ -423,11 +421,23 @@
                                   otherButtonTitles:nil] show];
                 return;
             }
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *token = [defaults stringForKey:@"deviceToken"];
+            NSString *arn = [defaults stringForKey:@"endpointArn"];
+
+            AWSCognitoIdentityUserAttributeType *deviceToken = [AWSCognitoIdentityUserAttributeType new];
+            deviceToken.name = @"custom:deviceToken";
+            deviceToken.value = token;
+            
+            AWSCognitoIdentityUserAttributeType *endpointArn = [AWSCognitoIdentityUserAttributeType new];
+            endpointArn.name = @"custom:endpointArn";
+            endpointArn.value = arn;
+            
             AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
             name.name = @"name";
             name.value = self.nameTextField.text;
             //register the user
-            [[pool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
+            [[pool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,deviceToken,endpointArn] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if(task.error){
                         if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidParameterException"]) {
@@ -1207,6 +1217,17 @@
         AWSCognitoIdentityUserAttributeType *driversLicense = [AWSCognitoIdentityUserAttributeType new];
         driversLicense.name = @"picture";
         driversLicense.value = [NSString stringWithFormat:@"%@_license.jpg", self.usernameTextField.text];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *token = [defaults stringForKey:@"deviceToken"];
+        NSString *arn = [defaults stringForKey:@"endpointArn"];
+
+        AWSCognitoIdentityUserAttributeType *deviceToken = [AWSCognitoIdentityUserAttributeType new];
+        deviceToken.name = @"custom:deviceToken";
+        deviceToken.value = token;
+        
+        AWSCognitoIdentityUserAttributeType *endpointArn = [AWSCognitoIdentityUserAttributeType new];
+        endpointArn.name = @"custom:endpointArn";
+        endpointArn.value = arn;
         
         AWSCognitoIdentityUserAttributeType *isAccepted = [AWSCognitoIdentityUserAttributeType new];
         isAccepted.name = @"custom:isAccepted";
@@ -1239,7 +1260,7 @@
         accurateOrderId.name = @"custom:accurateOrderId";
         accurateOrderId.value = [JSONObject objectForKey:@"id"];
         //register the user
-        [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense,stripeUserId,accurateCustomer,accurateOrderId] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
+        [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense,stripeUserId,accurateCustomer,accurateOrderId,deviceToken,endpointArn] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(task.error){
                     if ([task.error.userInfo[@"__type"] isEqualToString:@""]) {
