@@ -10,6 +10,7 @@
 #import "SWRevealViewController.h"
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import "Orders.h"
+#import "Transactions.h"
 #import "Locations.h"
 #import "ItemTableViewCell.h"
 #import "DetailTableViewCell.h"
@@ -42,6 +43,7 @@
     UIImage *customerDriversLicense;
     NSString *driverStripeId;
     NSNumber *transactionId;
+    NSString *stripeTransactionId;
 }
 
 @property (strong) NSNumber *orderId;

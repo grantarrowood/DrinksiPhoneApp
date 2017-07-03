@@ -133,7 +133,6 @@
         [self.signUpScrollView setContentOffset:svos animated:YES];
         [self.view endEditing:YES];
     }
-
 }
 
 - (void)didReceiveMemoryWarning {

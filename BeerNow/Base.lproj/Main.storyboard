@@ -2693,15 +2693,15 @@
         <image name="storeIcon" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="odx-CB-N57"/>
+        <segue reference="meJ-Ko-rwZ"/>
         <segue reference="OGW-dt-X8w"/>
         <segue reference="HHQ-Hf-bRH"/>
         <segue reference="ney-H2-6up"/>
         <segue reference="VPK-ZI-7P6"/>
         <segue reference="j3I-d0-PZp"/>
-        <segue reference="RRO-04-cjF"/>
+        <segue reference="RrA-gd-ycP"/>
         <segue reference="99P-PP-Z2P"/>
         <segue reference="mPy-wy-vqd"/>
-        <segue reference="meJ-Ko-rwZ"/>
-        <segue reference="odx-CB-N57"/>
     </inferredMetricsTieBreakers>
 </document>

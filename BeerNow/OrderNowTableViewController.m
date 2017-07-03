@@ -13,6 +13,11 @@
     NSTimer *timer;
     UIActivityIndicatorView *spinner;
     UIView *greyView;
+    UIView *modalView;
+    UITextField *streetAddressTextField;
+    UITextField *cityTextField;
+    UITextField *stateTextField;
+    CGPoint svos;
 }
 
 @end
@@ -23,11 +28,20 @@
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    orderItems = [[NSMutableArray alloc] init];
     allLocations = [[NSMutableArray alloc] init];
     allAreas = [[NSMutableArray alloc] init];
     allMenuItems = [[NSMutableArray alloc] init];
     selectedMenuItems = [[NSMutableArray alloc] init];
-
+    locationManager = [[CLLocationManager alloc] init];
+    if ([CLLocationManager authorizationStatus] == 0) {
+        [locationManager requestWhenInUseAuthorization];
+    }
+    locationManager.delegate = self;
+    [locationManager startUpdatingLocation];
+//    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
+//    [self.tableView addGestureRecognizer:recognizer];
+    
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -110,6 +124,48 @@
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
     
 }
+
+-(void)returnTextField {
+    if(([streetAddressTextField isFirstResponder]) || ([cityTextField isFirstResponder]) || ([stateTextField isFirstResponder])) {
+        [self.tableView setContentOffset:svos animated:YES];
+        [self.view endEditing:YES];
+    }
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    //Keyboard becomes visible
+    //    if (textField == self.cityTextField || self.stateTextField || self.birthdateTextField) {
+    //        CGPoint point = CGPointMake(0, textField.frame.origin.y) ;
+    //        [self.signUpScrollView setContentOffset:point animated:YES];
+    //    }
+    //    CGRect rect = [textField bounds];
+    //    rect = [textField convertRect:rect toView:self.signUpScrollView];
+    //    rect.origin.x = 0;
+    //    rect.origin.y -= 60;
+    //    rect.size.height = 600;
+    //    [self.signUpScrollView scrollRectToVisible:rect animated:YES];
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(returnTextField)];
+    [self.tableView addGestureRecognizer:recognizer];
+    [self.tableView setScrollEnabled:NO];
+    svos = self.tableView.contentOffset;
+    CGPoint pt;
+    CGRect rc = [textField bounds];
+    rc = [textField convertRect:rc toView:self.tableView];
+    pt = rc.origin;
+    pt.x = 0;
+    pt.y -= 300;
+    [self.tableView setContentOffset:pt animated:YES];
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    //keyboard will hide
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.tableView setContentOffset:svos animated:YES];
+    [textField resignFirstResponder];
+    return NO;
+}
+
 
 -(void)getTable {
     [self.tableView reloadData];
@@ -522,7 +578,7 @@
     // Pass the selected object to the new view controller.
 }
 */
--(void)submitOrder {
+-(void)useEnteredAddress {
     AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
                                                                                                     identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
     
@@ -535,7 +591,234 @@
     AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
     Orders *newOrder = [Orders new];
     
-    [[dynamoDBObjectMapper scan:[Orders class]
+    [[[dynamoDBObjectMapper scan:[Orders class]
+                      expression:scanExpression]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+              NSNumber *highestNumber = @0;
+              for (Orders *order in paginatedOutput.items) {
+                  //Do something with book.
+                  if (order.OrderId > highestNumber) {
+                      highestNumber = order.OrderId;
+                  }
+              }
+              int value = [highestNumber intValue];
+              orderId = [NSNumber numberWithInt:value + 1];
+              newOrder.OrderId = [NSNumber numberWithInt:value + 1];
+          }
+          return nil;
+      }] waitUntilFinished];
+    newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
+    newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
+    for (int i = 0; i < selectedMenuItems.count; i++) {
+        if (orderString.length > 0) {
+            orderString = [NSString stringWithFormat:@"%@, {%@, %.2f}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [[(MenuItems *)[selectedMenuItems objectAtIndex:i] Price] floatValue]];
+        } else {
+            orderString = [NSString stringWithFormat:@"{%@, %@}", [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+        }
+        
+    }
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
+    
+    newOrder.Order = orderString;
+    newOrder.AcceptedDelivery = @"NO";
+    newOrder.DeliveryDate = @"UNKNOWN";
+    newOrder.DeliveryAddress = [NSString stringWithFormat:@"%@, %@, %@", streetAddressTextField.text, cityTextField.text, stateTextField.text];
+    newOrder.driverUsername = @"UNKNOWN";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults stringForKey:@"currentUsername"];
+    newOrder.customerUsername = username;
+    newOrder.paid = @"NO";
+    newOrder.transactionId = @0;
+    [[[dynamoDBObjectMapper save:newOrder]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              //Do something with task.result or perform other operations.
+              
+          }
+          return nil;
+      }] waitUntilFinished];
+    NSString *stringWithoutSpaces = [orderString
+                                     stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *stringEndBracket = [stringWithoutSpaces
+                                  stringByReplacingOccurrencesOfString:@"}" withString:@""];
+    NSString *stringStartBracket = [stringEndBracket
+                                    stringByReplacingOccurrencesOfString:@"{" withString:@""];
+    NSArray *strings = [stringStartBracket componentsSeparatedByString:@","];
+    for (int i = 0; i<strings.count; i+=2) {
+        NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:strings[i], strings[i+1], nil];
+        [orderItems addObject:item];
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
+    controller.orderDetails = orderItems;
+    controller.orderId = orderId;
+    controller.payDelegate = self;
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    popController.sourceView = self.view;
+    popController.sourceRect = CGRectMake(10, 50, 355, 567);
+}
+
+
+
+-(void)useProfileAddress {
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+    
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+    Orders *newOrder = [Orders new];
+    
+    [[[dynamoDBObjectMapper scan:[Orders class]
+                      expression:scanExpression]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+              NSNumber *highestNumber = @0;
+              for (Orders *order in paginatedOutput.items) {
+                  //Do something with book.
+                  if (order.OrderId > highestNumber) {
+                      highestNumber = order.OrderId;
+                  }
+              }
+              int value = [highestNumber intValue];
+              orderId = [NSNumber numberWithInt:value + 1];
+              newOrder.OrderId = [NSNumber numberWithInt:value + 1];
+          }
+          return nil;
+      }] waitUntilFinished];
+    newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
+    newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
+    for (int i = 0; i < selectedMenuItems.count; i++) {
+        if (orderString.length > 0) {
+            orderString = [NSString stringWithFormat:@"%@, {%@, %.2f}", orderString, [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [[(MenuItems *)[selectedMenuItems objectAtIndex:i] Price] floatValue]];
+        } else {
+            orderString = [NSString stringWithFormat:@"{%@, %@}", [(MenuItems *)[selectedMenuItems objectAtIndex:i] Name], [(MenuItems *)[selectedMenuItems objectAtIndex:i] Price]];
+        }
+        
+    }
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
+    
+    newOrder.Order = orderString;
+    newOrder.AcceptedDelivery = @"NO";
+    newOrder.DeliveryDate = @"UNKNOWN";
+    AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    
+    //create a pool
+    AWSCognitoIdentityUserPoolConfiguration *userConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userConfiguration forKey:@"DrinksCustomerPool"];
+    
+    AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults stringForKey:@"currentUsername"];
+    [[[[pool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(task.error){
+                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                            message:task.error.userInfo[@"message"]
+                                           delegate:self
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:@"Retry", nil] show];
+            }else{
+                AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                //do something with response.userAttributes
+                for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                    //print the user attributes
+                    NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                    if ([attribute.name isEqualToString:@"address"]) {
+                        newOrder.DeliveryAddress = attribute.value;
+                        newOrder.driverUsername = @"UNKNOWN";
+                        newOrder.customerUsername = username;
+                        newOrder.paid = @"NO";
+                        newOrder.transactionId = @0;
+                        [[[dynamoDBObjectMapper save:newOrder]
+                          continueWithBlock:^id(AWSTask *task) {
+                              if (task.error) {
+                                  NSLog(@"The request failed. Error: [%@]", task.error);
+                              } else {
+                                  //Do something with task.result or perform other operations.
+                                  
+                              }
+                              return nil;
+                          }] waitUntilFinished];
+                        NSString *stringWithoutSpaces = [orderString
+                                                         stringByReplacingOccurrencesOfString:@" " withString:@""];
+                        NSString *stringEndBracket = [stringWithoutSpaces
+                                                      stringByReplacingOccurrencesOfString:@"}" withString:@""];
+                        NSString *stringStartBracket = [stringEndBracket
+                                                        stringByReplacingOccurrencesOfString:@"{" withString:@""];
+                        NSArray *strings = [stringStartBracket componentsSeparatedByString:@","];
+                        for (int i = 0; i<strings.count; i+=2) {
+                            NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:strings[i], strings[i+1], nil];
+                            [orderItems addObject:item];
+                        }
+                        
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
+                        controller.orderDetails = orderItems;
+                        controller.orderId = orderId;
+                        controller.payDelegate = self;
+                        // present the controller
+                        // on iPad, this will be a Popover
+                        // on iPhone, this will be an action sheet
+                        controller.modalPresentationStyle = UIModalPresentationPopover;
+                        [self presentViewController:controller animated:YES completion:nil];
+                        
+                        // configure the Popover presentation controller
+                        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+                        popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+                        popController.delegate = self;
+                        popController.sourceView = self.view;
+                        popController.sourceRect = CGRectMake(10, 50, 355, 567);
+                    }
+                }
+            }
+        });
+        return nil;
+    }] waitUntilFinished];
+
+}
+
+
+
+
+-(void)useCurrentLoc {
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+    
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+    Orders *newOrder = [Orders new];
+    
+    [[[dynamoDBObjectMapper scan:[Orders class]
                      expression:scanExpression]
      continueWithBlock:^id(AWSTask *task) {
          if (task.error) {
@@ -550,11 +833,11 @@
                  }
              }
              int value = [highestNumber intValue];
+             orderId = [NSNumber numberWithInt:value + 1];
              newOrder.OrderId = [NSNumber numberWithInt:value + 1];
          }
          return nil;
-     }];
-    sleep(2);
+     }] waitUntilFinished];
     newOrder.Area = [(MenuItems *)[selectedMenuItems objectAtIndex:0] Area];
     newOrder.Location = [(MenuItems *)[selectedMenuItems objectAtIndex:0] MenuLocation];
     for (int i = 0; i < selectedMenuItems.count; i++) {
@@ -565,30 +848,178 @@
         }
         
     }
-    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 10.00}", orderString];
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
     
     newOrder.Order = orderString;
     newOrder.AcceptedDelivery = @"NO";
     newOrder.DeliveryDate = @"UNKNOWN";
-    newOrder.DeliveryAddress = @"DELIVERY ADDRESS";
-    newOrder.driverUsername = @"UNKNOWN";
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [defaults stringForKey:@"currentUsername"];
-    newOrder.customerUsername = username;
-    newOrder.paid = @"NO";
-    newOrder.transactionId = @0;
-    [[[dynamoDBObjectMapper save:newOrder]
-     continueWithBlock:^id(AWSTask *task) {
-         if (task.error) {
-             NSLog(@"The request failed. Error: [%@]", task.error);
-         } else {
-             //Do something with task.result or perform other operations.
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    CLLocation *location = [[CLLocation alloc]initWithLatitude:currentLoc.coordinate.latitude longitude:currentLoc.coordinate.longitude];
+    [geoCoder reverseGeocodeLocation:location completionHandler: ^(NSArray *placemarks, NSError *error) {
+        //do something
+        CLPlacemark *placemark = [placemarks lastObject];
+        newOrder.DeliveryAddress = [NSString stringWithFormat:@"%@ %@, %@, %@",placemark.subThoroughfare, placemark.thoroughfare,placemark.locality, placemark.administrativeArea];
+        newOrder.driverUsername = @"UNKNOWN";
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *username = [defaults stringForKey:@"currentUsername"];
+        newOrder.customerUsername = username;
+        newOrder.paid = @"NO";
+        newOrder.transactionId = @0;
+        [[[dynamoDBObjectMapper save:newOrder]
+          continueWithBlock:^id(AWSTask *task) {
+              if (task.error) {
+                  NSLog(@"The request failed. Error: [%@]", task.error);
+              } else {
+                  //Do something with task.result or perform other operations.
+                  
+              }
+              return nil;
+          }] waitUntilFinished];
+        // GO TO PAYMENTS
+        NSString *stringWithoutSpaces = [orderString
+                                         stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSString *stringEndBracket = [stringWithoutSpaces
+                                      stringByReplacingOccurrencesOfString:@"}" withString:@""];
+        NSString *stringStartBracket = [stringEndBracket
+                                        stringByReplacingOccurrencesOfString:@"{" withString:@""];
+        NSArray *strings = [stringStartBracket componentsSeparatedByString:@","];
+        for (int i = 0; i<strings.count; i+=2) {
+            NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:strings[i], strings[i+1], nil];
+            [orderItems addObject:item];
+        }
 
-         }
-         return nil;
-     }] waitUntilFinished];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
+        controller.orderDetails = orderItems;
+        controller.orderId = orderId;
+        controller.payDelegate = self;
+        // present the controller
+        // on iPad, this will be a Popover
+        // on iPhone, this will be an action sheet
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        // configure the Popover presentation controller
+        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popController.delegate = self;
+        popController.sourceView = self.view;
+        popController.sourceRect = CGRectMake(10, 50, 355, 567);
+    }];
+    
+        //[self performSegueWithIdentifier:@"submitOrder" sender:nil];
+}
+     
+     
+ - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"didFailWithError: %@", error);
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+                               initWithTitle:@"Error" message:@"Failed to Get Your Location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+}
+ 
+ - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    NSLog(@"didUpdateToLocation: %@", newLocation);
+    CLLocation *currentLocation = newLocation;
+    
+    if (currentLocation != nil) {
+        currentLoc = currentLocation;
+        [locationManager stopUpdatingLocation];
+    }
+    
+}
+
+
+
+-(void)submitOrder {
+    [self.tableView setScrollEnabled:NO];
+    greyView = [[UIView alloc] initWithFrame:self.view.frame];
+    greyView.backgroundColor = [UIColor grayColor];
+    greyView.alpha = 0.5;
+    [self.view addSubview:greyView];
+    CGPoint centerView = self.view.center;
+    centerView.y = centerView.y - 44.0;
+    UIColor *baseColor = [UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0];
+    modalView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 330)];
+    modalView.center = centerView;
+    modalView.layer.cornerRadius = 15.0;
+    modalView.backgroundColor = [UIColor whiteColor];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, 100, 10)];
+    titleLabel.text = @"Delivery Address";
+    [titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+    [titleLabel sizeToFit];
+    CGPoint center = titleLabel.center;
+    center.x = modalView.frame.size.width / 2;
+    [titleLabel setCenter:center];
+    UIButton *currentLocButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 65, 250, 10)];
+    [currentLocButton setTitle:@"Use Current Location" forState:UIControlStateNormal];
+    [currentLocButton.titleLabel sizeToFit];
+    [currentLocButton setTitleColor:baseColor forState:UIControlStateNormal];
+    [currentLocButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+    currentLocButton.titleLabel.textColor = [UIColor blueColor];
+    CGPoint currentButtonCenter = currentLocButton.center;
+    currentButtonCenter.x = modalView.frame.size.width / 2;
+    [currentLocButton setCenter:currentButtonCenter];
+    [currentLocButton addTarget:self action:@selector(useCurrentLoc) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *savedLocButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 115, 250, 10)];
+    [savedLocButton setTitle:@"Use Profile Address" forState:UIControlStateNormal];
+    [savedLocButton.titleLabel sizeToFit];
+    [savedLocButton setTitleColor:baseColor forState:UIControlStateNormal];
+    [savedLocButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+    CGPoint savedButtonCenter = savedLocButton.center;
+    savedButtonCenter.x = modalView.frame.size.width / 2;
+    [savedLocButton setCenter:savedButtonCenter];
+    [savedLocButton addTarget:self action:@selector(useProfileAddress) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *addLocButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 165, 250, 10)];
+    [addLocButton setTitle:@"Use Entered Address" forState:UIControlStateNormal];
+    [addLocButton.titleLabel sizeToFit];
+    [addLocButton setTitleColor:baseColor forState:UIControlStateNormal];
+    [addLocButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+    CGPoint addButtonCenter = addLocButton.center;
+    addButtonCenter.x = modalView.frame.size.width / 2;
+    [addLocButton setCenter:addButtonCenter];
+    [addLocButton addTarget:self action:@selector(useEnteredAddress) forControlEvents:UIControlEventTouchUpInside];
+    streetAddressTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 210, 240, 40)];
+    [streetAddressTextField setPlaceholder:@"Street Address"];
+    [streetAddressTextField setBorderStyle:UITextBorderStyleBezel];
+    [streetAddressTextField setDelegate:self];
+    CGPoint streetAddressCenter = streetAddressTextField.center;
+    streetAddressCenter.x = modalView.frame.size.width / 2;
+    [streetAddressTextField setCenter:streetAddressCenter];
+    cityTextField = [[UITextField alloc] initWithFrame:CGRectMake(streetAddressTextField.frame.origin.x, 265, 115, 40)];
+    [cityTextField setPlaceholder:@"City"];
+    [cityTextField setBorderStyle:UITextBorderStyleBezel];
+    [cityTextField setDelegate:self];
+    stateTextField = [[UITextField alloc] initWithFrame:CGRectMake(streetAddressTextField.frame.origin.x+cityTextField.frame.size.width + 10, 265, 115, 40)];
+    [stateTextField setPlaceholder:@"State"];
+    [stateTextField setBorderStyle:UITextBorderStyleBezel];
+    [stateTextField setDelegate:self];
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(streetAddressTextField.frame.origin.x, titleLabel.frame.origin.y+5, 10, 10)];
+    [closeButton setTitle:@"X" forState:UIControlStateNormal];
+    [closeButton.titleLabel sizeToFit];
+    [closeButton setTitleColor:baseColor forState:UIControlStateNormal];
+    [closeButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+    [closeButton addTarget:self action:@selector(closeModalView) forControlEvents:UIControlEventTouchUpInside];
+    [modalView addSubview:closeButton];
+    [modalView addSubview:streetAddressTextField];
+    [modalView addSubview:cityTextField];
+    [modalView addSubview:stateTextField];
+    [modalView addSubview:addLocButton];
+    [modalView addSubview:savedLocButton];
+    [modalView addSubview:currentLocButton];
+    [modalView addSubview:titleLabel];
+    [self.view addSubview:modalView];
+}
+-(void)closeModalView {
+    [self.tableView setScrollEnabled:YES];
+    [modalView removeFromSuperview];
+    [greyView removeFromSuperview];
+}
+- (void)payViewControllerDismissed:(NSString *)paid
+{
     [self performSegueWithIdentifier:@"submitOrder" sender:nil];
-
 }
 
 @end

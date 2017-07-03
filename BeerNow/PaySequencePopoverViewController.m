@@ -18,16 +18,16 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     paymentSuccess = NO;
-//    self.imageView.hidden = YES;
-//    self.imageView.image = [UIImage imageNamed:@"campusImage"];
-    if (self.imageView.image == nil) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        [self presentViewController:picker animated:YES completion:NULL];
-    }
+    self.imageView.hidden = YES;
+    self.imageView.image = [UIImage imageNamed:@"campusImage"];
+//    if (self.imageView.image == nil) {
+//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//        picker.delegate = self;
+//        picker.allowsEditing = YES;
+//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        
+//        [self presentViewController:picker animated:YES completion:NULL];
+//    }
     total = [[NSNumber alloc] init];
     for (int i = 0; i<_orderDetails.count; i++) {
         total = [NSNumber numberWithFloat:([total floatValue] + [[_orderDetails objectAtIndex:i][1] floatValue])];
@@ -214,7 +214,7 @@
              } else {
                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
                  for (Orders *order in paginatedOutput.items) {
-                     if (order.OrderId == _orderId) {
+                     if ([order.OrderId isEqualToNumber: _orderId]) {
                          newOrder.Area = order.Area;
                          newOrder.Location = order.Location;
                          newOrder.Order = order.Order;
@@ -222,6 +222,7 @@
                          newOrder.OrderId = _orderId;
                          newOrder.AcceptedDelivery = @"NO";
                          newOrder.DeliveryDate = @"UNKNOWN";
+                         newOrder.DeliveryAddress = order.DeliveryAddress;
                          newOrder.driverUsername = order.driverUsername;
                          newOrder.paid = @"YES";
                          newOrder.transactionId = transactionId;
@@ -317,7 +318,8 @@
     [[lambdaInvoker invokeFunction:@"drinksApplePayPaymentProcessing"
                          JSONObject:@{@"token" : token.tokenId,
                                       @"amount" : totalCents,
-                                      @"driverStripeId" : _driverStripeId}] continueWithBlock:^id(AWSTask *task) {
+                                      @"transferGroup" : [_orderId stringValue]
+                                      }] continueWithBlock:^id(AWSTask *task) {
          if (task.error) {
              NSLog(@"Error: %@", task.error);
              if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]

@@ -77,10 +77,10 @@
                               for (Locations *location in paginatedOutput.items) {
                                   if ([location.Name isEqualToString: locationName]) {
                                       locationAddress = location.Address;
-                                      if ([driverUsername isEqualToString:@"UNKNOWN"]) {
-                                          sleep(1);
-                                          //[self getDeliveryFee];
-                                      }
+//                                      if ([driverUsername isEqualToString:@"UNKNOWN"]) {
+//                                          sleep(1);
+//                                          //[self getDeliveryFee];
+//                                      }
                                   }
                               }
                           }
@@ -89,40 +89,44 @@
                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                      NSString *userPool = [defaults stringForKey:@"userPool"];
                      if ([userPool isEqualToString:@"CUSTOMER"]) {
-                         AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-                         AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
-                         [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksDriverPool"];
-                         AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
-                         pool.delegate = self;
-                         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
-                         [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksDriverPool"];
-                         AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksDriverPool"];
-                         AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
-                         user.username = driverUsername;
-                         user.userPoolId = @"us-east-1_KpiGHtI7M";
-                         [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
-                             if(task.error){
-                                 [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                             message:task.error.userInfo[@"message"]
-                                                            delegate:self
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"Retry", nil] show];
-                             }else{
-                                 AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
-                                 //do something with response.userAttributes
-                                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
-                                     //print the user attributes
-                                     NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                                     if([attribute.name isEqualToString:@"name"]) {
-                                         driverName = attribute.value;
-                                     } else if([attribute.name isEqualToString:@"custom:stripeUserId"]) {
-                                         driverStripeId = attribute.value;
+                         if([driverUsername isEqualToString:@"UNKNOWN"]) {
+                             
+                         } else {
+                             AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+                             AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+                             [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:userPoolConfiguration forKey:@"DrinksDriverPool"];
+                             AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+                             pool.delegate = self;
+                             AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6" identityProviderManager:pool];
+                             [AWSCognitoIdentityProvider registerCognitoIdentityProviderWithConfiguration:[[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider] forKey:@"DrinksDriverPool"];
+                             AWSCognitoIdentityProvider *provider = [AWSCognitoIdentityProvider CognitoIdentityProviderForKey:@"DrinksDriverPool"];
+                             AWSCognitoIdentityProviderAdminGetUserRequest *user = [AWSCognitoIdentityProviderAdminGetUserRequest new];
+                             user.username = driverUsername;
+                             user.userPoolId = @"us-east-1_KpiGHtI7M";
+                             [[[provider adminGetUser:user] continueWithBlock:^id(AWSTask *task) {
+                                 if(task.error){
+                                     [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                                 message:task.error.userInfo[@"message"]
+                                                                delegate:self
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:@"Retry", nil] show];
+                                 }else{
+                                     AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                                     //do something with response.userAttributes
+                                     for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                                         //print the user attributes
+                                         NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                                         if([attribute.name isEqualToString:@"name"]) {
+                                             driverName = attribute.value;
+                                         } else if([attribute.name isEqualToString:@"custom:stripeUserId"]) {
+                                             driverStripeId = attribute.value;
+                                         }
                                      }
                                  }
-                             }
-                             return nil;
-                         }] waitUntilFinished];
-
+                                 return nil;
+                             }] waitUntilFinished];
+                         }
+                         
                      } else {
                          AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
                          AWSCognitoIdentityUserPoolConfiguration *userPoolConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
@@ -272,19 +276,19 @@
             [footerView addSubview:acceptButton];
             [self.navigationController.view addSubview:footerView];
         } else {
-            if([isPaid isEqualToString:@"NO"]) {
-                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
-                footerView.backgroundColor = [UIColor whiteColor];
-                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
-                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
-                [footerView addSubview:separatorView];
-                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
-                [acceptButton setTitle:@"Pay Now" forState:UIControlStateNormal];
-                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-                [acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
-                [footerView addSubview:acceptButton];
-                [self.navigationController.view addSubview:footerView];
-            } else {
+//            if([isPaid isEqualToString:@"NO"]) {
+//                UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
+//                footerView.backgroundColor = [UIColor whiteColor];
+//                UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
+//                separatorView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+//                [footerView addSubview:separatorView];
+//                UIButton *acceptButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 375, 44)];
+//                [acceptButton setTitle:@"Pay Now" forState:UIControlStateNormal];
+//                [acceptButton setTitleColor:[UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//                [acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
+//                [footerView addSubview:acceptButton];
+//                [self.navigationController.view addSubview:footerView];
+//            } else {
                 UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 623, 375, 44)];
                 footerView.backgroundColor = [UIColor whiteColor];
                 UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 375, 1)];
@@ -296,7 +300,7 @@
                 //[acceptButton addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
                 [footerView addSubview:acceptButton];
                 [self.navigationController.view addSubview:footerView];
-            }
+//            }
         }
         
     } else {
@@ -362,7 +366,7 @@
 //    // 1 mi = 5 min + 8 min in store ---- $10/ 60 min
 //    float timeCosts = (((totalMiles*5.0)+8.0)/60)*10;
 //    float totalCosts = gasCosts+timeCosts;
-    deliveryFee = 4.0+6.0;
+    deliveryFee = 6.0+6.0;
 }
 
 - (CLLocationCoordinate2D) geoCodeUsingAddress:(NSString *)address
@@ -433,11 +437,7 @@
         return 0;
     } else if(section == 1) {
         if (orderItems.count > 0) {
-            if ([driverUsername isEqualToString:@"UNKNOWN"]) {
-                return orderItems.count+1;
-            } else {
-                return orderItems.count+1;
-            }
+            return orderItems.count+2;
         }
         return 1;
     }
@@ -480,12 +480,21 @@
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSString *userPool = [defaults stringForKey:@"userPool"];
             if ([userPool isEqualToString:@"CUSTOMER"]) {
-                cell.detailMainLabel.text = @"Driver Name:";
-                cell.detailDynamicLabel.text = driverName;
-                [cell.detailMainLabel sizeToFit];
-                //[cell.detailDynamicLabel sizeToFit];
-                cell.detailDynamicLabel.minimumFontSize = 10;
-                cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
+                if([driverUsername isEqualToString:@"UNKNOWN"]) {
+                    cell.detailMainLabel.text = @"Driver Name:";
+                    cell.detailDynamicLabel.text = @"No Driver";
+                    [cell.detailMainLabel sizeToFit];
+                    //[cell.detailDynamicLabel sizeToFit];
+                    cell.detailDynamicLabel.minimumFontSize = 10;
+                    cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
+                } else {
+                    cell.detailMainLabel.text = @"Driver Name:";
+                    cell.detailDynamicLabel.text = driverName;
+                    [cell.detailMainLabel sizeToFit];
+                    //[cell.detailDynamicLabel sizeToFit];
+                    cell.detailDynamicLabel.minimumFontSize = 10;
+                    cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
+                }
             } else {
                 cell.detailMainLabel.text = @"Customer Name:";
                 cell.detailDynamicLabel.text = customerName;
@@ -589,7 +598,7 @@
                 for (int i = 0; i<orderItems.count; i++) {
                     total += [[orderItems objectAtIndex:i][1] floatValue];
                 }
-                total += deliveryFee;
+                //total += deliveryFee;
                 cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%.2f", total];
                 //[cell.itemPriceLabel sizeToFit];
                 [cell.itemNameLabel sizeToFit];
@@ -613,7 +622,7 @@
                 for (int i = 0; i<orderItems.count; i++) {
                     total += [[orderItems objectAtIndex:i][1] floatValue];
                 }
-                total += deliveryFee;
+                //total += deliveryFee;
                 cell.itemPriceLabel.text = [NSString stringWithFormat:@"$%.2f", total];
                 //[cell.itemPriceLabel sizeToFit];
                 [cell.itemNameLabel sizeToFit];
@@ -657,7 +666,7 @@
     AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
     //    scanExpression.limit = @10;
     
-    [[dynamoDBObjectMapper scan:[Orders class]
+    [[[dynamoDBObjectMapper scan:[Orders class]
                      expression:scanExpression]
      continueWithBlock:^id(AWSTask *task) {
          if (task.error) {
@@ -683,8 +692,8 @@
                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                          NSString *username = [defaults stringForKey:@"currentUsername"];
                          newOrder.driverUsername = username;
-                         newOrder.paid = @"NO";
-                         newOrder.transactionId = @0;
+                         newOrder.paid = order.paid;
+                         newOrder.transactionId = order.transactionId;
                          [[dynamoDBObjectMapper save:newOrder]
                           continueWithBlock:^id(AWSTask *task) {
                               if (task.error) {
@@ -699,7 +708,90 @@
              }
          }
          return nil;
-     }];
+     }] waitUntilFinished];
+    
+    [[[dynamoDBObjectMapper scan:[Transactions class]
+                      expression:scanExpression]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+              for (Transactions *transaction in paginatedOutput.items) {
+                  if(transactionId == transaction.TransactionId) {
+                      stripeTransactionId = transaction.transactionResult;
+                  }
+              }
+          }
+          return nil;
+      }] waitUntilFinished];
+    float total = 0;
+    for (int i = 0; i<orderItems.count; i++) {
+        total += [[orderItems objectAtIndex:i][1] floatValue];
+    }
+    AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    
+    AWSCognitoIdentityUserPoolConfiguration *driverConfiguration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7abpokft5to0bnmbpordu8ou7r"  clientSecret:@"lo4l2ui4oggikjfqo6afgo5mv4u1839jvsikrot5uh1rksf1ad2" poolId:@"us-east-1_KpiGHtI7M"];
+    
+    [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:driverConfiguration forKey:@"DrinksDriverPool"];
+    
+    AWSCognitoIdentityUserPool *driverPool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksDriverPool"];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults stringForKey:@"currentUsername"];
+    [[[[driverPool getUser:username] getDetails] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserGetDetailsResponse *> * _Nonnull task) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(task.error){
+                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                            message:task.error.userInfo[@"message"]
+                                           delegate:self
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:@"Retry", nil] show];
+            }else{
+                AWSCognitoIdentityUserGetDetailsResponse *response = task.result;
+                //do something with response.userAttributes
+                for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
+                    //print the user attributes
+                    //NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                    if ([attribute.name isEqualToString:@"custom:stripeUserId"]) {
+                        driverStripeId = attribute.value;
+                        AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
+                        NSNumber *totalCents = [NSNumber numberWithInteger:(total * 100)];
+                        
+                        [[lambdaInvoker invokeFunction:@"drinksCapturePayment"
+                                            JSONObject:@{@"stripeTransactionId" : stripeTransactionId,
+                                                         @"amount" : totalCents,
+                                                         @"driverId" : driverStripeId,
+                                                         @"transferGroup" : [_orderId stringValue]
+                                                         }] continueWithBlock:^id(AWSTask *task) {
+                            if (task.error) {
+                                NSLog(@"Error: %@", task.error);
+                                if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
+                                    && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
+                                    NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
+                                }
+                            }
+                            if (task.result) {
+                                NSDictionary *JSONObject = task.result;
+                                NSLog(@"result: %@", JSONObject[@"paid"]);
+                                if ([JSONObject[@"paid"] isEqual: @1]) {
+                                    NSLog(@"SUCCESS");
+                                } else {
+                                    NSLog(@"FAILURE");
+                                }
+                            }
+                            // Handle response
+                            return nil;
+                        }];
+
+                    }
+                }
+            }
+        });
+        return nil;
+    }] waitUntilFinished];
+
+    
     greyView = [[UIView alloc] initWithFrame:self.view.frame];
     greyView.backgroundColor = [UIColor grayColor];
     greyView.alpha = 0.5;
@@ -708,7 +800,7 @@
     [spinner setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)];
     [self.view addSubview:spinner];
     [spinner startAnimating];
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(avalibleScreen) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(avalibleScreen) userInfo:nil repeats:YES];
 }
 
 -(void)avalibleScreen {
@@ -744,27 +836,27 @@
 }
 
 
--(void)payNow {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
-    controller.orderDetails = orderItems;
-    controller.orderId = _orderId;
-    controller.driverStripeId = driverStripeId;
-    controller.payDelegate = self;
-    // present the controller
-    // on iPad, this will be a Popover
-    // on iPhone, this will be an action sheet
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    // configure the Popover presentation controller
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popController.delegate = self;
-    popController.sourceView = self.view;
-    popController.sourceRect = CGRectMake(10, 50, 355, 567);
-    //[self performSegueWithIdentifier:@"paySequence" sender:nil];
-}
+//-(void)payNow {
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    PaySequencePopoverViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"paySequenceViewController"];
+//    controller.orderDetails = orderItems;
+//    controller.orderId = _orderId;
+//    controller.driverStripeId = driverStripeId;
+//    controller.payDelegate = self;
+//    // present the controller
+//    // on iPad, this will be a Popover
+//    // on iPhone, this will be an action sheet
+//    controller.modalPresentationStyle = UIModalPresentationPopover;
+//    [self presentViewController:controller animated:YES completion:nil];
+//    
+//    // configure the Popover presentation controller
+//    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+//    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+//    popController.delegate = self;
+//    popController.sourceView = self.view;
+//    popController.sourceRect = CGRectMake(10, 50, 355, 567);
+//    //[self performSegueWithIdentifier:@"paySequence" sender:nil];
+//}
 
 -(void)cancelOrder {
     AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
