@@ -339,12 +339,76 @@
             [[pool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if(task.error){
-                        [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                    message:task.error.userInfo[@"message"]
-                                                   delegate:self
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil] show];
-                    }else {
+                        if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidParameterException"]) {
+                            NSArray *strings;
+                            if ([task.error.userInfo[@"message"] length] < 35) {
+                                strings = [task.error.userInfo[@"message"] componentsSeparatedByString:@";"];
+                            } else {
+                                strings = [[task.error.userInfo[@"message"] substringFromIndex:30] componentsSeparatedByString:@";"];
+                            }
+                            
+                            if([strings[0] isEqualToString:@"Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6"]) {
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Your password must contain 8 or more characters."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else  if([strings[0] isEqualToString:@"Value at 'username' failed to satisfy constraint: Member must have length greater than or equal to 1"]) {
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"You must have a username."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else {
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:task.error.userInfo[@"message"]
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+
+                            }
+                        } else if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidPasswordException"]) {
+                            if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password not long enough"]) {
+                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                            message:@"Your password must contain 8 or more characters."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have uppercase characters"]) {
+                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                            message:@"Your password must contain an uppercase character."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have lowercase characters"]) {
+                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                            message:@"Your password must contain a lowercase character."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have numeric characters"]) {
+                                [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                            message:@"Your password must contain a number."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+                            } else {
+                                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:task.error.userInfo[@"message"]
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil] show];
+
+                            }
+                            
+                        } else {
+                            [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:task.error.userInfo[@"message"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil] show];
+                        }
+                    } else {
                         AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
                         if(!response.userConfirmed){
                             //need to confirm user using user.confirmUser:
@@ -1059,11 +1123,19 @@
         [[driverPool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,isAccepted,profileImage,driversLicense,stripeUserId,accurateCustomer,accurateOrderId] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(task.error){
-                    [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
-                                                message:task.error.userInfo[@"message"]
-                                               delegate:self
-                                      cancelButtonTitle:@"Ok"
-                                      otherButtonTitles:nil] show];
+                    if ([task.error.userInfo[@"__type"] isEqualToString:@""]) {
+                        [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                    message:task.error.userInfo[@"message"]
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil] show];
+                    } else {
+                        [[[UIAlertView alloc] initWithTitle:task.error.userInfo[@"__type"]
+                                                    message:task.error.userInfo[@"message"]
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil] show];
+                    }
                 }else {
                     AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
                     if(!response.userConfirmed){
