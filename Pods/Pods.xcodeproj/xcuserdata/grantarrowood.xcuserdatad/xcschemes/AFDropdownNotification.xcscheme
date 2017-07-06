@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8E2441756BC02BB1FB1CE9D4E242203C'
-               BlueprintName = 'Stripe'
+               BlueprintIdentifier = 'E364C9B146CEAB5C9E518943A59D30DA'
+               BlueprintName = 'AFDropdownNotification'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libStripe.a'>
+               BuildableName = 'libAFDropdownNotification.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

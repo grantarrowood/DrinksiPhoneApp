@@ -992,6 +992,7 @@
     streetAddressTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 210, 240, 40)];
     [streetAddressTextField setPlaceholder:@"Street Address"];
     [streetAddressTextField setBorderStyle:UITextBorderStyleBezel];
+    streetAddressTextField.layer.borderColor = [[UIColor redColor] CGColor];
     [streetAddressTextField setDelegate:self];
     CGPoint streetAddressCenter = streetAddressTextField.center;
     streetAddressCenter.x = modalView.frame.size.width / 2;

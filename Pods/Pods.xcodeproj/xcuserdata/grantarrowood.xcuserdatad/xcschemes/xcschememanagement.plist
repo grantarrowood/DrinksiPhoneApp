@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AFDropdownNotification.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>AWSAutoScaling.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -177,6 +182,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>3E9A2B2F183F3CDA932A1EBADDADD0B1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4187A5DFAC146115CF5D283EB9A121C4</key>
 		<dict>
 			<key>primary</key>
@@ -188,11 +198,6 @@
 			<true/>
 		</dict>
 		<key>4D194249CA6D4C15BA877375A355DCEE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>69514B639844D6D1FE15443368257816</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -223,6 +228,11 @@
 			<true/>
 		</dict>
 		<key>80A02ED7B8F563C3FCB419E34BAFE374</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8E2441756BC02BB1FB1CE9D4E242203C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -262,11 +272,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D83A874F497E8B72966C16020C936AAB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>DF2BF674B724AB2D699D0388ED576064</key>
 		<dict>
 			<key>primary</key>
@@ -282,7 +287,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EBD517962172BB9A5F0DAD3733E40130</key>
+		<key>E364C9B146CEAB5C9E518943A59D30DA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F0EA6D0C8CE0C75C39E809385518C1E8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

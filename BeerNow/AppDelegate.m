@@ -130,9 +130,13 @@ static NSString *const SNSPlatformApplicationArn = @"arn:aws:sns:us-east-1:58556
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     application.applicationIconBadgeNumber = 0;
-    NSString *msg = [NSString stringWithFormat:@"%@", userInfo];
+    NSString *msg = [NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]];
     NSLog(@"%@",msg);
-    [self createAlert:msg];
+    //[self createAlert:msg];
+    NSDictionary *userInfos = [NSDictionary dictionaryWithObject:msg forKey:@"message"];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"InAppNotification"
+     object:userInfos];
 }
 
 - (void)createAlert:(NSString *)msg {

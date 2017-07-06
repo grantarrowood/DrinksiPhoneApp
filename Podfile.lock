@@ -1,4 +1,5 @@
 PODS:
+  - AFDropdownNotification (1.1)
   - AWSAutoScaling (2.5.8):
     - AWSCore (= 2.5.8)
   - AWSCloudWatch (2.5.8):
@@ -45,6 +46,7 @@ PODS:
   - Stripe (10.2.0)
 
 DEPENDENCIES:
+  - AFDropdownNotification (~> 1.0)
   - AWSAutoScaling
   - AWSCloudWatch
   - AWSCognito
@@ -69,6 +71,7 @@ DEPENDENCIES:
   - Stripe
 
 SPEC CHECKSUMS:
+  AFDropdownNotification: 4125b132cd03a8d6293e09ce000aeef55ced1364
   AWSAutoScaling: b0ca14740f9f26282d6ccd00a7b2f5a499506c28
   AWSCloudWatch: 9813ebc6104bc61599b12fa448047c69d4a0115c
   AWSCognito: 8eb74039f4dc5f2d929999c4f531eeb4bd83e6cb
@@ -93,6 +96,6 @@ SPEC CHECKSUMS:
   AWSSQS: bea4c7b93c011c7765a071b01ad74949d62c1d76
   Stripe: 5c5a49d750952b1801e4c1f5c4264a08e427c67d
 
-PODFILE CHECKSUM: 35ffe70bbd8cf86bbd1bf17b493eaa08585d1b87
+PODFILE CHECKSUM: 867f053dd620a93c806b568124e32c4f2775ce58
 
 COCOAPODS: 1.0.1

@@ -24,6 +24,7 @@ target ‘BeerNow’ do
     pod 'AWSSNS'
     pod 'AWSSQS'
     pod ‘Stripe’
+    pod 'AFDropdownNotification', '~> 1.0'
   target ‘BeerNowTests’ do
     inherit! :search_paths
     # Pods for testing

@@ -264,6 +264,34 @@
         [self presentViewController:alertController animated:YES completion:nil];
 
     } else {
+//        UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Add Tip"
+//                                                                                  message: @"Do you want to add a tip? ($1 - $25)"
+//                                                                           preferredStyle:UIAlertControllerStyleAlert];
+//        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+//            textField.placeholder = @"name";
+//            textField.textColor = [UIColor blueColor];
+//            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//            textField.borderStyle = UITextBorderStyleRoundedRect;
+//        }];
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            NSArray * textfields = alertController.textFields;
+//            UITextField * tipfield = textfields[0];
+//            NSLog(@"%@",tipfield.text);
+//            if ([tipfield.text floatValue] > 25.0) {
+//                [[[UIAlertView alloc] initWithTitle:@"Warning"
+//                                            message:@"Tip is too high. Pleas enter a tip lower than $25."
+//                                           delegate:nil
+//                                  cancelButtonTitle:@"OK"
+//                                  otherButtonTitles:nil, nil] show];
+//            } else {
+//                [self addTip:[tipfield.text floatValue]];
+//            }
+//        }]];
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            
+//        }]];
+//        [self presentViewController:alertController animated:YES completion:nil];
+
         Orders *newOrder = [Orders new];
         
         AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
@@ -511,4 +539,11 @@
 {
     return UIBarPositionTopAttached;
 }
+
+-(void)addTip:(float)amount {
+    //INTEGRATE TIP
+    
+}
+
+
 @end

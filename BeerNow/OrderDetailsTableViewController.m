@@ -156,15 +156,13 @@
                                      NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
                                      if([attribute.name isEqualToString:@"name"]) {
                                          customerName = attribute.value;
-                                     } else if([attribute.name isEqualToString:@"address"]) {
-                                         customerAddress = attribute.value;
                                      }
                                  }
                              }
                              return nil;
                          }] waitUntilFinished];
                      }
-                     
+                     customerAddress = order.DeliveryAddress;
                      isPaid = order.paid;
                      if ([isPaid isEqualToString: @"YES"]) {
                          AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
@@ -518,7 +516,7 @@
                 cell.detailDynamicLabel.minimumFontSize = 10;
                 cell.detailDynamicLabel.adjustsFontSizeToFitWidth = YES;
             } else {
-                cell.detailMainLabel.text = @"Customer Address:";
+                cell.detailMainLabel.text = @"Delivery Address:";
                 cell.detailDynamicLabel.text = customerAddress;
                 [cell.detailMainLabel sizeToFit];
                 //[cell.detailDynamicLabel sizeToFit];

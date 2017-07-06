@@ -214,11 +214,24 @@
                 //do something with response.userAttributes
                 for (AWSCognitoIdentityUserAttributeType *attribute in response.userAttributes) {
                     //print the user attributes
-                    NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
-                    BOOL accepted = NO;
+                    //NSLog(@"Attribute: %@ Value: %@", attribute.name, attribute.value);
+                    NSString *arn;
+                    if ([attribute.name isEqualToString:@"custom:endpointArn"]) {
+                        arn = attribute.value;
+                    }
                     if ([attribute.name isEqualToString:@"custom:isAccepted"]) {
                         if ([attribute.value isEqualToString:@"YES"]) {
-                            accepted = YES;
+                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                            [defaults setValue:arn forKey:@"endpointArn"];
+                            [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
+                            [defaults synchronize];
+                            [[NSNotificationCenter defaultCenter]
+                             postNotificationName:@"ReloadSidebar"
+                             object:self];
+                            [spinner stopAnimating];
+                            [spinner removeFromSuperview];
+                            [greyView removeFromSuperview];
+                            [self performSegueWithIdentifier:@"loginToDriver" sender:nil];
                         } else {
                             [[[UIAlertView alloc] initWithTitle:@"You have not been accepted yet!"
                                                         message:@"Please check again later."
@@ -230,23 +243,7 @@
                             [greyView removeFromSuperview];
                         }
                     }
-                    if ([attribute.name isEqualToString:@"custom:endpointArn"]) {
-                        if (accepted) {
-                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                            [defaults setValue:attribute.value forKey:@"endpointArn"];
-                            [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
-                            [defaults synchronize];
-                            [[NSNotificationCenter defaultCenter]
-                             postNotificationName:@"ReloadSidebar"
-                             object:self];
-                            [spinner stopAnimating];
-                            [spinner removeFromSuperview];
-                            [greyView removeFromSuperview];
-                            [self performSegueWithIdentifier:@"loginToDriver" sender:nil];
-                        } else {
-                            
-                        }
-                    }
+                    
                 }
             }
         });
@@ -723,9 +720,9 @@
                              self.notAMemberLabel.hidden = YES;
                              self.signUpButton.hidden = YES;
                              self.forgotPasswordButton.hidden = YES;
+                             self.customerLoginButton.hidden = NO;
+                             self.driverLoginButton.hidden = NO;
                          }];
-        self.customerLoginButton.hidden = NO;
-        self.driverLoginButton.hidden = NO;
     } else {
         [self returnTextField];
         self.driversLicenseImageView.hidden = YES;

@@ -10,9 +10,11 @@
 #import "SWRevealViewController.h"
 #import "AWSCognitoIdentityProvider.h"
 #import <AWSS3/AWSS3.h>
+#import "AFDropdownNotification.h"
 
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <AFDropdownNotificationDelegate>
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem *topNavigationItem;
