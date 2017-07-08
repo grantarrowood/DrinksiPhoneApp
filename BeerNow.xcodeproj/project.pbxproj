@@ -11,6 +11,7 @@
 		9C039D981EEF29A1006476BA /* Orders.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C039D971EEF29A1006476BA /* Orders.m */; };
 		9C219B071EF9C94900DDF258 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C219B061EF9C94900DDF258 /* MapKit.framework */; };
 		9C219B0A1EF9C9A700DDF258 /* NearYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C219B091EF9C9A700DDF258 /* NearYouViewController.m */; };
+		9C23AA9A1F1133340094962F /* PromoCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C23AA991F1133340094962F /* PromoCodes.m */; };
 		9C2C2FC01EF99D6100343AB0 /* FAQTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */; };
 		9C2C2FC61EF9A47300343AB0 /* ProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2C2FC51EF9A47300343AB0 /* ProfileTableViewController.m */; };
 		9C58AFED1ED64A1800EB8E62 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C58AFEC1ED64A1800EB8E62 /* main.m */; };
@@ -82,6 +83,8 @@
 		9C219B061EF9C94900DDF258 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9C219B081EF9C9A700DDF258 /* NearYouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearYouViewController.h; sourceTree = "<group>"; };
 		9C219B091EF9C9A700DDF258 /* NearYouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearYouViewController.m; sourceTree = "<group>"; };
+		9C23AA981F1133340094962F /* PromoCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoCodes.h; sourceTree = "<group>"; };
+		9C23AA991F1133340094962F /* PromoCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoCodes.m; sourceTree = "<group>"; };
 		9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAQTableViewController.h; sourceTree = "<group>"; };
 		9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAQTableViewController.m; sourceTree = "<group>"; };
 		9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewController.h; sourceTree = "<group>"; };
@@ -271,6 +274,8 @@
 				9CF8AD291EDA141A00C61003 /* MenuItems.m */,
 				9CF276001F01FC910079672F /* Transactions.h */,
 				9CF276011F01FC910079672F /* Transactions.m */,
+				9C23AA981F1133340094962F /* PromoCodes.h */,
+				9C23AA991F1133340094962F /* PromoCodes.m */,
 				9C2C2FBE1EF99D6100343AB0 /* FAQTableViewController.h */,
 				9C2C2FBF1EF99D6100343AB0 /* FAQTableViewController.m */,
 				9C2C2FC41EF9A47300343AB0 /* ProfileTableViewController.h */,
@@ -628,6 +633,7 @@
 				9CB392201EF6530200FD458D /* OrderDetailsTableViewController.m in Sources */,
 				9C5DCCC21ED6853500FA93E6 /* LoginViewController.m in Sources */,
 				9CF8AD2A1EDA141A00C61003 /* MenuItems.m in Sources */,
+				9C23AA9A1F1133340094962F /* PromoCodes.m in Sources */,
 				9CF8AD211ED9CC5F00C61003 /* OrderNowTableViewController.m in Sources */,
 				9C58AFF01ED64A1800EB8E62 /* AppDelegate.m in Sources */,
 				9CD8F5A81EFD7A83006BC414 /* CustomerLicenseTableViewCell.m in Sources */,
@@ -786,7 +792,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Randy Arrowood (7J53ZS2X2N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Randy Arrowood (N5WA24M8FS)";
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -796,8 +802,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f621c5b9-a509-4d02-b1d5-5ae6548c7704";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev Drinks";
+				PROVISIONING_PROFILE = "fe7a5120-e4af-4073-8f19-cbf0fd755105";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution Drinks";
 				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -811,7 +817,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Randy Arrowood (7J53ZS2X2N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Randy Arrowood (N5WA24M8FS)";
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -821,8 +827,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f621c5b9-a509-4d02-b1d5-5ae6548c7704";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev Drinks";
+				PROVISIONING_PROFILE = "fe7a5120-e4af-4073-8f19-cbf0fd755105";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Distribution Drinks";
 				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

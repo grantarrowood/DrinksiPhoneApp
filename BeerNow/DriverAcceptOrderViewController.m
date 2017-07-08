@@ -272,7 +272,7 @@
 //            textField.placeholder = @"name";
 //            textField.textColor = [UIColor blueColor];
 //            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//            textField.borderStyle = UITextBorderStyleRoundedRect;
+//            textField.borderStyle = UITextBorderStyleNone;
 //        }];
 //        [alertController addAction:[UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 //            NSArray * textfields = alertController.textFields;

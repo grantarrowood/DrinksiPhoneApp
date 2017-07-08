@@ -42,44 +42,22 @@
     ev.frame = self.mapContainerView.frame;
     [self.view addSubview:ev];
     [self.view bringSubviewToFront:self.mapContainerView];
-    
-    
-    
-    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
-    
-    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
-    
-    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
-    
-    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-    
-    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
-    //    scanExpression.limit = @10;
-    
-    [[dynamoDBObjectMapper scan:[Locations class]
-                     expression:scanExpression]
-     continueWithBlock:^id(AWSTask *task) {
-         if (task.error) {
-             NSLog(@"The request failed. Error: [%@]", task.error);
-         } else {
-             AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-             for (Locations *location in paginatedOutput.items) {
-                 NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:location.Name, location.Address, nil];
-                 [locationsArray addObject:item];
-                 CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:location.Address];
-                 MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-                 point.coordinate = locationCoordinate;
-                 point.title = location.Name;
-                 point.subtitle = location.Address;
-                 [self.mapView addAnnotation:point];
-             }
-         }
-         return nil;
-     }];
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
-    
+    //[self getTable];
+    //timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        // Perform async operation
+        // Call your method/function here
+        [self getTable];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            // Update UI
+            [self.tableView reloadData];
+
+        });
+    });
 }
+
+
 
 
 - (CLLocationCoordinate2D) geoCodeUsingAddress:(NSString *)address
@@ -105,8 +83,38 @@
 
 
 -(void)getTable {
-    [self.tableView reloadData];
-    [timer invalidate];
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+    
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+    
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+    //    scanExpression.limit = @10;
+    
+    [[[dynamoDBObjectMapper scan:[Locations class]
+                      expression:scanExpression]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+              for (Locations *location in paginatedOutput.items) {
+                  NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:location.Name, location.Address, nil];
+                  [locationsArray addObject:item];
+                  CLLocationCoordinate2D locationCoordinate = [self geoCodeUsingAddress:location.Address];
+                  MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+                  point.coordinate = locationCoordinate;
+                  point.title = location.Name;
+                  point.subtitle = location.Address;
+                  [self.mapView addAnnotation:point];
+              }
+          }
+          return nil;
+      }] waitUntilFinished];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -196,26 +204,32 @@
         panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x, 410);
         [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
         ev.frame = self.mapContainerView.frame;
+        [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, panGestureRecognizer.view.center.y-330, 0)];
+
     } else {
         if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
             if ((panGestureRecognizer.view.frame.origin.y + translation.y) >= 500) {
                 panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x, 957);
                 [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
                 ev.frame = self.mapContainerView.frame;
+                [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, panGestureRecognizer.view.center.y-330, 0)];
             } else if (((panGestureRecognizer.view.frame.origin.y + translation.y) <= 500) && ((panGestureRecognizer.view.frame.origin.y + translation.y) >= 300)) {
                 panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x, 692);
                 [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
                 ev.frame = self.mapContainerView.frame;
+                [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, panGestureRecognizer.view.center.y-330, 0)];
             } else if (((panGestureRecognizer.view.frame.origin.y + translation.y) <= 300)) {
                 panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x, 410);
                 [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
                 ev.frame = self.mapContainerView.frame;
+                [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, panGestureRecognizer.view.center.y-330, 0)];
             }
             
         } else {
             panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x, panGestureRecognizer.view.center.y + translation.y);
             [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
             ev.frame = self.mapContainerView.frame;
+            [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, panGestureRecognizer.view.center.y-330, 0)];
         }
         
     }

@@ -419,7 +419,7 @@
         NSLog(@"Submit");
     } else {
         for (NSInteger j = 0; j < [tableView numberOfSections]; ++j)
-        {
+        { 
             for (NSInteger i = 0; i < [tableView numberOfRowsInSection:j]; ++i)
             {
                 if ([tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:j]].accessoryType == UITableViewCellAccessoryCheckmark) {

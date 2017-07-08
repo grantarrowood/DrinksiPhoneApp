@@ -97,39 +97,173 @@
     
 }
 
+
+
 - (IBAction)applePayAction:(id)sender {
     if (![self.termsAndConditionsSwitch isOn]) {
         NSLog(@"NOT ENABLED");
     } else {
-        if([PKPaymentAuthorizationViewController canMakePayments]) {
-            if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
-                PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-                request.countryCode = @"US";
-                request.currencyCode = @"USD";
-                request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
-                request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
-                request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
-                NSMutableArray *itemArray = [[NSMutableArray alloc] init];
-                for (int i = 0; i<_orderDetails.count; i++) {
-                    PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
-                    [itemArray addObject:item];
-                }
-                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
-                [itemArray addObject:item];
-                request.paymentSummaryItems = itemArray;
-                PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
-                paymentPane.delegate = self;
-                if ([Stripe canSubmitPaymentRequest:request]) {
-                    [self presentViewController:paymentPane animated:YES completion:nil];
-                } else {
-                    NSLog(@"cannont submit request");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Promo Code" message:@"Do you have a promo code?" preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"code";
+            textField.textColor = [UIColor blackColor];
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleNone;
+        }];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+            
+            AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+            
+            AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+            
+            AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+            PromoCodes *codeUsed = [PromoCodes new];
+            [[[dynamoDBObjectMapper scan:[PromoCodes class]
+                              expression:scanExpression]
+              continueWithBlock:^id(AWSTask *task) {
+                  if (task.error) {
+                      NSLog(@"The request failed. Error: [%@]", task.error);
+                  } else {
+                      AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                      for (PromoCodes *promoCode in paginatedOutput.items) {
+                          //Do something with book.
+                          if([promoCode.PromoCode isEqualToString:alertController.textFields[0].text]) {
+                              codeUsed.CodeId = promoCode.CodeId;
+                              codeUsed.Used = @"YES";
+                              codeUsed.PromoCode  = promoCode.PromoCode;
+                              codeUsed.UsedBy = @"1 Person";
+                              codeUsed.CodeType = promoCode.CodeType;
+                              promoCodeType = promoCode.CodeType;
+                          }
+                      }
+                  }
+                  return nil;
+              }] waitUntilFinished];
+            if (codeUsed.Used != nil) {
+                [[[dynamoDBObjectMapper save:codeUsed]
+                  continueWithBlock:^id(AWSTask *task) {
+                      if (task.error) {
+                          NSLog(@"The request failed. Error: [%@]", task.error);
+                      } else {
+                          //Do something with task.result or perform other operations.
+                      }
+                      return nil;
+                  }] waitUntilFinished];
+                [alertController dismissViewControllerAnimated:YES completion:nil];
+                if ([promoCodeType isEqualToString:@"10% Off"]) {
+                    if([PKPaymentAuthorizationViewController canMakePayments]) {
+                        if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
+                            PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+                            request.countryCode = @"US";
+                            request.currencyCode = @"USD";
+                            request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
+                            request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
+                            request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
+                            NSMutableArray *itemArray = [[NSMutableArray alloc] init];
+                            for (int i = 0; i<_orderDetails.count; i++) {
+                                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
+                                [itemArray addObject:item];
+                            }
+                            total = [NSNumber numberWithFloat:([total floatValue] - 1.20)];
+                            PKPaymentSummaryItem *discount = [PKPaymentSummaryItem summaryItemWithLabel:@"Discount" amount:[NSDecimalNumber decimalNumberWithString:@"-1.20"]];
+                            [itemArray addObject:discount];
+                            PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
+                            [itemArray addObject:item];
+                            request.paymentSummaryItems = itemArray;
+                            PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+                            paymentPane.delegate = self;
+                            if ([Stripe canSubmitPaymentRequest:request]) {
+                                [self presentViewController:paymentPane animated:YES completion:nil];
+                            } else {
+                                NSLog(@"cannont submit request");
+                            }
+                        } else {
+                            NSLog(@"NO PAYMENT");
+                        }
+                    } else {
+                        NSLog(@"NO PAYMENTS");
+                    }
+
+                } else if ([promoCodeType isEqualToString:@"Free Service"]){
+                    if([PKPaymentAuthorizationViewController canMakePayments]) {
+                        if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
+                            PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+                            request.countryCode = @"US";
+                            request.currencyCode = @"USD";
+                            request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
+                            request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
+                            request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
+                            NSMutableArray *itemArray = [[NSMutableArray alloc] init];
+                            for (int i = 0; i<_orderDetails.count; i++) {
+                                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
+                                [itemArray addObject:item];
+                            }
+                            total = [NSNumber numberWithFloat:([total floatValue] - 0.49)];
+                            PKPaymentSummaryItem *discount = [PKPaymentSummaryItem summaryItemWithLabel:@"Discount" amount:[NSDecimalNumber decimalNumberWithString:@"-0.49"]];
+                            [itemArray addObject:discount];
+                            PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
+                            [itemArray addObject:item];
+                            request.paymentSummaryItems = itemArray;
+                            PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+                            paymentPane.delegate = self;
+                            if ([Stripe canSubmitPaymentRequest:request]) {
+                                [self presentViewController:paymentPane animated:YES completion:nil];
+                            } else {
+                                NSLog(@"cannont submit request");
+                            }
+                        } else {
+                            NSLog(@"NO PAYMENT");
+                        }
+                    } else {
+                        NSLog(@"NO PAYMENTS");
+                    }
                 }
             } else {
-                NSLog(@"NO PAYMENT");
+                [alertController dismissViewControllerAnimated:YES completion:nil];
+                
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Invalid Code" message:@"Re-enter your code." preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [alertController dismissViewControllerAnimated:YES completion:nil];
+                }]];
+                [self presentViewController:alertController animated:YES completion:nil];
+                
             }
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            if([PKPaymentAuthorizationViewController canMakePayments]) {
+                if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
+                    PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+                    request.countryCode = @"US";
+                    request.currencyCode = @"USD";
+                    request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
+                    request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
+                    request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
+                    NSMutableArray *itemArray = [[NSMutableArray alloc] init];
+                    for (int i = 0; i<_orderDetails.count; i++) {
+                        PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
+                        [itemArray addObject:item];
+                    }
+                    PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
+                    [itemArray addObject:item];
+                    request.paymentSummaryItems = itemArray;
+                    PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+                    paymentPane.delegate = self;
+                    if ([Stripe canSubmitPaymentRequest:request]) {
+                        [self presentViewController:paymentPane animated:YES completion:nil];
+                    } else {
+                        NSLog(@"cannont submit request");
+                    }
+                } else {
+                    NSLog(@"NO PAYMENT");
+                }
             } else {
-            NSLog(@"NO PAYMENTS");
-        }
+                NSLog(@"NO PAYMENTS");
+            }
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -273,58 +407,6 @@
 
 -(void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
 
-//    BTApplePayClient *applePayClient = [[BTApplePayClient alloc]
-//                                        initWithAPIClient:self.braintreeClient];
-//    [applePayClient tokenizeApplePayPayment:payment
-//                                 completion:^(BTApplePayCardNonce *tokenizedApplePayPayment,
-//                                              NSError *error) {
-//                                     if (tokenizedApplePayPayment) {
-//                                         // On success, send nonce to your server for processing.
-//                                         AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
-//                                         
-//                                         [[lambdaInvoker invokeFunction:@"drinksApplePayPaymentProcessing"
-//                                                             JSONObject:@{@"nonce" : tokenizedApplePayPayment.nonce,
-//                                                                          @"amount" : total}] continueWithBlock:^id(AWSTask *task) {
-//                                             if (task.error) {
-//                                                 NSLog(@"Error: %@", task.error);
-//                                                 if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
-//                                                     && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
-//                                                     NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
-//                                                     completion(PKPaymentAuthorizationStatusFailure);
-//                                                     paymentSuccess = NO;
-//                                                 }
-//                                             }
-//                                             if (task.result) {
-//                                                 NSDictionary *JSONObject = task.result;
-//                                                 NSLog(@"result: %@", JSONObject[@"success"]);
-//                                                 if ([JSONObject[@"success"] isEqual: @1]) {
-//                                                     NSLog(@"SUCCESS");
-//                                                     paymentSuccess = YES;
-//                                                     transactionResult = task.result;
-//                                                     completion(PKPaymentAuthorizationStatusSuccess);
-//                                                 } else {
-//                                                     completion(PKPaymentAuthorizationStatusFailure);
-//                                                     NSLog(@"FAILURE");
-//                                                     paymentSuccess = NO;
-//                                                 }
-//                                                 
-//                                             }
-//                                             // Handle response
-//                                             return nil;
-//                                         }];
-//
-//                                         // If applicable, address information is accessible in `payment`.
-//                                         NSLog(@"nonce = %@", tokenizedApplePayPayment.nonce);
-//                                         
-//                                         // Then indicate success or failure via the completion callback, e.g.
-//                                     } else {
-//                                         // Tokenization failed. Check `error` for the cause of the failure.
-//                                         
-//                                         // Indicate failure via the completion callback:
-//                                         completion(PKPaymentAuthorizationStatusFailure);
-//                                         paymentSuccess = NO;
-//                                     }
-//                                 }];
     
     [[STPAPIClient sharedClient] createTokenWithPayment:payment completion:^(STPToken *token, NSError *error) {
         if (error) {

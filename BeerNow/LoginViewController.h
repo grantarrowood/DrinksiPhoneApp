@@ -11,10 +11,16 @@
 #import "AWSCognitoIdentityProvider.h"
 #import "ViewController.h"
 #import <AWSS3/AWSS3.h>
+#import <PassKit/PassKit.h>
+#import <Stripe/Stripe.h>
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import "Transactions.h"
+#import "PromoCodes.h"
+#import <AWSLambda/AWSLambda.h>
 
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIWebViewDelegate>
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIWebViewDelegate, PKPaymentAuthorizationViewControllerDelegate>
 {
     NSString *loginType;
     BOOL profilePhoto;
@@ -22,6 +28,9 @@
     NSURLConnection *accurateCustomerConnection;
     NSString *stripeDriverId;
     NSString *accurateCustomerId;
+    BOOL paymentSuccess;
+    NSNumber *transactionId;
+    NSString *transactionResultId;
 }
 
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;

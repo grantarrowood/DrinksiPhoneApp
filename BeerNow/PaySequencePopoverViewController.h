@@ -14,6 +14,7 @@
 #import "Transactions.h"
 #import <Stripe/Stripe.h>
 #import <AWSS3/AWSS3.h>
+#import "PromoCodes.h"
 
 
 @protocol PayDelegate <NSObject>
@@ -26,6 +27,8 @@
     bool paymentSuccess;
     NSString *transactionResultId;
     NSNumber *transactionId;
+    NSString *promoCodeType;
+
 }
 
 @property (strong) NSMutableArray *orderDetails;

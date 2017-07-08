@@ -15,6 +15,7 @@
     UIView *greyView;
     CGPoint svos;
     UIDatePicker *datePicker;
+    UIView *modalView;
 }
 @end
 
@@ -280,271 +281,293 @@
         [self.view endEditing:YES];
     } else {
         [self.view endEditing:YES];
-        if ([loginType isEqualToString:@"CUSTOMER"]) {
-            AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                                            identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
-            
-            AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
-            
-            AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
-            AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
-            
-            AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
-            
-            [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
-            AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
-            AWSCognitoIdentityUserAttributeType *profileImage = [AWSCognitoIdentityUserAttributeType new];
-            if (self.profileImageView.image != [UIImage imageNamed:@"profileIcon"]) {
-                AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
-                NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsPath = [paths objectAtIndex:0];
-                NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
-                [pngData writeToFile:filePath atomically:YES];
-                NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
-                AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
-                uploadRequest.bucket = @"drinksprofilepictures";
-                uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
-                uploadRequest.body = uploadingFileURL;
-                [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
-                                                                   withBlock:^id(AWSTask *task) {
-                                                                       if (task.error) {
-                                                                           if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
-                                                                               switch (task.error.code) {
-                                                                                   case AWSS3TransferManagerErrorCancelled:
-                                                                                   case AWSS3TransferManagerErrorPaused:
-                                                                                       break;
-                                                                                       
-                                                                                   default:
-                                                                                       NSLog(@"Error: %@", task.error);
-                                                                                       break;
+
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Accept Terms and Conditions" message:@"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda." preferredStyle:UIAlertControllerStyleActionSheet];
+        NSMutableAttributedString *alertTitle = [[NSMutableAttributedString alloc] initWithString:@"Accept Terms and Conditions"];
+        NSRange range = NSMakeRange(0, alertTitle.length);
+        [alertTitle addAttribute:NSFontAttributeName
+                      value:[UIFont fontWithName:@"Optima" size:22.0]
+                      range:range];
+        [alertController setValue:alertTitle forKey:@"attributedTitle"];
+        NSMutableAttributedString *alertMessage = [[NSMutableAttributedString alloc] initWithString:@"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."];
+        NSRange rangeMessage = NSMakeRange(0, alertMessage.length);
+        [alertMessage addAttribute:NSFontAttributeName
+                           value:[UIFont fontWithName:@"Optima" size:16.0]
+                           range:rangeMessage];
+        [alertController setValue:alertMessage forKey:@"attributedMessage"];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+            if ([loginType isEqualToString:@"CUSTOMER"]) {
+                AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                                identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+                
+                AWSServiceConfiguration *s3configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+                
+                AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = s3configuration;
+                AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+                
+                AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:@"7ffg3sd7gu2fh3cjfr2ig5j8o8"  clientSecret:@"acilon9h90v9kgc9n831epnpqng8tqsac12po3g31h570ov9qmb" poolId:@"us-east-1_rwnjPpBrw"];
+                
+                [AWSCognitoIdentityUserPool registerCognitoIdentityUserPoolWithConfiguration:serviceConfiguration userPoolConfiguration:configuration forKey:@"DrinksCustomerPool"];
+                AWSCognitoIdentityUserPool *pool = [AWSCognitoIdentityUserPool CognitoIdentityUserPoolForKey:@"DrinksCustomerPool"];
+                AWSCognitoIdentityUserAttributeType *profileImage = [AWSCognitoIdentityUserAttributeType new];
+                if (self.profileImageView.image != [UIImage imageNamed:@"profileIcon"]) {
+                    AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+                    NSData *pngData = UIImagePNGRepresentation(self.profileImageView.image);
+                    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                    NSString *documentsPath = [paths objectAtIndex:0];
+                    NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType]];
+                    [pngData writeToFile:filePath atomically:YES];
+                    NSURL *uploadingFileURL = [NSURL fileURLWithPath:filePath];
+                    AWSS3TransferManagerUploadRequest *uploadRequest = [AWSS3TransferManagerUploadRequest new];
+                    uploadRequest.bucket = @"drinksprofilepictures";
+                    uploadRequest.key = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
+                    uploadRequest.body = uploadingFileURL;
+                    [[transferManager upload:uploadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                       withBlock:^id(AWSTask *task) {
+                                                                           if (task.error) {
+                                                                               if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                   switch (task.error.code) {
+                                                                                       case AWSS3TransferManagerErrorCancelled:
+                                                                                       case AWSS3TransferManagerErrorPaused:
+                                                                                           break;
+                                                                                           
+                                                                                       default:
+                                                                                           NSLog(@"Error: %@", task.error);
+                                                                                           break;
+                                                                                   }
+                                                                               } else {
+                                                                                   // Unknown error.
+                                                                                   NSLog(@"Error: %@", task.error);
                                                                                }
-                                                                           } else {
-                                                                               // Unknown error.
-                                                                               NSLog(@"Error: %@", task.error);
                                                                            }
-                                                                       }
-                                                                       
-                                                                       if (task.result) {
-                                                                           AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
-                                                                           // The file uploaded successfully.
-                                                                       }
-                                                                       return nil;
-                                                                   }];
+                                                                           
+                                                                           if (task.result) {
+                                                                               AWSS3TransferManagerUploadOutput *uploadOutput = task.result;
+                                                                               // The file uploaded successfully.
+                                                                           }
+                                                                           return nil;
+                                                                       }];
+                    
+                    
+                    profileImage.name = @"picture";
+                    //phone number must be prefixed by country code
+                    profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
+                }
                 
-                
-                profileImage.name = @"picture";
+                AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
+                phone.name = @"phone_number";
                 //phone number must be prefixed by country code
-                profileImage.value = [NSString stringWithFormat:@"%@_profilePicture_%@.jpg", self.usernameTextField.text,loginType];
-            }
-
-            AWSCognitoIdentityUserAttributeType * phone = [AWSCognitoIdentityUserAttributeType new];
-            phone.name = @"phone_number";
-            //phone number must be prefixed by country code
-            phone.value = [NSString stringWithFormat:@"+1%@",self.phoneTextField.text];
-            if([self.emailTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have an email address."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            if(![self NSStringIsValidEmail:self.emailTextField.text]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have an valid email address. (ie. your@example.com)"
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            
-            AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
-            email.name = @"email";
-            email.value = self.emailTextField.text;
-            if([self.birthdateTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must enter your birthday."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            dateFormatter.dateFormat = @"MM/DD/YYYY";
-            dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-            
-            NSDate *date = [dateFormatter dateFromString:self.birthdateTextField.text];
-            unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
-            NSDate *now = [NSDate date];
-            NSCalendar *gregorian = [NSCalendar currentCalendar];
-            NSDateComponents *comps = [gregorian components:unitFlags fromDate:now];
-            [comps setYear:[comps year] - 21];
-            NSDate *twentyoneAgo = [gregorian dateFromComponents:comps];
-            if ([date timeIntervalSinceReferenceDate] > [twentyoneAgo timeIntervalSinceReferenceDate]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must be 21 to use this app."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            AWSCognitoIdentityUserAttributeType * birthdate = [AWSCognitoIdentityUserAttributeType new];
-            birthdate.name = @"birthdate";
-            birthdate.value = self.birthdateTextField.text;
-            if([self.streetAddressTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have a street address."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            if([self.cityTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have a city."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            if([self.stateTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have a state."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
-            address.name = @"address";
-            address.value = [NSString stringWithFormat:@"%@, %@, %@",self.streetAddressTextField.text,self.cityTextField.text,self.stateTextField.text];
-            if([self.nameTextField.text isEqualToString:@""]) {
-                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                            message:@"Your must have a name."
-                                           delegate:self
-                                  cancelButtonTitle:@"Ok"
-                                  otherButtonTitles:nil] show];
-                return;
-            }
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *token = [defaults stringForKey:@"deviceToken"];
-            NSString *arn = [defaults stringForKey:@"endpointArn"];
-
-            AWSCognitoIdentityUserAttributeType *deviceToken = [AWSCognitoIdentityUserAttributeType new];
-            deviceToken.name = @"custom:deviceToken";
-            deviceToken.value = token;
-            
-            AWSCognitoIdentityUserAttributeType *endpointArn = [AWSCognitoIdentityUserAttributeType new];
-            endpointArn.name = @"custom:endpointArn";
-            endpointArn.value = arn;
-            
-            AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
-            name.name = @"name";
-            name.value = self.nameTextField.text;
-            //register the user
-            [[pool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,deviceToken,endpointArn] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(task.error){
-                        if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidParameterException"]) {
-                            NSArray *strings;
-                            if ([task.error.userInfo[@"message"] length] < 35) {
-                                strings = [task.error.userInfo[@"message"] componentsSeparatedByString:@";"];
-                            } else {
-                                strings = [[task.error.userInfo[@"message"] substringFromIndex:30] componentsSeparatedByString:@";"];
-                            }
-                            
-                            if([strings[0] isEqualToString:@"Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your password must contain 8 or more characters."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-                            } else  if([strings[0] isEqualToString:@"Value at 'username' failed to satisfy constraint: Member must have length greater than or equal to 1"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"You must have a username."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
+                phone.value = [NSString stringWithFormat:@"+1%@",self.phoneTextField.text];
+                if([self.emailTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have an email address."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                if(![self NSStringIsValidEmail:self.emailTextField.text]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have an valid email address. (ie. your@example.com)"
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                
+                AWSCognitoIdentityUserAttributeType * email = [AWSCognitoIdentityUserAttributeType new];
+                email.name = @"email";
+                email.value = self.emailTextField.text;
+                if([self.birthdateTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must enter your birthday."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateFormat = @"MM/DD/YYYY";
+                dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+                
+                NSDate *date = [dateFormatter dateFromString:self.birthdateTextField.text];
+                unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+                NSDate *now = [NSDate date];
+                NSCalendar *gregorian = [NSCalendar currentCalendar];
+                NSDateComponents *comps = [gregorian components:unitFlags fromDate:now];
+                [comps setYear:[comps year] - 21];
+                NSDate *twentyoneAgo = [gregorian dateFromComponents:comps];
+                if ([date timeIntervalSinceReferenceDate] > [twentyoneAgo timeIntervalSinceReferenceDate]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must be 21 to use this app."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                AWSCognitoIdentityUserAttributeType * birthdate = [AWSCognitoIdentityUserAttributeType new];
+                birthdate.name = @"birthdate";
+                birthdate.value = self.birthdateTextField.text;
+                if([self.streetAddressTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have a street address."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                if([self.cityTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have a city."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                if([self.stateTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have a state."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                AWSCognitoIdentityUserAttributeType * address = [AWSCognitoIdentityUserAttributeType new];
+                address.name = @"address";
+                address.value = [NSString stringWithFormat:@"%@, %@, %@",self.streetAddressTextField.text,self.cityTextField.text,self.stateTextField.text];
+                if([self.nameTextField.text isEqualToString:@""]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:@"Your must have a name."
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:nil] show];
+                    return;
+                }
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSString *token = [defaults stringForKey:@"deviceToken"];
+                NSString *arn = [defaults stringForKey:@"endpointArn"];
+                
+                AWSCognitoIdentityUserAttributeType *deviceToken = [AWSCognitoIdentityUserAttributeType new];
+                deviceToken.name = @"custom:deviceToken";
+                deviceToken.value = token;
+                
+                AWSCognitoIdentityUserAttributeType *endpointArn = [AWSCognitoIdentityUserAttributeType new];
+                endpointArn.name = @"custom:endpointArn";
+                endpointArn.value = arn;
+                
+                AWSCognitoIdentityUserAttributeType * name = [AWSCognitoIdentityUserAttributeType new];
+                name.name = @"name";
+                name.value = self.nameTextField.text;
+                //register the user
+                [[pool signUp:self.usernameTextField.text password:self.passwordTextField.text userAttributes:@[email,phone,birthdate,address,name,profileImage,deviceToken,endpointArn] validationData:nil] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *> * _Nonnull task) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(task.error){
+                            if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidParameterException"]) {
+                                NSArray *strings;
+                                if ([task.error.userInfo[@"message"] length] < 35) {
+                                    strings = [task.error.userInfo[@"message"] componentsSeparatedByString:@";"];
+                                } else {
+                                    strings = [[task.error.userInfo[@"message"] substringFromIndex:30] componentsSeparatedByString:@";"];
+                                }
+                                
+                                if([strings[0] isEqualToString:@"Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Your password must contain 8 or more characters."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else  if([strings[0] isEqualToString:@"Value at 'username' failed to satisfy constraint: Member must have length greater than or equal to 1"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"You must have a username."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:task.error.userInfo[@"message"]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                    
+                                }
+                            } else if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidPasswordException"]) {
+                                if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password not long enough"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Your password must contain 8 or more characters."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have uppercase characters"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Your password must contain an uppercase character."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have lowercase characters"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Your password must contain a lowercase character."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have numeric characters"]) {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Your password must contain a number."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                } else {
+                                    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:task.error.userInfo[@"message"]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles:nil] show];
+                                    
+                                }
+                                
                             } else {
                                 [[[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:task.error.userInfo[@"message"]
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil] show];
-
                             }
-                        } else if ([task.error.userInfo[@"__type"] isEqualToString:@"InvalidPasswordException"]) {
-                            if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password not long enough"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your password must contain 8 or more characters."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have uppercase characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your password must contain an uppercase character."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have lowercase characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your password must contain a lowercase character."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-                            } else if ([task.error.userInfo[@"message"] isEqualToString:@"Password did not conform with policy: Password must have numeric characters"]) {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your password must contain a number."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-                            } else {
-                                [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:task.error.userInfo[@"message"]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil] show];
-
-                            }
-                            
                         } else {
-                            [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:task.error.userInfo[@"message"]
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil] show];
-                        }
-                    } else {
-                        AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
-                        if(!response.userConfirmed){
-                            //need to confirm user using user.confirmUser:
-                            [response.user confirmSignUp:@"YES"];
-                        }
-                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                        [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
-                        [defaults synchronize];
-                        [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
-                    }});
-                return nil;
-            }];
+                            AWSCognitoIdentityUserPoolSignUpResponse * response = task.result;
+                            if(!response.userConfirmed){
+                                //need to confirm user using user.confirmUser:
+                                [response.user confirmSignUp:@"YES"];
+                            }
+                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                            [defaults setValue:self.usernameTextField.text forKey:@"currentUsername"];
+                            [defaults synchronize];
+                            [self performSegueWithIdentifier:@"loginToCustomer" sender:nil];
+                        }});
+                    return nil;
+                }];
+                
+            } else if([loginType isEqualToString:@"DRIVER"]) {
+                UIWebView *webview  = [[UIWebView alloc] initWithFrame:self.view.frame];
+                webview.delegate = self;
+                [self.view addSubview:webview];
+                NSURL *url = [NSURL URLWithString:@"https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://stripe.com/connect/default/oauth/test&client_id=ca_AvNbMkYUi4id6MfQzmVXGcq1oA3WFn1r"];
+                
+                //URL Requst Object
+                NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+                
+                //Load the request in the UIWebView.
+                [webview loadRequest:requestObj];
+                
+            }
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        UIColor *color = [UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0];
+        alertController.view.tintColor = color;
+        [self presentViewController:alertController animated:YES completion:nil];
+        alertController.view.tintColor = color;
 
-        } else if([loginType isEqualToString:@"DRIVER"]) {
-            UIWebView *webview  = [[UIWebView alloc] initWithFrame:self.view.frame];
-            webview.delegate = self;
-            [self.view addSubview:webview];
-            NSURL *url = [NSURL URLWithString:@"https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://stripe.com/connect/default/oauth/test&client_id=ca_AvNbMkYUi4id6MfQzmVXGcq1oA3WFn1r"];
-            
-            //URL Requst Object
-            NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-            
-            //Load the request in the UIWebView.
-            [webview loadRequest:requestObj];
-
-        }
     }
 }
-
 -(BOOL) NSStringIsValidEmail:(NSString *)checkString
 {
     BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
@@ -1074,6 +1097,63 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data
 {
     if (connection == stripeConnection) {
+        greyView = [[UIView alloc] initWithFrame:self.view.frame];
+        greyView.backgroundColor = [UIColor grayColor];
+        greyView.alpha = 0.0;
+        [self.view addSubview:greyView];
+        CGPoint centerView = self.view.center;
+        centerView.y = centerView.y - 44.0;
+        UIColor *baseColor = [UIColor colorWithRed:201.0/255.0 green:77.0/255.0 blue:32.0/255.0 alpha:1.0];
+        modalView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 330)];
+        modalView.center = centerView;
+        modalView.layer.cornerRadius = 15.0;
+        modalView.backgroundColor = [UIColor whiteColor];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, 100, 10)];
+        titleLabel.text = @"Pay for Background Check";
+        [titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+        [titleLabel sizeToFit];
+        CGPoint center = titleLabel.center;
+        center.x = modalView.frame.size.width / 2;
+        [titleLabel setCenter:center];
+        UIButton *currentLocButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 65, 250, 10)];
+//        [currentLocButton setTitle:@"Use Current Location" forState:UIControlStateNormal];
+        currentLocButton.imageView.image = [UIImage imageNamed:@"applePay50ptBlackText"];
+        //[currentLocButton.titleLabel sizeToFit];
+        //[currentLocButton setTitleColor:baseColor forState:UIControlStateNormal];
+        //[currentLocButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+        //currentLocButton.titleLabel.textColor = [UIColor blueColor];
+        CGPoint currentButtonCenter = currentLocButton.center;
+        currentButtonCenter.x = modalView.frame.size.width / 2;
+        [currentLocButton setCenter:currentButtonCenter];
+        [currentLocButton addTarget:self action:@selector(payWithApplePay) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *savedLocButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 115, 250, 10)];
+        [savedLocButton setTitle:@"Cancel Sign Up" forState:UIControlStateNormal];
+        [savedLocButton.titleLabel sizeToFit];
+        [savedLocButton setTitleColor:baseColor forState:UIControlStateNormal];
+        [savedLocButton.titleLabel setFont: [UIFont fontWithName:@"Optima" size:17.0]];
+        CGPoint savedButtonCenter = savedLocButton.center;
+        savedButtonCenter.x = modalView.frame.size.width / 2;
+        [savedLocButton setCenter:savedButtonCenter];
+        [savedLocButton addTarget:self action:@selector(cancelSignUp) forControlEvents:UIControlEventTouchUpInside];
+
+        [modalView addSubview:savedLocButton];
+        [modalView addSubview:currentLocButton];
+        [modalView addSubview:titleLabel];
+        modalView.alpha = 0.0;
+        [self.view addSubview:modalView];
+        
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             modalView.alpha = 1.0;
+                             greyView.alpha = 0.5;
+                         }
+                         completion:^(BOOL finished){
+                         }];
+
+        
+        
         id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSLog(@"%@", [JSONObject objectForKey:@"stripe_user_id"]);
         //    if ([[_birthdateTextField.text substringFromIndex:5] integerValue] >= 1997) {
@@ -1326,5 +1406,209 @@
 {
     
 }
+
+
+-(void)payWithApplePay {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Promo Code" message:@"Do you have a promo code?" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"code";
+        textField.textColor = [UIColor blackColor];
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleNone;
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1 identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        
+        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+        PromoCodes *codeUsed = [PromoCodes new];
+        [[[dynamoDBObjectMapper scan:[PromoCodes class]
+                         expression:scanExpression]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             } else {
+                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                 for (PromoCodes *promoCode in paginatedOutput.items) {
+                     //Do something with book.
+                     if([promoCode.PromoCode isEqualToString:alertController.textFields[0].text]) {
+                         if ([promoCode.Used isEqualToString:@"NO"]) {
+                             codeUsed.CodeId = promoCode.CodeId;
+                             codeUsed.Used = @"YES";
+                             codeUsed.PromoCode  = promoCode.PromoCode;
+                             codeUsed.UsedBy = self.usernameTextField.text;
+                             codeUsed.CodeType = promoCode.CodeType;
+                         }
+                     }
+                 }
+             }
+             return nil;
+         }] waitUntilFinished];
+        if (codeUsed.Used != nil) {
+            [[[dynamoDBObjectMapper save:codeUsed]
+              continueWithBlock:^id(AWSTask *task) {
+                  if (task.error) {
+                      NSLog(@"The request failed. Error: [%@]", task.error);
+                  } else {
+                      //Do something with task.result or perform other operations.
+                  }
+                  return nil;
+              }] waitUntilFinished];
+            [self dismissViewControllerAnimated:YES completion:nil];
+
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil];
+
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Invalid Code" message:@"Re-enter your code." preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }]];
+            [self presentViewController:alertController animated:YES completion:nil];
+
+        }
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if([PKPaymentAuthorizationViewController canMakePayments]) {
+            if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
+                PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+                request.countryCode = @"US";
+                request.currencyCode = @"USD";
+                request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
+                request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
+                request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
+                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Applicaton Fee" amount:[[NSDecimalNumber alloc] initWithDouble:14.71]];
+                request.paymentSummaryItems = @[item];
+                PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+                paymentPane.delegate = self;
+                if ([Stripe canSubmitPaymentRequest:request]) {
+                    [self presentViewController:paymentPane animated:YES completion:nil];
+                } else {
+                    NSLog(@"cannont submit request");
+                }
+            } else {
+                NSLog(@"NO PAYMENT");
+            }
+        } else {
+            NSLog(@"NO PAYMENTS");
+        }
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alertController animated:YES completion:nil];
+
+}
+
+- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    if (paymentSuccess) {
+        //SET PAID TO YES AND SET TRANSACTION
+        AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                        identityPoolId:@"us-east-1:05a67f89-89d3-485c-a991-7ef01ff18de6"];
+        
+        
+        AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:credentialsProvider];
+        
+        AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+        
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+        transactionId = [[NSNumber alloc] init];
+        Transactions *newTransaction = [Transactions new];
+        newTransaction.transactionResult = transactionResultId;
+        newTransaction.date = [NSString stringWithFormat:@"%@", [NSDate date]];
+        newTransaction.scannedCustomerLicenseInfo = @"N/A";
+        newTransaction.refunded = @"NO";
+        [[[dynamoDBObjectMapper scan:[Transactions class]
+                          expression:scanExpression]
+          continueWithBlock:^id(AWSTask *task) {
+              if (task.error) {
+                  NSLog(@"The request failed. Error: [%@]", task.error);
+              } else {
+                  AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                  NSNumber *highestNumber = @0;
+                  for (Transactions *transaction in paginatedOutput.items) {
+                      //Do something with book.
+                      if (transaction.TransactionId > highestNumber) {
+                          highestNumber = transaction.TransactionId;
+                      }
+                  }
+                  int value = [highestNumber intValue];
+                  newTransaction.TransactionId = [NSNumber numberWithInt:value + 1];
+                  transactionId = [NSNumber numberWithInt:value + 1];
+              }
+              return nil;
+          }] waitUntilFinished];
+        
+        [[[dynamoDBObjectMapper save:newTransaction]
+          continueWithBlock:^id(AWSTask *task) {
+              if (task.error) {
+                  NSLog(@"The request failed. Error: [%@]", task.error);
+              } else {
+                  //Do something with task.result or perform other operations.
+              }
+              return nil;
+          }] waitUntilFinished];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    [[STPAPIClient sharedClient] createTokenWithPayment:payment completion:^(STPToken *token, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+            completion(PKPaymentAuthorizationStatusFailure);
+            return;
+        }
+        [self createBackendChargeWithToken:token completion:completion];
+    }];
+}
+
+- (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    //We are printing Stripe token here, you can charge the Credit Card using this token from your backend.
+    NSLog(@"Stripe Token is %@",token);
+    AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
+    
+    [[lambdaInvoker invokeFunction:@"drinksBackgroundCheckPayment"
+                        JSONObject:@{@"token" : token.tokenId,
+                                     @"amount" : @1471
+                                     }] continueWithBlock:^id(AWSTask *task) {
+        if (task.error) {
+            NSLog(@"Error: %@", task.error);
+            if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
+                && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
+                NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
+                completion(PKPaymentAuthorizationStatusFailure);
+                paymentSuccess = NO;
+            }
+        }
+        if (task.result) {
+            NSDictionary *JSONObject = task.result;
+            NSLog(@"result: %@", JSONObject[@"paid"]);
+            if ([JSONObject[@"paid"] isEqual: @1]) {
+                NSLog(@"SUCCESS");
+                paymentSuccess = YES;
+                transactionResultId = JSONObject[@"id"];
+                completion(PKPaymentAuthorizationStatusSuccess);
+            } else {
+                completion(PKPaymentAuthorizationStatusFailure);
+                NSLog(@"FAILURE");
+                paymentSuccess = NO;
+            }
+            //             NSLog(@"%@", task.result);
+            //             completion(PKPaymentAuthorizationStatusSuccess);
+            
+        }
+        // Handle response
+        return nil;
+    }];
+    
+}
+
+
 
 @end
