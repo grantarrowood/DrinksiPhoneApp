@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *transactionResult;
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *scannedCustomerLicenseInfo;
+@property (nonatomic, strong) NSString *refunded;
 
 @end

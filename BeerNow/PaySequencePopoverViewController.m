@@ -102,23 +102,33 @@
         NSLog(@"NOT ENABLED");
     } else {
         if([PKPaymentAuthorizationViewController canMakePayments]) {
-            PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-            request.countryCode = @"US";
-            request.currencyCode = @"USD";
-            request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
-            request.merchantCapabilities = PKMerchantCapabilityEMV;
-            request.merchantIdentifier = @"merchant.com.drinks.pigletproducts";
-            NSMutableArray *itemArray = [[NSMutableArray alloc] init];
-            for (int i = 0; i<_orderDetails.count; i++) {
-                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
+            if ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]])  {
+                PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+                request.countryCode = @"US";
+                request.currencyCode = @"USD";
+                request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
+                request.merchantCapabilities = PKMerchantCapabilityEMV | PKMerchantCapability3DS;
+                request.merchantIdentifier = @"merchant.com.drinksapp.pigletproducts";
+                NSMutableArray *itemArray = [[NSMutableArray alloc] init];
+                for (int i = 0; i<_orderDetails.count; i++) {
+                    PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:[_orderDetails objectAtIndex:i][0] amount:[NSDecimalNumber decimalNumberWithString:[_orderDetails objectAtIndex:i][1]]];
+                    [itemArray addObject:item];
+                }
+                PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
                 [itemArray addObject:item];
+                request.paymentSummaryItems = itemArray;
+                PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+                paymentPane.delegate = self;
+                if ([Stripe canSubmitPaymentRequest:request]) {
+                    [self presentViewController:paymentPane animated:YES completion:nil];
+                } else {
+                    NSLog(@"cannont submit request");
+                }
+            } else {
+                NSLog(@"NO PAYMENT");
             }
-            PKPaymentSummaryItem *item = [PKPaymentSummaryItem summaryItemWithLabel:@"Total" amount:[[NSDecimalNumber alloc] initWithDouble:[total doubleValue]]];
-            [itemArray addObject:item];
-            request.paymentSummaryItems = itemArray;
-            PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
-            paymentPane.delegate = self;
-            [self presentViewController:paymentPane animated:YES completion:nil];
+            } else {
+            NSLog(@"NO PAYMENTS");
         }
     }
 }
@@ -149,6 +159,7 @@
         newTransaction.transactionResult = transactionResultId;
         newTransaction.date = [NSString stringWithFormat:@"%@", [NSDate date]];
         newTransaction.scannedCustomerLicenseInfo = @"INCOMPLETE";
+        newTransaction.refunded = @"NO";
         [[[dynamoDBObjectMapper scan:[Transactions class]
                          expression:scanExpression]
          continueWithBlock:^id(AWSTask *task) {
@@ -314,8 +325,10 @@
 //                                         paymentSuccess = NO;
 //                                     }
 //                                 }];
+    
     [[STPAPIClient sharedClient] createTokenWithPayment:payment completion:^(STPToken *token, NSError *error) {
         if (error) {
+            NSLog(@"Error: %@", error);
             completion(PKPaymentAuthorizationStatusFailure);
             return;
         }

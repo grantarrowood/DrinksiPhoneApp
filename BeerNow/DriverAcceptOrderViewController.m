@@ -188,6 +188,7 @@
             Transactions *newTransaction = [Transactions new];
             newTransaction.TransactionId = self.transactionId;
             newTransaction.scannedCustomerLicenseInfo = [NSString stringWithFormat:@"Name: %@ %@, Address: %@, Date of Birth: %@, License Number: %@",[usdlResult getAllStringElements][@"Customer First Name"],[usdlResult getAllStringElements][@"Customer Family Name"],[usdlResult getAllStringElements][@"Full Address"],[usdlResult getAllStringElements][@"Date of Birth"],[usdlResult getAllStringElements][@"Customer ID Number"] ];
+            newTransaction.refunded = @"NO";
             [[[dynamoDBObjectMapper scan:[Transactions class]
                               expression:scanExpression]
               continueWithBlock:^id(AWSTask *task) {

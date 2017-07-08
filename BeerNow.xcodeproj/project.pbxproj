@@ -404,10 +404,13 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = N5WA24M8FS;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
 								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
 							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -783,6 +786,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Randy Arrowood (7J53ZS2X2N)";
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -792,6 +796,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f621c5b9-a509-4d02-b1d5-5ae6548c7704";
+				PROVISIONING_PROFILE_SPECIFIER = "Dev Drinks";
 				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -805,6 +811,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BeerNow/BeerNow.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Randy Arrowood (7J53ZS2X2N)";
 				DEVELOPMENT_TEAM = N5WA24M8FS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -814,6 +821,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PigletProducts.Drinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f621c5b9-a509-4d02-b1d5-5ae6548c7704";
+				PROVISIONING_PROFILE_SPECIFIER = "Dev Drinks";
 				SWIFT_OBJC_BRIDGING_HEADER = "BeerNow/BeerNow-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

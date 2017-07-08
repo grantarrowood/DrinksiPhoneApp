@@ -20,7 +20,7 @@ static NSString *const SNSPlatformApplicationArn = @"arn:aws:sns:us-east-1:58556
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_C6FhEd8zoD4zqkHDTJ5iWEy9"];
-    [[STPPaymentConfiguration sharedConfiguration] setAppleMerchantIdentifier:@"merchant.com.drinks.pigletproducts"];
+    [[STPPaymentConfiguration sharedConfiguration] setAppleMerchantIdentifier:@"merchant.com.drinksapp.pigletproducts"];
     
     UIMutableUserNotificationAction *readAction = [[UIMutableUserNotificationAction alloc] init];
     readAction.identifier = @"READ_IDENTIFIER";

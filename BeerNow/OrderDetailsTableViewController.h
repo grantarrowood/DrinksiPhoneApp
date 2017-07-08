@@ -20,6 +20,8 @@
 #import <AWSS3/AWSS3.h>
 #import "CustomerLicenseTableViewCell.h"
 #import "DriverAcceptOrderViewController.h"
+#import <Stripe/Stripe.h>
+
 
 @interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate, AcceptDelegate> {
     NSMutableArray *orderItems;
@@ -45,7 +47,7 @@
     NSNumber *transactionId;
     NSString *stripeTransactionId;
     NSString *customerEndpointArn;
-
+    NSString *charge;
 }
 
 @property (strong) NSNumber *orderId;

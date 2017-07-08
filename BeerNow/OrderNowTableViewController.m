@@ -121,7 +121,7 @@
          }
          return nil;
      }];
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getTable) userInfo:nil repeats:YES];
     
 }
 
@@ -313,7 +313,7 @@
 //                        } else {
                             cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
                             cell.textLabel.text = [(MenuItems *)[allMenuItems objectAtIndex:indexPath.row] Name];
-                            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%@.00", [(MenuItems *)[allMenuItems objectAtIndex:indexPath.row] Price]];
+                            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", [[(MenuItems *)[allMenuItems objectAtIndex:indexPath.row] Price] floatValue]];
                        // }
                     }
                 } else {
@@ -623,7 +623,7 @@
         }
         
     }
-    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 0.49}", orderString];
     
     newOrder.Order = orderString;
     newOrder.AcceptedDelivery = @"NO";
@@ -723,7 +723,7 @@
         }
         
     }
-    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 0.49}", orderString];
     
     newOrder.Order = orderString;
     newOrder.AcceptedDelivery = @"NO";
@@ -854,7 +854,7 @@
         }
         
     }
-    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 12.00}", orderString];
+    orderString = [NSString stringWithFormat:@"%@, {DeliveryFee, 0.49}", orderString];
     
     newOrder.Order = orderString;
     newOrder.AcceptedDelivery = @"NO";

@@ -873,19 +873,85 @@
 
 -(void)cancelOrder {
     AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-    Orders *orderToCancel = [Orders new];
-    orderToCancel.OrderId = _orderId;
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapperTwo = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+    Transactions *newTransaction = [Transactions new];
     
-    [[dynamoDBObjectMapper remove:orderToCancel]
+    [[[dynamoDBObjectMapper scan:[Transactions class]
+                      expression:scanExpression]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+              for (Transactions *transaction in paginatedOutput.items) {
+                  //Do something with book.
+                  if (transaction.TransactionId == transactionId) {
+                      newTransaction.transactionResult = transaction.transactionResult;
+                      charge = transaction.transactionResult;
+                      newTransaction.date = transaction.date;
+                      newTransaction.scannedCustomerLicenseInfo = transaction.scannedCustomerLicenseInfo;
+                      newTransaction.refunded = @"YES";
+                  }
+              }
+          }
+          return nil;
+      }] waitUntilFinished];
+    [[dynamoDBObjectMapperTwo save:newTransaction]
      continueWithBlock:^id(AWSTask *task) {
          if (task.error) {
              NSLog(@"The request failed. Error: [%@]", task.error);
          } else {
-             //Item deleted.
-             [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
+             //Do something with task.result or perform other operations.
          }
          return nil;
      }];
+    AWSLambdaInvoker *lambdaInvoker = [AWSLambdaInvoker defaultLambdaInvoker];
+    
+    [[[lambdaInvoker invokeFunction:@"drinksRefundOrder"
+                         JSONObject:@{@"charge" : charge
+                                      }] continueWithBlock:^id(AWSTask *task) {
+        if (task.error) {
+            NSLog(@"Error: %@", task.error);
+            if ([task.error.domain isEqualToString:AWSLambdaInvokerErrorDomain]
+                && task.error.code == AWSLambdaInvokerErrorTypeFunctionError) {
+                NSLog(@"Function error: %@", task.error.userInfo[AWSLambdaInvokerFunctionErrorKey]);
+            }
+        }
+        if (task.result) {
+            NSLog(@"SUCCESS");
+            //            NSDictionary *JSONObject = task.result;
+            //            NSLog(@"result: %@", JSONObject[@"paid"]);
+            //            if ([JSONObject[@"paid"] isEqual: @1]) {
+            //                NSLog(@"SUCCESS");
+            //            } else {
+            //                NSLog(@"FAILURE");
+            //            }
+            //             NSLog(@"%@", task.result);
+            //             completion(PKPaymentAuthorizationStatusSuccess);
+            
+        }
+        // Handle response
+        return nil;
+    }] waitUntilFinished];
+    // REFUND ORDER
+
+    Orders *orderToCancel = [Orders new];
+    orderToCancel.OrderId = _orderId;
+    
+    [[[dynamoDBObjectMapper remove:orderToCancel]
+      continueWithBlock:^id(AWSTask *task) {
+          if (task.error) {
+              NSLog(@"The request failed. Error: [%@]", task.error);
+          } else {
+              //Item deleted.
+          }
+          return nil;
+      }] waitUntilFinished];
+    
+
+    [self performSegueWithIdentifier:@"backToYourOrdersSegue" sender:nil];
+    
 }
 
 
