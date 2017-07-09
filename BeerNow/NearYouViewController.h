@@ -13,15 +13,17 @@
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import "Locations.h"
 #import "OrderNowTableViewController.h"
+#import "AFDropdownNotification.h"
 
 
-@interface NearYouViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface NearYouViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, AFDropdownNotificationDelegate> {
     
     NSMutableArray *locationsArray;
     NSTimer *timer;
     NSString *selectedLocationAddress;
     BOOL locationUpdated;
 }
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

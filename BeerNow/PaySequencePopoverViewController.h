@@ -15,13 +15,14 @@
 #import <Stripe/Stripe.h>
 #import <AWSS3/AWSS3.h>
 #import "PromoCodes.h"
+#import "AFDropdownNotification.h"
 
 
 @protocol PayDelegate <NSObject>
 -(void)payViewControllerDismissed:(NSString *)paid;
 @end
 
-@interface PaySequencePopoverViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PKPaymentAuthorizationViewControllerDelegate> {
+@interface PaySequencePopoverViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PKPaymentAuthorizationViewControllerDelegate, AFDropdownNotificationDelegate> {
     NSTimer *timer;
     NSNumber *total;
     bool paymentSuccess;
@@ -30,6 +31,7 @@
     NSString *promoCodeType;
 
 }
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 @property (strong) NSMutableArray *orderDetails;
 @property (strong) NSNumber *orderId;

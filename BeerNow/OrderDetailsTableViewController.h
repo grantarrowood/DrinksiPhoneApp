@@ -21,9 +21,10 @@
 #import "CustomerLicenseTableViewCell.h"
 #import "DriverAcceptOrderViewController.h"
 #import <Stripe/Stripe.h>
+#import "AFDropdownNotification.h"
 
 
-@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate, AcceptDelegate> {
+@interface OrderDetailsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, CLLocationManagerDelegate, UIPopoverPresentationControllerDelegate, PayDelegate, AcceptDelegate, AFDropdownNotificationDelegate> {
     NSMutableArray *orderItems;
     NSTimer *timerTwo;
     NSTimer *timer;
@@ -49,6 +50,7 @@
     NSString *customerEndpointArn;
     NSString *charge;
 }
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 @property (strong) NSNumber *orderId;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

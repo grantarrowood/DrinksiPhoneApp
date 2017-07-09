@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <AWSSNS/AWSSNS.h>
 #import <AWSMobileAnalytics/AWSMobileAnalytics.h>
-static NSString *const SNSPlatformApplicationArn = @"arn:aws:sns:us-east-1:585566417461:app/APNS_SANDBOX/Drinks";
+static NSString *const SNSPlatformApplicationArn = @"arn:aws:sns:us-east-1:585566417461:app/APNS/DrinksProduction";
 
 
 @interface AppDelegate ()

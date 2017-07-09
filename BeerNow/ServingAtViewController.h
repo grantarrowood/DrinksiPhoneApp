@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
+#import "AFDropdownNotification.h"
 
-@interface ServingAtViewController : UIViewController
+@interface ServingAtViewController : UIViewController <AFDropdownNotificationDelegate>
+
+@property (nonatomic, strong) AFDropdownNotification *notification;
+
 @property (weak, nonatomic) IBOutlet UIImageView *campusImageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 

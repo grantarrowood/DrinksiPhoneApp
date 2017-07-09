@@ -17,10 +17,11 @@
 #import "Transactions.h"
 #import "PromoCodes.h"
 #import <AWSLambda/AWSLambda.h>
+#import "AFDropdownNotification.h"
 
 
 
-@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIWebViewDelegate, PKPaymentAuthorizationViewControllerDelegate>
+@interface LoginViewController : UIViewController <AWSCognitoIdentityPasswordAuthentication, AWSCognitoIdentityInteractiveAuthenticationDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIWebViewDelegate, PKPaymentAuthorizationViewControllerDelegate, AFDropdownNotificationDelegate>
 {
     NSString *loginType;
     BOOL profilePhoto;
@@ -32,6 +33,7 @@
     NSNumber *transactionId;
     NSString *transactionResultId;
 }
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 @property (nonatomic, strong) AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails*>* passwordAuthenticationCompletion;
 @property (nonatomic,strong) AWSTaskCompletionSource<NSNumber *>* rememberDeviceCompletionSource;

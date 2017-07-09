@@ -13,13 +13,14 @@
 #import "Transactions.h"
 #import "Orders.h"
 #import <AWSS3/AWSS3.h>
+#import "AFDropdownNotification.h"
 
 
 @protocol AcceptDelegate <NSObject>
 -(void)acceptViewControllerDismissed:(NSString *)accepted;
 @end
 
-@interface DriverAcceptOrderViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PPScanningDelegate>
+@interface DriverAcceptOrderViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PPScanningDelegate, AFDropdownNotificationDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -31,6 +32,9 @@
     UIAlertView *matchesAlertView;
     UIAlertView *infoAlertView;
 }
+
+@property (nonatomic, strong) AFDropdownNotification *notification;
+
 -(void)drawPageNbr:(int)pageNumber;
 -(CFRange*)updatePDFPage:(int)pageNumber setTextRange:(CFRange*)pageRange setFramesetter:(CTFramesetterRef*)framesetter;
 

@@ -15,9 +15,10 @@
 #import "Orders.h"
 #import "OrderDetailsTableViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "AFDropdownNotification.h"
 
 
-@interface AvailableOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,  CLLocationManagerDelegate> {
+@interface AvailableOrdersTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,  CLLocationManagerDelegate, AFDropdownNotificationDelegate> {
     
     NSMutableArray *ordersArray;
     NSMutableArray *locationsArray;
@@ -29,6 +30,7 @@
     UIActivityIndicatorView *spinner;
     UIView *greyView;
 }
+@property (nonatomic, strong) AFDropdownNotification *notification;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 

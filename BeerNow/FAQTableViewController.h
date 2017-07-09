@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
+#import "AFDropdownNotification.h"
 
-@interface FAQTableViewController : UITableViewController
+@interface FAQTableViewController : UITableViewController <AFDropdownNotificationDelegate>
+@property (nonatomic, strong) AFDropdownNotification *notification;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 
 @end

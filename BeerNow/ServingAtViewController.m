@@ -17,6 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(inAppNotification:)
+                                                 name:@"InAppNotification"
+                                               object:nil];
+    _notification = [[AFDropdownNotification alloc] init];
+    _notification.notificationDelegate = self;
+
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -40,6 +47,62 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void)inAppNotification:(NSNotification*)sender {
+    // Perform action here
+    _notification.titleText = @"DRINKS";
+    _notification.subtitleText = [[sender object] valueForKey:@"message"];
+    _notification.image = [UIImage imageNamed:@"profileIcon"];
+    _notification.topButtonText = @"Accept";
+    _notification.bottomButtonText = @"Cancel";
+    _notification.dismissOnTap = YES;
+    [_notification presentInView:self.view withGravityAnimation:YES];
+    
+    [_notification listenEventsWithBlock:^(AFDropdownNotificationEvent event) {
+        
+        switch (event) {
+            case AFDropdownNotificationEventTopButton:
+                // Top button
+                break;
+                
+            case AFDropdownNotificationEventBottomButton:
+                // Bottom button
+                break;
+                
+            case AFDropdownNotificationEventTap:
+                // Tap
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    
+    NSLog(@"show notification");
+    
+    
+}
+
+-(void)dropdownNotificationTopButtonTapped {
+    
+    NSLog(@"Top button tapped");
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Top button tapped" message:@"Hooray! You tapped the top button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
+    [_notification dismissWithGravityAnimation:YES];
+}
+
+-(void)dropdownNotificationBottomButtonTapped {
+    
+    NSLog(@"Bottom button tapped");
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bottom button tapped" message:@"Hooray! You tapped the bottom button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
+    [_notification dismissWithGravityAnimation:YES];
+}
+
 
 /*
 #pragma mark - Navigation

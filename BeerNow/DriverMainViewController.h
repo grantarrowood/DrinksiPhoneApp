@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import <AWSS3/AWSS3.h>
+#import "AFDropdownNotification.h"
 
-@interface DriverMainViewController : UIViewController
+
+@interface DriverMainViewController : UIViewController <AFDropdownNotificationDelegate>
+
+@property (nonatomic, strong) AFDropdownNotification *notification;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;

@@ -15,9 +15,10 @@
 #import "Orders.h"
 #import <CoreLocation/CoreLocation.h>
 #import "PaySequencePopoverViewController.h"
+#import "AFDropdownNotification.h"
 
 
-@interface OrderNowTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PayDelegate, UIPopoverPresentationControllerDelegate> {
+@interface OrderNowTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PayDelegate, UIPopoverPresentationControllerDelegate, AFDropdownNotificationDelegate> {
     NSMutableArray *allLocations;
     NSMutableArray *allAreas;
     NSMutableArray *allMenuItems;
@@ -31,7 +32,7 @@
     NSMutableArray *orderItems;
     NSNumber *orderId;
 }
-
+@property (nonatomic, strong) AFDropdownNotification *notification;
 @property (strong) NSString *selectedAddress;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 
